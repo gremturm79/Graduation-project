@@ -10,3 +10,4 @@ for u in range(a):
                 else:
                     print(' '' ', end='')
         print()
+
