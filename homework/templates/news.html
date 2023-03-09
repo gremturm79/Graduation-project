@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ super() }}
+{% endblock %}
+{% block news %}
+<div class="news">
+    {% for i in lst %}
+            <p class="news_items">{{ i }}</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
