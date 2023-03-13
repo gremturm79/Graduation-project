@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ super() }}
+<h1>{{ menu.name }}</h1>
+
+{% endblock %}
+{% block data_base %}
+<h1>{{ model[1].title }}</h1>
+
+<table>
+    <tr>
+    <th>Id</th>
+    <th>Title</th>
+    <th>Url</th>
+    </tr>
+    <tr>
+        <td>{{ model[0].id }}</td>
+        <td>{{ model[0].title }}</td>
+        <td>{{ model[0].url }}</td>
+    </tr>
+     <tr>
+        <td>{{ model[1].id }}</td>
+        <td>{{ model[1].title }}</td>
+        <td>{{ model[1].url }}</td>
+    </tr>
+</table>
+{% endblock %}
+

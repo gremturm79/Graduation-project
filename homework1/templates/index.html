@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ super() }}
+{% endblock %}
+{% block list_title %}
+<h1>Новости регионов</h1>
+<h2><a href="{{ menu[1].url  }}">Посмотреть базу данных</a></h2>
+{% endblock %}
