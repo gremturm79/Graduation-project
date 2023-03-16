@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ super() }}
+
+{% endblock %}
+{% block data_base %}
+<h1>Таблица Меню</h1>
+
+<table>
+    <tr>
+    <th>Id</th>
+    <th>Title</th>
+    <th>Url</th>
+    </tr>
+    {% for i in menu %}
+    <tr>
+        <td>{{ i.id }}</td>
+        <td>{{ i.title }}</td>
+        <td>{{ i.url }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+

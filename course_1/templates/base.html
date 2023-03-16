@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block title %}
+    <meta charset="UTF-8">
+    {% if title %}
+    <title>Курсы по программированию - {{ title }}</title>
+    {% else %}
+    <title>Курсы по программированию</title>
+    {% endif %}
+    {% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+{% block content %}
+{% block menu %}
+<ul class="menu">
+    {% for i in menu %}
+    <li><a href="{{ url_for(i.url)}}">{{ i.title }}</a></li>
+    {% endfor %}
+</ul>
+<div class="content">
+{% endblock %}
+    {% if title %}
+    <h1>{{ title }}</h1>
+    {% else %}
+    <h1>Новостной портал</h1>
+    {% endif %}
+    {% endblock %}
+</div>
+{% block list_title %}
+{% endblock %}
+{% block news %}
+
+{% endblock %}
+<div class="dbase">
+{% block data_base %}
+
+{% endblock %}
+
+
+{% block add_bd %}
+{% endblock %}
+{% block note %}
+{% endblock %}
+</div>
+</body>
+</html>
