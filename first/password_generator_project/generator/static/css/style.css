@@ -1,0 +1,53 @@
+body {
+    background: rgb(241, 241, 89);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.container {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.container h1 {
+    text-align: center;
+}
+
+.container h2,
+.container form {
+    background: rgb(159, 159, 225);
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 6px;
+}
+
+.description {
+    width: 650px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: beige;
+    padding-left: 10px;
+
+}
+
+.description ol,
+ul {
+    color: rgb(26, 130, 26);
+    font-size: 140%;
+    font-weight: bolder;
+    margin-top: 10px;
+}
+
+.description li {
+    padding-top: 10px;
+}
+
+.description p {
+    font-size: 120%;
+    font-weight: bolder;
+}
+
+body .description {
+    margin: 0 auto;
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <div class="description">
+        <h1>Приложение  "Генератор паролей"</h1>
+        <h2>Автор приложения Неизвестно</h2>
+        <h2>Описание:<br>Приложение генерирует пароль в зависимости от выбранных параметров</h2>
+            <ol>Параметры:
+                <li>Количество символов</li>
+                <li>Символы верхнего регистра</li>
+                <li>Цифры</li>
+                <li>Спецсимволы</li>
+            </ol>
+        <p><a href="{% url 'home' %}">вернуться к генерации пароля</a></p>
+    </div>
+
+</body>
+</html>
