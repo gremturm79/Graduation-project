@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="menu">
+    <div class="wrap">
+        <div class="logo">
+            <img src="{% static 'skills/logo.png' %}" alt="">
+        </div>
+        <div class="png">
+            {% for soc in social %}
+            <a href="{{ soc.url }}" target="_blank"><img src="{{ soc.image.url }}" alt=""></a>
+            {% endfor %}
+        </div>
+        <div class="resume">
+            <a href="{% static 'skills/resume.pdf' %}" target="_blank"><img src="{% static 'skills/resume.png' %}"
+                                                                            alt=""></a>
+        </div>
+    </div>
+</div>
+  <div class="content">
+    <div class="wrap">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+</body>
+</html>
