@@ -18,11 +18,16 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 from skills import views
+from django.contrib.auth import views as authViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('signup/', views.signupuser, name='signupuser'),
+    path('exit/', authViews.LogoutView.as_view(next_page='index'), name='exit'),
+    path('login/', views.loginuser, name='loginuser'),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # для просмотра медиафайлов через админ
-# страницу
+# страницу, а также на web страницах

@@ -100,7 +100,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-Ru'
 
 TIME_ZONE = 'UTC'
 
@@ -113,8 +113,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'  # путь для статических файлов
 
-MEDIA_URL = 'media/'  # путь для динамических путей
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = 'media/'  # путь для шаблонов динамических путей
+MEDIA_ROOT = BASE_DIR / 'media'  # абсолютный путь к директории где хранятся медиа файлы, также создастся папка media
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
