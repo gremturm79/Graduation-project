@@ -1,0 +1,45 @@
+* {
+    box-sizing: border-box;
+}
+
+@import url(https://fonts.googleapis.com/css?family=PT+Sans);
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'PT Sans', Arial, Verdana;
+    background-color: #eee;
+}
+
+.menu {
+    height: 100px;
+    background: #FFF;
+    text-align: center;
+
+}
+
+.wrap {
+    height: 100%;
+}
+
+.wrap ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.wrap li {
+    font-size: 140%;
+    font-weight: bolder;
+    list-style: none;
+}
+
+.wrap li a {
+    text-decoration: none;
+}
