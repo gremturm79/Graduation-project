@@ -1,0 +1,17 @@
+{% extends 'main/index.html' %}
+{% block content %}
+<div class="block_register">
+    <div class="register_wrapper">
+<h1>Авторизация</h1>
+<h2>{{ error }}</h2>
+
+<form method="post" class="bg authorization">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="center">
+        <button class="btn">Авторизация</button>
+    </div>
+</form>
+    </div>
+</div>
+{% endblock %}

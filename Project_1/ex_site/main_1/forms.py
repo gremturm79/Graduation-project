@@ -1,0 +1,20 @@
+from django import forms
+
+
+# import datetime
+
+
+class ContactForm(forms.Form):
+    name = forms.CharField(max_length=250, label='Ваше имя:')  # disabled=True отключает поле
+    email = forms.EmailField(max_length=250, label='Почтовый ящик:')
+    content = forms.CharField(widget=forms.Textarea, label='Описание:')  # help_text='текст рядом с полем',
+    # strip=True удаление начальных и конечных пробелов
+    file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), label='Загрузка файла:')
+    # square = forms.DecimalField(max_value=1000, min_value=2, label='Укажите площадь помещения:')
+    # CHOICES = (
+    # ('Paris', 'France'),
+    # ('Moscow', 'Russia'),
+    # )
+    # position = forms.ChoiceField(choices=CHOICES) choices именованный параметр для тега select в html
+
+    # day = forms.DateField(initial=datetime.date.today) отдельное поле с датой на сегодня

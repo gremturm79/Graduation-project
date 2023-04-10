@@ -1,16 +1,19 @@
 {% extends 'main/index.html' %}
 {% block content %}
-<div class="menu">
-    <div class="wrap">
-        <ul class="menu">
-            <li><a href="{% url 'about' %}" class="active" title="">Наши услуги</a></li>
-            <li><a href="{% url 'gallery' %}" class="active" title="">Галерея</a></li>
-            <li><a href="{% url 'calculate' %}" class="active" title="">Калькулятор</a></li>
-            <li><a href="{% url 'reviews' %}" class="active" title="">Отзывы</a></li>
-            <li><a href="{% url 'contact' %}" class="active" title="">Контакты</a></li>
-            <li><a href="{% url 'enter' %}" class="active" title="">Вход</a></li>
+
+ <h2>Галерея</h2>
+<div class="gallery">
+  <div class="gallery_wrap">
+	<div class="top">
+    	<ul>
+            {% for image in images %}
+        	<li><a href="#img_{{ image.id }}"><img src="{{ image.image.url }}"></a></li>
+            {% endfor %}
         </ul>
+            {% for image in images %}
+        <a href="#_{{ image.id }}" class="lightbox trans" id="img_{{ image.id }}"><img src="{{ image.image.url }}"></a>
+            {% endfor %}
     </div>
 </div>
-<h1>Галерея</h1>
+</div>
 {% endblock %}

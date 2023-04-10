@@ -1,18 +1,24 @@
 {% extends 'main/index.html' %}
 {% block content %}
-<div class="menu">
-    <div class="wrap">
-        <ul class="menu">
-            <li><a href="{% url 'about' %}" class="active" title="">Наши услуги</a></li>
-            <li><a href="{% url 'gallery' %}" class="active" title="">Галерея</a></li>
-            <li><a href="{% url 'calculate' %}" class="active" title="">Калькулятор</a></li>
-            <li><a href="{% url 'reviews' %}" class="active" title="">Отзывы</a></li>
-            <li><a href="{% url 'contact' %}" class="active" title="">Контакты</a></li>
-            <li><a href="{% url 'enter' %}" class="active" title="">Вход</a></li>
-        </ul>
+
+
+<div class="block_register">
+    <div class="register_wrapper">
+      <h1>Регистрация</h1>
+        <div>
+            <small>{{ error }}</small>
+        </div>
+<form action="" method="post" class="bg">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn">Зарегистрироваться</button>
+    <div class="authorization">
+            <h2><a href="{% url 'loginuser' %}">Авторизация</a></h2>
+        </div>
+</form>
+
     </div>
 </div>
-
-<h1>Вход</h1>
-
 {% endblock %}
+
+
