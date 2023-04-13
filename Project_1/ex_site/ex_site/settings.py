@@ -9,8 +9,9 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,6 +34,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'logvinov.al.m@gmail.com'
 EMAIL_HOST_PASSWORD = 'rxtukxvapogyjuxz'
 EMAIL_USE_TLS = True
+MY_PASSWORD_MAIL = os.getenv('MY_PASSWORD_MAIL')
+MY_HOST_MAIL = ''
 
 # Application definition
 

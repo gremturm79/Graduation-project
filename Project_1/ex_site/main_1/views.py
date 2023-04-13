@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import PhotoOfWorks
+from .models import PhotoOfWorks, TypeOfServices
 # UserCreationForm импорт формы которая создаёт пользователя
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -15,7 +15,11 @@ def index(request):
 
 
 def main(request):
-    return render(request, 'main/about.html')
+    services = TypeOfServices.objects.all()
+    context = {
+        'services': services
+    }
+    return render(request, 'main/about.html', context)
 
 
 def gallery(request):
@@ -28,16 +32,19 @@ def gallery(request):
 
 def calculate(request):
     if request.method == 'POST':
-        form = ContactForm(request.POST)
+        # form = ContactForm(request.POST)
+        form = ContactForm(request.POST, request.FILES)
         # if form.is_valid():
         name = request.POST['name']
         content = request.POST['content']
         email = request.POST['email']
-        files = request.FILES['file']
-        print('file', files)
+
+        files = request.FILES.getlist('file')
+        # print('file', files)
         # square = request.FILES['square']
         msg = EmailMessage(name, content, settings.EMAIL_HOST_USER, [email])
-        msg.attach(files.name, files.read(), files.content_type)
+        for f in files:
+            msg.attach(f.name, f.read(), f.content_type)
         msg.send()
         return redirect('about')
         # else:
@@ -89,4 +96,6 @@ def loginuser(request):
             return render(request, 'main/loginuser.html', {'form': AuthenticationForm(), 'error': 'Неверные данные'})
         else:  # иначе, сохраняются данные пользователя в серверной части запроса пока пользователь находится в сессии
             login(request, user)
-            return redirect('index')
+            return redirect('about')
+
+

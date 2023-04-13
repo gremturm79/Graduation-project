@@ -87,7 +87,7 @@ body {
 
 .about {
     width: 100%;
-    height: 600px;
+    /*     height: 600px; */
 }
 
 /* .content {
@@ -126,11 +126,13 @@ body {
 }
 
 button {
-    padding: 10px 40px;
+
     border-radius: 6px;
-    margin-top: 40px;
-    font-size: 24px;
+    text-align: center;
+    width: 50%;
     cursor: pointer;
+    border: none;
+
 }
 
 .btn:hover {
@@ -284,7 +286,7 @@ input {
 
 /* sidebar */
 @import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
-}
+
 
 @import url(https://fonts.googleapis.com/css?family=Titillium+Web:300);
 
@@ -372,6 +374,8 @@ nav.main-menu.expanded {
     position: absolute;
     left: 0;
     bottom: 0;
+    text-align: center;
+    background: #212121;
 }
 
 .no-touch .scrollable.hover {
@@ -428,4 +432,69 @@ nav.main-menu li.active>a,
     font-style: normal;
     font-weight: 300;
     src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
+}
+
+.column1 {
+    display: flex;
+    flex-direction: column;
+    align-content: space-evenly;
+    width: 400px;
+    height: 500px;
+    /*  float: left; */
+    /* margin-right: 1px; */
+    /*     margin-bottom: 100px;
+    padding-bottom: 50px; */
+    padding: 20px;
+    background: #FFF;
+    box-shadow: 20px 20px 50px 10px rgb(102, 230, 123) inset;
+}
+
+.subbanner {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* .more {
+    padding: 20px 0px 0px 0px;
+    text-align: right;
+
+} */
+
+.browntxt {
+    color: #3B392F;
+    font-weight: bold;
+}
+
+.whiteheading {
+    font: 20px ZapfHumnst BT, Arial, Helvetica, sans-serif;
+    color: #ffffff;
+    margin: 0px;
+    padding: 0px;
+}
+
+.about_wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 70px;
+}
+
+.about {
+    text-align: center;
+    margin-bottom: 70px;
+    margin-top: 50px;
+}
+
+
+.about_img {
+    width: 100%;
+    height: 150px;
+    margin-top: 20px;
+}
+
+.about .title {
+    margin-bottom: 50px;
 }

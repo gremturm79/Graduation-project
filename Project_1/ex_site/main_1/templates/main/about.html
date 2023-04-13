@@ -1,11 +1,29 @@
 {% extends 'main/index.html' %}
 {% block content %}
 <div class="about">
-    <div class="wrap">
+      <div class="tittle">
+            <h1>Наши предложения</h1>
+            <h2>Выбор лучших услуг нашей компании</h2>
+        </div>
+    <div class="about_wrap">
+        {% for service in services %}
+       <div class="column1">
 
+        <div>
+            <h1>{{ service.title }}</h1>
+          </div>
+          <div>
+              {{ service.description|truncatechars:300 }}
+         </div>
+       <div class="more">
+           <a href=""><img src="{{ service.services_image.image.url }}" alt="" border="0" class="about_img" /></a>
+        </div>
+           <div><a href="{% url 'send_mail' %}">Рассчитать цену</a></div>
+
+      </div>
+        {% endfor %}
     </div>
 </div>
-
 {% endblock %}
 
 
