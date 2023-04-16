@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main_1.apps.MainConfig',
+    'repair_of_apartments.apps.RepairOfApartmentsConfig',
+    'renovation_bathroom.apps.RenovationBathroomConfig',
 ]
 
 MIDDLEWARE = [

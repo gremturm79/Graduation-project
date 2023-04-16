@@ -39,6 +39,7 @@ body {
 
 .wrap {
     height: 100%;
+    text-align: center;
 }
 
 .wrap ul {
@@ -497,4 +498,106 @@ nav.main-menu li.active>a,
 
 .about .title {
     margin-bottom: 50px;
+}
+
+.bath_1 {
+    color: red;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.bath_2 {
+    color: green;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.table_calculate {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-evenly;
+
+}
+
+.content_calculate {
+    width: 100%;
+}
+
+.wrap_calculate {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+form.form_calculate {
+    width: 100%;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.wrap_field {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-content: center;
+    /* padding: 10px; */
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.wrap_field_form {
+    width: 100%;
+    height: 50%;
+    background: #e5e5e5;
+    box-shadow: 20px 20px 50px 10px rgb(102, 230, 123) inset;
+    padding: 20px;
+    padding-right: 30px;
+
+
+}
+
+input.btn_calculate {
+    width: 200px;
+}
+
+.our_works_wrapper {
+    width: 800px;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    /* align-items: flex-start; */
+    margin-bottom: 50px;
+    background-color: #b8e994;
+}
+
+
+.our_works_img {
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+}
+
+.our_works_img img {
+    width: 300px;
+    height: 150px;
+    padding-top: 12px;
+    margin-left: 0;
+}
+
+.our_works_wrapper_title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: justify;
+    margin-left: 15px;
+    margin-right: 15px;
 }

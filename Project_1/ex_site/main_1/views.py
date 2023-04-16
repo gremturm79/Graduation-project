@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import PhotoOfWorks, TypeOfServices
+from .models import PhotoOfWorks, TypeOfServices, CalculateTableEx, ListOfWorks
 # UserCreationForm импорт формы которая создаёт пользователя
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -8,6 +8,7 @@ from django.contrib.auth import login, logout, authenticate
 from .forms import ContactForm
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
+from .forms import CalculateTableExForm, ListOfWorksForm
 
 
 def index(request):
@@ -99,3 +100,27 @@ def loginuser(request):
             return redirect('about')
 
 
+def calculate_table(request):
+    if request.method == 'GET':
+        form = ListOfWorksForm()
+        obj = ListOfWorks.objects.all()
+        return render(request, 'main/calculate_table.html', {'form': form, 'obj': obj})
+    else:
+        form = ListOfWorksForm()
+        obj = ListOfWorks.objects.all()
+        lst = []
+        for i in obj:
+            lst.append(i.price)  # добавляем в список значения с полями price из БД ListOfWorks
+            print(i.price)  # получаем все значения из БД ListOfWorks в поле price
+        # check = request.POST.getlist('checks[]')  получаем список отмеченных полей для дальнейшей проверки
+        square = request.POST.getlist('square')  # получаем список указанных площадей в теге input name="square"
+
+        summ = 0
+        if square:
+            for i in range(len(square)):
+                if square[i].isdigit():  # делая проверку на цифровое значении тем самым получаем индекс соответствующий
+                    # индексации нашего списка lst с ценами на работы, которые мы взяли из БД ListOfWorks
+                    total = int(lst[i]) * int(square[i])
+                    summ += total
+
+        return render(request, 'main/calculate_table.html', {'form': form, 'obj': obj, 'summ': summ})

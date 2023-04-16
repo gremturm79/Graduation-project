@@ -18,10 +18,14 @@
        <div class="more">
            <a href=""><img src="{{ service.services_image.image.url }}" alt="" border="0" class="about_img" /></a>
         </div>
-           <div><a href="{% url 'send_mail' %}">Рассчитать цену</a></div>
-
+            {% if service.title == 'Ремонт квартир' %}
+                <div><a href="{% url 'repair_of_apartments' %}">Перейти</a></div>
+           {% else %}
+           <div><a href="{% url 'renovation_bathroom' %}">Перейти</a></div>
+           {% endif %}
       </div>
         {% endfor %}
+
     </div>
 </div>
 {% endblock %}

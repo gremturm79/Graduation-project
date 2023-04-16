@@ -10,6 +10,7 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('enter/', views.enter, name='enter'),
     path('logout/', views.logoutuser, name='logoutuser'),
-    path('login', views.loginuser, name='loginuser'),
+    path('login/', views.loginuser, name='loginuser'),
+    path('calculate_table/', views.calculate_table, name='calculate_table'),
 
 ]

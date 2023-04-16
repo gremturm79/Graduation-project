@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Menu(models.Model):  # модель не используется
@@ -33,6 +34,38 @@ class TypeOfServices(models.Model):  # модель видов предоста�
     title = models.CharField(max_length=250)
     description = models.TextField(max_length=3000)
     services_image = models.ForeignKey(PhotoOfWorks, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class CalculateTable(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=300, blank=True, null=True)
+    dismantling = models.IntegerField()
+    montage = models.IntegerField()
+    plaster = models.IntegerField()
+    putty = models.IntegerField()
+
+    def __str__(self):
+        return self.title
+
+
+class CalculateTableEx(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=300, blank=True, null=True)
+    dismantling = models.IntegerField()
+    montage = models.IntegerField()
+    plaster = models.IntegerField()
+    putty = models.IntegerField()
+
+    def __str__(self):
+        return self.title
+
+
+class ListOfWorks(models.Model):
+    title = models.TextField(max_length=100)
+    price = models.IntegerField(null=False)
 
     def __str__(self):
         return self.title

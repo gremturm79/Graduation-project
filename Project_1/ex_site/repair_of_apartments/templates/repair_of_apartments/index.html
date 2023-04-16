@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ремонт квартиры</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="area">
+
+</div><nav class="main-menu">
+            <ul>
+                <li>
+                    <a href="{% url 'about' %}">
+                        <i class="fa fa-home fa-2x"></i>
+                        <span class="nav-text">
+                           Главная
+                        </span>
+                    </a>
+
+                </li>
+                <li class="has-subnav">
+                    <a href="{% url 'about' %}">
+                        <i class="fa fa-globe fa-2x"></i>
+                        <span class="nav-text">
+                            О нас
+                        </span>
+                    </a>
+
+                </li>
+                <li class="has-subnav">
+                    <a href="{% url 'gallery' %}">
+                       <i class="fa fa-comments fa-2x"></i>
+                        <span class="nav-text">
+                            Галерея
+                        </span>
+                    </a>
+
+                </li>
+                <li class="has-subnav">
+                    <a href="{% url 'send_mail' %}">
+                       <i class="fa fa-camera-retro fa-2x"></i>
+                        <span class="nav-text">
+                            Калькулятор
+                        </span>
+                    </a>
+
+                </li>
+                <li class="has-subnav">
+                    <a href="{% url 'reviews' %}">
+                       <i class="fa fa-camera-retro fa-2x"></i>
+                        <span class="nav-text">
+                            Отзывы
+                        </span>
+                    </a>
+
+                </li>
+                <li>
+                    <a href="{% url 'contact' %}">
+                        <i class="fa fa-film fa-2x"></i>
+                        <span class="nav-text">
+                            Контакты
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'enter' %}">
+                        <i class="fa fa-book fa-2x"></i>
+                        <span class="nav-text">
+                           Регистрация
+                        </span>
+                    </a>
+                </li>
+                <li>
+                   <a href="{% url 'loginuser' %}">
+                       <i class="fa fa-cogs fa-2x"></i>
+                        <span class="nav-text">
+                            Авторизация
+                        </span>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="logout">
+                <li>
+
+                    <form action="{% url 'logoutuser' %}" method="post" id="li_form">
+                    {% csrf_token %}
+                    <button>
+                    <a href="#">   <i class="fa fa-power-off fa-2x"></i><span class="nav-text"> Выйти</span></a></button>
+                        </form>
+                </li>
+            </ul>
+        </nav>
+
+{% block title %}
+<div class="title">
+    <div class="wrap_title">
+
+    </div>
+</div>
+{% endblock %}
+{% if user.is_authenticated%}
+<div class="menu">
+    <div class="wrap">
+        <ul class="menu">
+            <li><a href="{% url 'about' %}" class="active" title="">Наши услуги</a></li>
+            <li><a href="{% url 'gallery' %}" class="active" title="">Галерея</a></li>
+            <li><a href="{% url 'send_mail' %}" class="active" title="">Калькулятор</a></li>
+            <li><a href="{% url 'contact' %}" class="active" title="">Контакты</a></li>
+            <li><a href="{% url 'contact' %}" class="active" title="">Привет {{ user.username }}</a></li>
+        </ul>
+    </div>
+</div>
+{% else %}
+<div class="menu">
+    <div class="wrap">
+        <ul class="menu">
+            <li><a href="{% url 'about' %}" class="active" title="">Наши услуги</a></li>
+            <li><a href="{% url 'gallery' %}" class="active" title="">Галерея</a></li>
+            <li><a href="{% url 'send_mail' %}" class="active" title="">Калькулятор</a></li>
+            <li><a href="{% url 'contact' %}" class="active" title="">Контакты</a></li>
+            <li><a href="{% url 'enter' %}" class="active" title="">Зарегистрироваться</a>
+            </li>
+      </ul>
+    </div>
+</div>
+{% endif %}
+{% block content %}
+<div class="content">
+        <div class="our_works_wrapper">
+            <div class="our_works_img">
+                 {% for field in apartment %}
+                <img src="{{ field.binding.image.url }}" alt="">
+                {% endfor %}
+            </div>
+
+            <div class="our_works_wrapper_title">
+                <h1>Ремонт квартир</h1>
+                {% for field in works %}
+                <p>{{ field.binding.description }}</p>
+                {% endfor %}
+            </div>
+
+        </div>
+
+</div>
+{% endblock %}
+{% block footer %}
+<div class="footer">
+    <div class="footer_wrap">
+        <ul class="footer_ul">
+            <li>Почта</li>
+            <li>Телеграм</li>
+            <li>Обратная связь</li>
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
+
+
+</body>
+</html>

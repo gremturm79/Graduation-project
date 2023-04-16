@@ -1,4 +1,6 @@
 from django import forms
+from .models import CalculateTableEx, ListOfWorks
+from django.forms import ModelForm
 
 
 # import datetime
@@ -18,3 +20,20 @@ class ContactForm(forms.Form):
     # position = forms.ChoiceField(choices=CHOICES) choices именованный параметр для тега select в html
 
     # day = forms.DateField(initial=datetime.date.today) отдельное поле с датой на сегодня
+
+
+class CalculateTableExForm(ModelForm):  # из django.forms наследуем родительский класс ModelForm для создания Form class
+    class Meta:
+        model = CalculateTableEx
+        fields = ['dismantling', 'montage', 'plaster', 'putty']
+        # labels переопределение названия полей
+        labels = {'dismantling': 'Демонтаж', 'montage': 'Монтаж', 'plaster': 'Штукатурка', 'putty': 'Шпаклёвка'}
+
+
+class ListOfWorksForm(ModelForm):
+    square = forms.IntegerField(min_value=0, max_value=1000)
+
+    class Meta:
+        model = ListOfWorks
+        fields = ['title', 'price']
+

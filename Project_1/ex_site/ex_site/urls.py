@@ -21,6 +21,8 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main_1.urls')),
+    path('repair_of_apartments/', include('repair_of_apartments.urls')),
+    path('renovation_bathroom/', include('renovation_bathroom.urls')),
 ]
 
 # путь url для медиафайлов в режиме разработки сайта

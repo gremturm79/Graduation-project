@@ -2,6 +2,7 @@
 {% block content %}
 <div class="block_register">
     <div class="register_wrapper">
+        <a href="{% url 'calculate_table' %}">Перейти на другую форму калькулятора</a>
         <h1>Отправка данных об объекте</h1>
 <h2>{{ error }}</h2>
         {{ success }}
@@ -14,5 +15,6 @@
         </form>
     </div>
 </div>
+
 {% endblock %}
 
