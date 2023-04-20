@@ -1,10 +1,12 @@
 from django.shortcuts import render
-# from main_1.models import PhotoOfWorks
+from main_1.models import PhotoOfWorks
 from .models import BathRoom, BathRoomType
 
 
 def renovation_bathroom(request):
-    bathroom = BathRoom.objects.all()
+    photo = PhotoOfWorks.objects.all()
+    print(photo)
+    bathroom = BathRoom.objects.all()[:3]
     works = BathRoomType.objects.all()
     context = {
         'bathroom': bathroom,

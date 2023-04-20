@@ -3,7 +3,7 @@ from .models import Apartments, ApartmentType
 
 
 def repair_of_apartments(request):
-    apartment = Apartments.objects.all()
+    apartment = Apartments.objects.all()[0:3]
     works = ApartmentType.objects.all()
     context = {
         'apartment': apartment,

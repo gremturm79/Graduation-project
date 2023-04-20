@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import PhotoOfWorks, TypeOfServices, CalculateTableEx, ListOfWorks
+from .models import PhotoOfWorks, TypeOfServices, CalculateTableEx, ListOfWorks, ContactOfOrganization
 # UserCreationForm импорт формы которая создаёт пользователя
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -8,7 +8,7 @@ from django.contrib.auth import login, logout, authenticate
 from .forms import ContactForm
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
-from .forms import CalculateTableExForm, ListOfWorksForm
+from .forms import CalculateTableExForm, ListOfWorksForm, SendMessageForm
 
 
 def index(request):
@@ -39,10 +39,7 @@ def calculate(request):
         name = request.POST['name']
         content = request.POST['content']
         email = request.POST['email']
-
         files = request.FILES.getlist('file')
-        # print('file', files)
-        # square = request.FILES['square']
         msg = EmailMessage(name, content, settings.EMAIL_HOST_USER, [email])
         for f in files:
             msg.attach(f.name, f.read(), f.content_type)
@@ -60,7 +57,21 @@ def reviews(request):
 
 
 def contact(request):
-    return render(request, 'main/contact.html')
+    if request.method == 'GET':
+        contact_org = ContactOfOrganization.objects.all()
+        form = SendMessageForm()
+        context = {'form': form, 'contact': contact_org}
+        return render(request, 'main/contact.html', context)
+    else:
+        contact_org = ContactOfOrganization.objects.all()
+        name = request.POST['name']
+        organization = request.POST['organization']
+        email = request.POST['email']
+        content = request.POST['content']
+        msg = send_mail(name, content, settings.EMAIL_HOST_USER, [email])
+        msg.send()
+        context = {'success': 'письмо отравлено', 'contact': contact_org}
+        return render(request, 'main/contact.html', context)
 
 
 def enter(request):
@@ -100,27 +111,40 @@ def loginuser(request):
             return redirect('about')
 
 
-def calculate_table(request):
+def calculate_table(request):  # функция калькуляции в виде таблицы checkbox
     if request.method == 'GET':
+        summ = 0
         form = ListOfWorksForm()
         obj = ListOfWorks.objects.all()
-        return render(request, 'main/calculate_table.html', {'form': form, 'obj': obj})
+        return render(request, 'main/calculate_table.html', {'form': form, 'obj': obj, 'summ': summ})
     else:
         form = ListOfWorksForm()
         obj = ListOfWorks.objects.all()
-        lst = []
-        for i in obj:
-            lst.append(i.price)  # добавляем в список значения с полями price из БД ListOfWorks
-            print(i.price)  # получаем все значения из БД ListOfWorks в поле price
-        # check = request.POST.getlist('checks[]')  получаем список отмеченных полей для дальнейшей проверки
-        square = request.POST.getlist('square')  # получаем список указанных площадей в теге input name="square"
-
+        print(type(obj))
+        all_square = request.POST.getlist('square')  # получаем список указанных площадей в теге input name="square"
+        print(type(all_square))
         summ = 0
-        if square:
-            for i in range(len(square)):
-                if square[i].isdigit():  # делая проверку на цифровое значении тем самым получаем индекс соответствующий
-                    # индексации нашего списка lst с ценами на работы, которые мы взяли из БД ListOfWorks
-                    total = int(lst[i]) * int(square[i])
-                    summ += total
 
+        def total_summ(pricing, squares):
+            '''
+            функция total_summ рассчитывает сумму оплаты всех работ: выбранных клиентом также учитывая квадратные метры
+            :param pricing: объект запроса данных из БД модели ListOfWorks
+            :type pricing: class 'django.db.models.query.QuerySet'
+            :param squares: список с данными из ListOfWorksForm тегов input с аттрибутом name="square"
+            :type squares: class 'list'
+            :return:
+            :rtype:
+            '''
+            nonlocal summ
+            lst_pricing = []
+            for i in pricing:
+                lst_pricing.append(i.price)
+            if squares:
+                for j in range(len(squares)):
+                    if all_square[j].isdigit():
+                        total = int(lst_pricing[j]) * int(squares[j])
+                        summ += total
+            return summ
+
+        total_summ(obj, all_square)
         return render(request, 'main/calculate_table.html', {'form': form, 'obj': obj, 'summ': summ})

@@ -69,3 +69,10 @@ class ListOfWorks(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ContactOfOrganization(models.Model):
+    address = models.CharField(max_length=1000)
+    phone = models.CharField(max_length=50)
+    email = models.CharField(max_length=100)
+

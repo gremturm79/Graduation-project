@@ -37,3 +37,13 @@ class ListOfWorksForm(ModelForm):
         model = ListOfWorks
         fields = ['title', 'price']
 
+
+class SendMessageForm(forms.Form):
+    '''
+    Класс SendMessageForm создаёт форму для отправки сообщения от клиента на странице contact.html
+    '''
+    name = forms.CharField(max_length=250, label='Ваше имя:')
+    organization = forms.CharField(max_length=250, label='Название организации:')
+    email = forms.EmailField(max_length=250, label='Почтовый ящик:')
+    content = forms.CharField(widget=forms.Textarea, label='Текст сообщения:')
+

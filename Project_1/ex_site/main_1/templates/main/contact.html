@@ -1,9 +1,33 @@
 {% extends 'main/index.html' %}
 {% block content %}
-<div class="about">
-    <div class="wrap">
-
+{% load static %}
+<div class="contact_block">
+    <div class="contact_wrapper">
+        <div class="contact_org bg">
+            {% for fields in contact %}
+                <ul class="contact_list">
+                    <li>
+                        <img src="{% static 'images/address_icon.png' %}" alt="">
+                        <p>{{ fields.address }}</p>
+                    </li>
+                    <li>
+                         <img src="{% static 'images/phone_icon.png' %}" alt="">
+                        <p>{{ fields.phone }}</p>
+                    </li>
+                     <li>
+                         <img src="{% static 'images/mail_icon.png' %}" alt="">
+                        <p>{{ fields.email }}</p>
+                    </li>
+                </ul>
+            {% endfor %}
+        </div>
+        <form action="" method="post" class="bg authorization">
+            {% csrf_token %}
+              {{ form.as_p }}
+            <div class="center">
+            <button class="btn">Отправить</button>
+            </div>
+        </form>
     </div>
 </div>
-
 {% endblock %}
