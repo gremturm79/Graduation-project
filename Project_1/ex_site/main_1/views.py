@@ -118,11 +118,9 @@ def calculate_table(request):  # функция калькуляции в вид
         obj = ListOfWorks.objects.all()
         return render(request, 'main/calculate_table.html', {'form': form, 'obj': obj, 'summ': summ})
     else:
-        form = ListOfWorksForm()
         obj = ListOfWorks.objects.all()
-        print(type(obj))
+        form = ListOfWorksForm()
         all_square = request.POST.getlist('square')  # получаем список указанных площадей в теге input name="square"
-        print(type(all_square))
         summ = 0
 
         def total_summ(pricing, squares):
