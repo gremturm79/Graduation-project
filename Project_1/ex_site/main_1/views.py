@@ -175,13 +175,9 @@ def personal_account(request, pk):  # функция представления 
 
 
 def write_reviews(request):  # метод для отзывов пока не реализован
-    u_form = UserForm(instance=request.user)
     if request.method == 'GET' and request.user.is_authenticated:
+        u_form = UserForm(instance=request.user)
         return render(request, 'main/personal_account.html', {'form': u_form})
     else:
-        u_form = UserForm(instance=request.user)
-        u_form = UserForm(request.POST, instance=request.user)
-        if u_form.is_valid():
-            u_form.save()
-            messages.success(request, 'Профиль был удачно изменён')
-        return redirect('login')
+        messages.error(request, 'Отзыв может написать только зарегистрированный пользователь')
+        return redirect('enter')
