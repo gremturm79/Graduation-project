@@ -38,3 +38,4 @@ $(document).on("click", ".img-c.active", function () {
         copy.remove();
     }, 500)
 })
+

@@ -12,20 +12,25 @@
         <div>
             <h1>{{ service.title }}</h1>
           </div>
-          <div>
+          <div class="column1_text">
               {{ service.description|truncatechars:300 }}
          </div>
+           {% if service.title == 'Ремонт квартир' %}
        <div class="more">
-           <a href=""><img src="{{ service.services_image.image.url }}" alt="" border="0" class="about_img" /></a>
+           <a href="{% url 'apartment_gallery' %}"><img src="{{ service.services_image.image.url }}"
+                                 alt="" border="0" class="about_img" /></a>
+
         </div>
-            {% if service.title == 'Ремонт квартир' %}
                 <div><a href="{% url 'repair_of_apartments' %}">Перейти</a></div>
            {% else %}
+                <div class="more">
+           <a href="{% url 'bathroom_gallery' %}"><img src="{{ service.services_image.image.url }}"
+                           alt="" border="0" class="about_img" /></a>
+        </div>
            <div><a href="{% url 'renovation_bathroom' %}">Перейти</a></div>
            {% endif %}
       </div>
         {% endfor %}
-
     </div>
 </div>
 {% endblock %}

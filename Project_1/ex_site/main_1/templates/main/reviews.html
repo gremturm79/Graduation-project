@@ -1,8 +1,102 @@
 {% extends 'main/index.html' %}
 {% block content %}
+{% load static %}
 <div class="about">
+        <div class="tittle" style="margin-top: 80px; margin-bottom: 50px">
+            <h1>Отзывы клиентов</h1>
+            <h2></h2>
+        </div>
     <div class="wrap">
+<ul class="c-tile-list">
+  <li class="c-tile-list__item">
+    <article class="c-article-tile t-sass" itemscope itemtype="http://schema.org/Article">
+      <div class="c-article-tile__header">
+        <a href="{% url 'write-reviews' %}" class="c-article-tile__category" itemprop="keywords">
+           Оставить отзыв
+        </a>
+        <a class="c-article-tile__comment-count" href="https://www.sitepoint.com/a-tale-of-css-and-sass-precision/#comments" itemprop="commentCount">
+          8
+          <svg class="icon icon-bubble" aria-label="comments"><use xlink:href="#icon-bubble"></use></svg>
+        </a>
+      </div>
+      <div class="c-article-tile__body">
+        <h2 class="c-article-tile__title" itemprop="headline">
+          <a href="https://www.sitepoint.com/a-tale-of-css-and-sass-precision/">A Tale of CSS and Sass Precision</a>
+        </h2>
+      </div>
+      <footer class="c-article-tile__footer">
+        <span class="c-article-tile__author">
+          by <a href="https://www.sitepoint.com/author/hgiraudel/" itemprop="author">Hugo Giraudel</a>
+        </span>
+        <time datetime="2016-05-12T12:00" class="c-article-tile__date" itemprop="datePublished">
+          May 12, 2016
+        </time>
+      </footer>
+    </article>
+  </li>
 
+  <li class="c-tile-list__item">
+    <article class="c-article-tile t-svg" itemscope itemtype="http://schema.org/Article">
+      <div class="c-article-tile__header">
+        <a href="{% url 'write-reviews' %}" class="c-article-tile__category" itemprop="keywords">
+           Оставить отзыв
+        </a>
+
+        <a class="c-article-tile__comment-count" href="https://www.sitepoint.com/a-working-svg-workflow-for-accessible-icons/#comments" itemprop="commentCount">
+          14
+          <svg class="icon icon-bubble" aria-label="comments"><use xlink:href="#icon-bubble"></use></svg>
+        </a>
+      </div>
+
+      <div class="c-article-tile__body">
+        <h2 class="c-article-tile__title" itemprop="headline">
+          <a href="https://www.sitepoint.com/a-working-svg-workflow-for-accessible-icons/">A Working SVG Workflow for Accessible Icons</a>
+        </h2>
+      </div>
+
+      <footer class="c-article-tile__footer">
+        <span class="c-article-tile__author">
+          by <a href="https://www.sitepoint.com/author/hgiraudel/" itemprop="author">Hugo Giraudel</a>
+        </span>
+
+        <time datetime="2016-04-15T12:00" class="c-article-tile__date" itemprop="datePublished">
+          April 15, 2016
+        </time>
+      </footer>
+    </article>
+  </li>
+
+  <li class="c-tile-list__item">
+    <article class="c-article-tile t-web" itemscope itemtype="http://schema.org/Article">
+      <div class="c-article-tile__header">
+        <a href="{% url 'write-reviews' %}" class="c-article-tile__category" itemprop="keywords">
+           Оставить отзыв
+        </a>
+
+        <a class="c-article-tile__comment-count" href="https://www.sitepoint.com/the-importance-of-code-reviews/#comments" itemprop="commentCount">
+          2
+          <svg class="icon icon-bubble" aria-label="comments"><use xlink:href="#icon-bubble"></use></svg>
+        </a>
+      </div>
+
+      <div class="c-article-tile__body">
+        <h2 class="c-article-tile__title" itemprop="headline">
+          <a href="https://www.sitepoint.com/the-importance-of-code-reviews/">The Importance of Code Reviews</a>
+        </h2>
+      </div>
+
+      <footer class="c-article-tile__footer">
+        <span class="c-article-tile__author">
+          by <a href="https://www.sitepoint.com/author/hgiraudel/" itemprop="author">Hugo Giraudel</a>
+        </span>
+
+        <time datetime="2016-06-10T12:00" class="c-article-tile__date" itemprop="datePublished">
+          June 10, 2016
+        </time>
+      </footer>
+    </article>
+  </li>
+</ul>
     </div>
 </div>
 {% endblock %}

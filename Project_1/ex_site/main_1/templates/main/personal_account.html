@@ -1,0 +1,90 @@
+{% extends 'main/index.html' %}
+{% block content %}
+{% load static %}
+<div class="warning">
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>!!!</strong>{{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+</div>
+{% endfor %}
+<div class="personal_account">
+	<div class="main">
+
+  <div class="name">
+	  <ul>
+    <li>{{ user.first_name }}</li>
+    <li>{{ user.last_name }}</li>
+		</ul>
+  </div>
+  <div class="contact">
+	  <ul>
+    <li>0901234567</li>
+    <li><a href="www.google.com">Personal Page</a></li>
+    <li>{{ user.email }}</li>
+	  </ul>
+      <input type="submit" value="Редактировать" class="edit_account">
+      <input type="submit" value="Оставить отзыв" class="leave_review">
+
+
+  </div>
+</div>
+    <div class="edit">
+
+    <form action="{% url 'write-reviews' %}" method="post" class="bg authorization">
+        <img src="{% static 'images/close_cross_icon.png' %}" alt="" class="edit_close">
+        {% csrf_token %}
+        {% for field in form %}
+        {{ field.label }}
+        {{ field }}
+        {% endfor %}
+        <input type="submit" value="Редактировать">
+    </form>
+
+</div>
+    <div class="main_review_personal">
+<form class="row g-3 needs-validation" novalidate>
+  <div class="col-md-4 position-relative">
+    <label for="validationTooltip01" class="form-label">First name</label>
+    <input type="text" class="form-control" id="validationTooltip01" value="" required>
+    <div class="valid-tooltip">
+      Looks good!
+    </div>
+  </div>
+  <div class="col-md-4 position-relative">
+    <label for="validationTooltip02" class="form-label">Last name</label>
+    <input type="text" class="form-control" id="validationTooltip02" value="" required>
+    <div class="valid-tooltip">
+      Looks good!
+    </div>
+  </div>
+<div class="col-md-4 position-relative">
+    <label for="validationTooltip03" class="form-label">Email</label>
+    <input type="text" class="form-control" id="validationTooltip03" value="" required>
+    <div class="valid-tooltip">
+      Looks good!
+    </div>
+  </div>
+    <div class="mb-3">
+    <label for="validationTextarea" class="form-label">Textarea</label>
+    <textarea class="form-control" id="validationTextarea" placeholder="Required example textarea" required></textarea>
+    <div class="invalid-feedback">
+      Please enter a message in the textarea.
+    </div>
+  </div>
+    <div class="mb-3">
+    <input type="file" class="form-control" aria-label="file example" required>
+    <div class="invalid-feedback">Example invalid form file feedback</div>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-primary" type="submit">Submit form</button>
+  </div>
+    <div>
+        <img src="{% static 'images/close_cross_icon.png' %}" alt="" class="review_close">
+    </div>
+</form>
+    </div>
+
+</div>
+{% endblock %}

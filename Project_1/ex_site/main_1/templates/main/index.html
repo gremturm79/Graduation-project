@@ -6,42 +6,47 @@
     <meta charset="UTF-8">
     <title>Главная</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.scss' %}">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+     <script src="https://use.fontawesome.com/a6f0361695.js"></script>
 </head>
 <body>
 {% block title %}
 <div class="title">
-<div class="mobile-nav">
+    <div class="mobile-nav">
 
-    <div class="b-nav">
-          <ul>
-              <li><a class="b-link b-link--active" href="{% url 'about' %}">Наши услуги</a></li>
-              <li><a class="b-link" href="{% url 'gallery' %}">Галерея</a></li>
-              <li><a class="b-link" href="{% url 'send_mail' %}">Калькулятор</a></li>
-              <li><a class="b-link" href="{% url 'contact' %}">Контакты</a></li>
+        <div class="b-nav">
+            <ul>
+                <li><a class="b-link b-link--active" href="{% url 'about' %}">Наши услуги</a></li>
+                <li><a class="b-link" href="{% url 'gallery' %}">Галерея</a></li>
+                <li><a class="b-link" href="{% url 'calculate' %}">Калькулятор</a></li>
+                <li><a class="b-link" href="{% url 'contact' %}">Контакты</a></li>
+                <li><a class="b-link" href="{% url 'reviews' %}">Отзывы</a></li>
+                <li><a class="b-link" href="{% url 'login' %}">Войти</a></li>
+                <li><a class="b-link" href="{% url 'logout' %}">Выйти</a></li>
+                <li><a class="b-link" href="{% url 'personal_account'  user.id %}">Личный кабинет</a></li>
+            </ul>
 
+            <input type="text" class="mobile-search" placeholder="Enter keyword" name="">
+            <input type="submit" class="mobile-search-btn" value="Search">
 
-        </ul>
-
-          <input type="text" class="mobile-search" placeholder="Enter keyword" name="">
-          <input type="submit" class="mobile-search-btn" value="Search">
-
-    </div>
+        </div>
 
         <!-- Burger-Icon -->
         <div class="b-container">
-          <div class="b-menu">
-            <div class="b-bun b-bun--top"></div>
-            <div class="b-bun b-bun--mid"></div>
-            <div class="b-bun b-bun--bottom"></div>
-          </div>
+            <div class="b-menu">
+                <div class="b-bun b-bun--top"></div>
+                <div class="b-bun b-bun--mid"></div>
+                <div class="b-bun b-bun--bottom"></div>
+            </div>
 
-          <!-- Burger-Brand -->
-          <a href="#" class="b-brand"></a>
+            <!-- Burger-Brand -->
+            <a href="#" class="b-brand"></a>
         </div>
 
-  </div>
+    </div>
 </div>
 {% endblock %}
 {% if user.is_authenticated%}
@@ -50,7 +55,7 @@
         <ul class="menu">
             <li><a href="{% url 'about' %}" class="active" title="">Наши услуги</a></li>
             <li><a href="{% url 'gallery' %}" class="active" title="">Галерея</a></li>
-            <li><a href="{% url 'send_mail' %}" class="active" title="">Калькулятор</a></li>
+            <li><a href="{% url 'calculate' %}" class="active" title="">Калькулятор</a></li>
             <li><a href="{% url 'contact' %}" class="active" title="">Контакты</a></li>
             <li><a href="{% url 'contact' %}" class="active" title="">Привет {{ user.username }}</a></li>
         </ul>
@@ -62,11 +67,11 @@
         <ul class="menu">
             <li><a href="{% url 'about' %}" class="active" title="">Наши услуги</a></li>
             <li><a href="{% url 'gallery' %}" class="active" title="">Галерея</a></li>
-            <li><a href="{% url 'send_mail' %}" class="active" title="">Калькулятор</a></li>
+            <li><a href="{% url 'calculate' %}" class="active" title="">Калькулятор</a></li>
             <li><a href="{% url 'contact' %}" class="active" title="">Контакты</a></li>
             <li><a href="{% url 'enter' %}" class="active" title="">Зарегистрироваться</a>
             </li>
-      </ul>
+        </ul>
     </div>
 </div>
 {% endif %}
@@ -88,5 +93,6 @@
 
 {% endblock %}
 <script src="{% static 'css/style1.js' %}"></script>
+<script src="{% static 'css/style.js' %}"></script>
 </body>
 </html>

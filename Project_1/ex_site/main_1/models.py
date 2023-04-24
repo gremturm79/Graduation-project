@@ -31,18 +31,20 @@ class TypeOfServices(models.Model):  # модель видов предоста�
     предоставляемого типа работ, services_image - внешний ключ типа один ко многим для связи с полями
     класса PhotoOfWorks
     '''
-    title = models.CharField(max_length=250)
-    description = models.TextField(max_length=3000)
-    services_image = models.ForeignKey(PhotoOfWorks, on_delete=models.CASCADE, null=True, blank=True)
+    title = models.CharField(max_length=250)  # название предоставляемых услуг
+    description = models.TextField(max_length=3000)  # описание предоставляемых услуг
+    services_image = models.ForeignKey(PhotoOfWorks, on_delete=models.CASCADE, null=True, blank=True)  # связь с
+
+    # фотографиями работ
 
     def __str__(self):
         return self.title
 
 
-class CalculateTable(models.Model):
+class CalculateTable(models.Model):  # модель не применяется
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=300, blank=True, null=True)
-    dismantling = models.IntegerField()
+    dismantling = models.IntegerField()  # название работы
     montage = models.IntegerField()
     plaster = models.IntegerField()
     putty = models.IntegerField()
@@ -51,10 +53,10 @@ class CalculateTable(models.Model):
         return self.title
 
 
-class CalculateTableEx(models.Model):
+class CalculateTableEx(models.Model):  # модель для подсчёта стоимости работ
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
-    title = models.CharField(max_length=300, blank=True, null=True)
-    dismantling = models.IntegerField()
+    title = models.CharField(max_length=300, blank=True, null=True)  # заголовок таблицы
+    dismantling = models.IntegerField()  # название работы
     montage = models.IntegerField()
     plaster = models.IntegerField()
     putty = models.IntegerField()
@@ -75,4 +77,5 @@ class ContactOfOrganization(models.Model):
     address = models.CharField(max_length=1000)
     phone = models.CharField(max_length=50)
     email = models.CharField(max_length=100)
+
 

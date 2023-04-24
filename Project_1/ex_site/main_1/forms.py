@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 from .models import CalculateTableEx, ListOfWorks
 from django.forms import ModelForm
 
@@ -47,3 +48,16 @@ class SendMessageForm(forms.Form):
     email = forms.EmailField(max_length=250, label='Почтовый ящик:')
     content = forms.CharField(widget=forms.Textarea, label='Текст сообщения:')
 
+
+class UserForm(ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['username', 'last_name', 'first_name', 'email']
+
+
+class UserUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['username', 'last_name', 'first_name', 'email']

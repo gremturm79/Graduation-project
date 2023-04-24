@@ -1,16 +1,16 @@
 from django.shortcuts import render
-from main_1.models import PhotoOfWorks
+from main_1.models import PhotoOfWorks, TypeOfServices
 from .models import BathRoom, BathRoomType
 
 
 def renovation_bathroom(request):
     photo = PhotoOfWorks.objects.all()
-    print(photo)
     bathroom = BathRoom.objects.all()[:3]
     works = BathRoomType.objects.all()
     context = {
         'bathroom': bathroom,
-        'works': works
+        'works': works,
+        'photo': photo
     }
     return render(request, 'renovation_bathroom/index.html', context)
 

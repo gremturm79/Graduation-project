@@ -14,14 +14,15 @@
 <div class="mobile-nav">
 
     <div class="b-nav">
-          <ul>
-              <li><a class="b-link b-link--active" href="#">Item 1</a></li>
-              <li><a class="b-link" href="#">Item 2</a></li>
-              <li><a class="b-link" href="#">Item 3</a></li>
-              <li><a class="b-link" href="#">Item 4</a></li>
-
-
-        </ul>
+            <ul>
+                <li><a class="b-link b-link--active" href="{% url 'about' %}">Наши услуги</a></li>
+                <li><a class="b-link" href="{% url 'gallery' %}">Галерея</a></li>
+                <li><a class="b-link" href="{% url 'calculate' %}">Калькулятор</a></li>
+                <li><a class="b-link" href="{% url 'contact' %}">Контакты</a></li>
+                <li><a class="b-link" href="{% url 'login' %}">Войти</a></li>
+                <li><a class="b-link" href="{% url 'logout' %}">Выйти</a></li>
+                <li><a class="b-link" href="{% url 'personal_account'  user.id %}">Личный кабинет</a></li>
+            </ul>
 
           <input type="text" class="mobile-search" placeholder="Enter keyword" name="">
           <input type="submit" class="mobile-search-btn" value="Search">
@@ -49,7 +50,7 @@
         <ul class="menu">
             <li><a href="{% url 'about' %}" class="active" title="">Наши услуги</a></li>
             <li><a href="{% url 'apartment_gallery' %}" class="active" title="">Галерея</a></li>
-            <li><a href="{% url 'send_mail' %}" class="active" title="">Калькулятор</a></li>
+            <li><a href="{% url 'calculate' %}" class="active" title="">Калькулятор</a></li>
             <li><a href="{% url 'contact' %}" class="active" title="">Контакты</a></li>
             <li><a href="{% url 'contact' %}" class="active" title="">Привет {{ user.username }}</a></li>
         </ul>
@@ -61,7 +62,7 @@
         <ul class="menu">
             <li><a href="{% url 'about' %}" class="active" title="">Наши услуги</a></li>
             <li><a href="{% url 'apartment_gallery' %}" class="active" title="">Галерея</a></li>
-            <li><a href="{% url 'send_mail' %}" class="active" title="">Калькулятор</a></li>
+            <li><a href="{% url 'calculate' %}" class="active" title="">Калькулятор</a></li>
             <li><a href="{% url 'contact' %}" class="active" title="">Контакты</a></li>
             <li><a href="{% url 'enter' %}" class="active" title="">Зарегистрироваться</a>
             </li>
