@@ -1,0 +1,6 @@
+# Замена кнопки в редактировании профиля
+# <img src="{% static 'images/close_cross_icon.png' %}" alt="" class="edit_close">
+# Замена кнопки в форме отзывы
+# <img src="{% static 'images/close_cross_icon.png' %}" alt="" class="review_close">
+# Убрал из index.html
+# <li><a href="{% url 'contact' %}" class="active" title="">Привет {{ user.username }}</a></li>

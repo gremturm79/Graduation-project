@@ -78,4 +78,37 @@ class ContactOfOrganization(models.Model):
     phone = models.CharField(max_length=50)
     email = models.CharField(max_length=100)
 
+    def __str__(self):
+        return f'{self.address}'
 
+
+class ProfileUser(models.Model):
+    owner = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(upload_to='profile/', default='profile/default.png')
+
+    def __str__(self):
+        return f'{self.owner} ProfileUser'  # передаёт username
+
+
+RATING = [
+    (1, '1 - плохо'),
+    (2, '2 - удовлетворительно'),
+    (3, '3 - хорошо'),
+    (4, '4 - очень хорошо'),
+    (5, '5 - отлично')
+
+]
+
+
+class Review(models.Model):
+    owner = models.OneToOneField(User, on_delete=models.PROTECT, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to='reviews/', default='reviews/default_review.png')
+    rating = models.PositiveSmallIntegerField(choices=RATING)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.rating}'
+
+    def get_rating(self):
+        return self.rating

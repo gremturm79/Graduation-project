@@ -3,20 +3,19 @@
 {% load static %}
 <div class="warning">
 {% for message in messages %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>!!!</strong>{{ message }}
+<div class= "alert alert-success" role="alert">
+  {{ message }}<strong>!!!</strong>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-</div>
 {% endfor %}
+</div>
 <div class="personal_account">
 	<div class="main">
 
-  <div class="name">
-	  <ul>
-    <li>{{ user.first_name }}</li>
-    <li>{{ user.last_name }}</li>
-		</ul>
+  <div class="name_card">
+      <img src="{{ image.url }} " style="width: 50px; height: 50px" alt="">
+      <div>{{ user.first_name }}</div>
+      <div>{{ user.last_name }}</div>
   </div>
   <div class="contact">
 	  <ul>
@@ -24,17 +23,18 @@
     <li><a href="www.google.com">Personal Page</a></li>
     <li>{{ user.email }}</li>
 	  </ul>
-      <input type="submit" value="Редактировать" class="edit_account">
-      <input type="submit" value="Оставить отзыв" class="leave_review">
+      <input type="submit" value="Редактировать" id="edit_account">
+      <input type="submit" value="Оставить отзыв" class="leave_review" id="leave_review">
 
 
   </div>
 </div>
-    <div class="edit">
+    <div class="edit" id="edit">
+    <form action="" method="post" class="bg authorization" enctype="multipart/form-data">
+        <button type="button" class="btn-close edit_close" data-bs-dismiss="alert" aria-label="Close" ></button>
 
-    <form action="{% url 'write-reviews' %}" method="post" class="bg authorization">
-        <img src="{% static 'images/close_cross_icon.png' %}" alt="" class="edit_close">
         {% csrf_token %}
+        {{ profile_image }}
         {% for field in form %}
         {{ field.label }}
         {{ field }}
@@ -43,48 +43,22 @@
     </form>
 
 </div>
-    <div class="main_review_personal">
-<form class="row g-3 needs-validation" novalidate>
-  <div class="col-md-4 position-relative">
-    <label for="validationTooltip01" class="form-label">First name</label>
-    <input type="text" class="form-control" id="validationTooltip01" value="" required>
-    <div class="valid-tooltip">
-      Looks good!
-    </div>
-  </div>
-  <div class="col-md-4 position-relative">
-    <label for="validationTooltip02" class="form-label">Last name</label>
-    <input type="text" class="form-control" id="validationTooltip02" value="" required>
-    <div class="valid-tooltip">
-      Looks good!
-    </div>
-  </div>
-<div class="col-md-4 position-relative">
-    <label for="validationTooltip03" class="form-label">Email</label>
-    <input type="text" class="form-control" id="validationTooltip03" value="" required>
-    <div class="valid-tooltip">
-      Looks good!
-    </div>
-  </div>
-    <div class="mb-3">
-    <label for="validationTextarea" class="form-label">Textarea</label>
-    <textarea class="form-control" id="validationTextarea" placeholder="Required example textarea" required></textarea>
-    <div class="invalid-feedback">
-      Please enter a message in the textarea.
-    </div>
-  </div>
-    <div class="mb-3">
-    <input type="file" class="form-control" aria-label="file example" required>
-    <div class="invalid-feedback">Example invalid form file feedback</div>
-  </div>
-  <div class="col-12">
-    <button class="btn btn-primary" type="submit">Submit form</button>
-  </div>
-    <div>
-        <img src="{% static 'images/close_cross_icon.png' %}" alt="" class="review_close">
-    </div>
-</form>
+    <div class="main_review_personal" id="main_review_personal">
+        <button type="button" class="btn-close" id="review_close" data-bs-dismiss="alert" aria-label="Close" ></button>
+        <form action="personal_account" method="post" class="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in review %}
+            {{ field.label }}
+            {{ field }}
+            {% endfor %}
+            <input type="submit" value="Отправить отзыв">
+        </form>
+
     </div>
 
+
+
 </div>
+
+<script src="{% static 'css/style1.js' %}"></script>
 {% endblock %}

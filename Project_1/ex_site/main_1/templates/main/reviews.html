@@ -1,6 +1,7 @@
 {% extends 'main/index.html' %}
 {% block content %}
 {% load static %}
+<a href="{% url 'write-review' %}"><h2>Оставить отзыв</h2></a>
 <div class="about">
         <div class="tittle" style="margin-top: 80px; margin-bottom: 50px">
             <h1>Отзывы клиентов</h1>
@@ -11,7 +12,7 @@
   <li class="c-tile-list__item">
     <article class="c-article-tile t-sass" itemscope itemtype="http://schema.org/Article">
       <div class="c-article-tile__header">
-        <a href="{% url 'write-reviews' %}" class="c-article-tile__category" itemprop="keywords">
+        <a href="{% url 'personal_account' user.id %}" class="c-article-tile__category" itemprop="keywords">
            Оставить отзыв
         </a>
         <a class="c-article-tile__comment-count" href="https://www.sitepoint.com/a-tale-of-css-and-sass-precision/#comments" itemprop="commentCount">
@@ -38,7 +39,7 @@
   <li class="c-tile-list__item">
     <article class="c-article-tile t-svg" itemscope itemtype="http://schema.org/Article">
       <div class="c-article-tile__header">
-        <a href="{% url 'write-reviews' %}" class="c-article-tile__category" itemprop="keywords">
+        <a href="{% url 'personal_account' user.id %}" class="c-article-tile__category" itemprop="keywords">
            Оставить отзыв
         </a>
 
@@ -69,7 +70,7 @@
   <li class="c-tile-list__item">
     <article class="c-article-tile t-web" itemscope itemtype="http://schema.org/Article">
       <div class="c-article-tile__header">
-        <a href="{% url 'write-reviews' %}" class="c-article-tile__category" itemprop="keywords">
+        <a href="{% url 'personal_account' user.id %}" class="c-article-tile__category" itemprop="keywords">
            Оставить отзыв
         </a>
 
@@ -99,4 +100,13 @@
 </ul>
     </div>
 </div>
+    <div class="edit" id="review_form">
+    <form action="" method="post" class="bg authorization" enctype="multipart/form-data">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="reviews_close"></button>
+        <input type="submit" value="Отправить">
+    </form>
+
+</div>
+
+<script src="{% static 'css/style1.js' %}"></script>
 {% endblock %}

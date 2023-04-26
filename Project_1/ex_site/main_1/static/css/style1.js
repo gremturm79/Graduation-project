@@ -1,40 +1,49 @@
 'use strict';
 
-(function () {
-    var body = document.body;
-    var burgerMenu = document.getElementsByClassName('b-menu')[0];
-    var burgerContain = document.getElementsByClassName('b-container')[0];
-    var burgerNav = document.getElementsByClassName('b-nav')[0];
-
-    burgerMenu.addEventListener('click', function toggleClasses() {
-        [body, burgerContain, burgerNav].forEach(function (el) {
-            el.classList.toggle('open');
-        });
-    }, false);
-})();
 /* edit_account */
-let edit_but = document.querySelector('.edit_account')
-let edit = document.querySelector('.edit') /* блок формы редактирования */
-edit_but.addEventListener('click', opent_edit_account);
+let editbut = document.getElementById('edit_account')
+let edit = document.getElementById('edit') /* блок формы редактирования */
+console.log(edit)
+console.log(editbut)
+editbut.addEventListener('click', opentEditAccount);
 
-function opent_edit_account() {
+function opentEditAccount() {
     edit.style.display = 'block'
 }
-let edit_close = document.querySelector('.edit_close')
-edit_close.addEventListener('click', close_edit_account)
-function close_edit_account() {
+let editclose = document.querySelector('.edit_close')
+editclose.addEventListener('click', closeEditAccount)
+function closeEditAccount() {
     edit.style.display = 'none'
 }
-let leave_review = document.querySelector('.leave_review')
-let form_review_personal = document.querySelector('.main_review_personal')
-leave_review.addEventListener('click', open_form_review)
+let leavereview = document.getElementById('leave_review')
+let formreviewpersonal = document.getElementById('main_review_personal')
+leavereview.addEventListener('click', openFormReview)
 
-function open_form_review() {
-    form_review_personal.style.display = 'flex'
+function openFormReview() {
+    formreviewpersonal.style.display = 'flex'
 }
-let close_reviews = document.querySelector('.review_close')
-close_reviews.addEventListener('click', close_form_reviews)
+let closereviews = document.getElementById('review_close')
+closereviews.addEventListener('click', closeFormReviews)
 
-function close_form_reviews() {
-    form_review_personal.style.display = 'none'
+function closeFormReviews() {
+    formreviewpersonal.style.display = 'none'
+}
+
+/* setTimeout(function () {
+    document.getElementsByClassName('warning').style.display = 'none';
+}, 5000); */
+
+/* форма отзыва на странице отзыва */
+let openreview = document.getElementById('open_review')
+let reviewform = document.getElementById('review_form')
+openreview.addEventListener('click', openReview)
+
+function openReview() {
+    reviewform.style.display = 'flex'
+}
+
+let reviewsclose = document.getElementById('reviews_close')
+reviewsclose.addEventListener('click', closeReviews)
+function closeReviews() {
+    reviewform.style.display = 'none'
 }

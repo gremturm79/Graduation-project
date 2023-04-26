@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import PhotoOfWorks, TypeOfServices, CalculateTableEx, ListOfWorks, ContactOfOrganization
+from .models import PhotoOfWorks, TypeOfServices, ListOfWorks, ContactOfOrganization, ProfileUser, Review
 # UserCreationForm импорт формы которая создаёт пользователя
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -9,7 +9,8 @@ from .forms import ContactForm, UserForm
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from .forms import CalculateTableExForm, ListOfWorksForm, SendMessageForm
+from .forms import ListOfWorksForm, SendMessageForm, ProfileUserForm, ReviewForm
+
 from django.contrib import messages
 
 
@@ -56,7 +57,11 @@ def calculate(request):
 
 
 def reviews(request):
-    return render(request, 'main/reviews.html')
+    reviews_all = Review.objects.all()
+    context = {
+        'reviews': reviews_all
+    }
+    return render(request, 'main/reviews.html', context)
 
 
 def contact(request):  # функция отправки сообщения для 'админа'
@@ -78,7 +83,7 @@ def contact(request):  # функция отправки сообщения дл
 
 
 def enter(request):
-    if request.method == 'GET':  # при методе GET возвращаем страницу формой регистрации Django
+    if request.method == 'GET':  # при методе GET возвращаем страницу с формой регистрации
         return render(request, 'main/enter.html', {'form': UserCreationForm()})
     else:  # при методе POST регистрируем пользователя со своей проверкой на соответствие паролей и проверкой Django
         # на наличие имени пользователя
@@ -87,6 +92,7 @@ def enter(request):
                 user = User.objects.create_user(request.POST['username'], password=request.POST['password1'])
                 user.save()
                 login(request, user)
+                messages.info(request, 'Вы успешно зарегистрировались')
                 return redirect('index')
             except IntegrityError:
                 return render(request, 'main/enter.html', {'form': UserCreationForm(),
@@ -140,9 +146,9 @@ def calculate_table(request):  # функция калькуляции в вид
             lst_pricing = []
             for i in pricing:
                 lst_pricing.append(i.price)  # в пустой список заносим данные поля price
-            if squares: # если список
-                for j in range(len(squares)): # проходим по его списку
-                    if all_square[j].isdigit(): # если это цифры, берём элемент по этому индексу из списка lst_pricing
+            if squares:  # если список
+                for j in range(len(squares)):  # проходим по его списку
+                    if all_square[j].isdigit():  # если это цифры, берём элемент по этому индексу из списка lst_pricing
                         total = int(lst_pricing[j]) * int(squares[j])
                         summ += total
             return summ
@@ -156,28 +162,61 @@ def calculate_table(request):  # функция калькуляции в вид
         return render(request, 'main/calculate_table.html', context)
 
 
-def personal_account(request, pk):  # функция представления личного кабинета если метод GET
-    if request.method == 'GET' and request.user.is_authenticated:
-        custom = request.user
-        form = UserForm(instance=custom)  # заполняем поля формы редактирования, данными из БД User
-        date = User.objects.get(id=pk)  # получаем данные из БД User для заполнения карточки пользователя
-        context = {
-            'user': date,
-            'form': form
-        }
-        return render(request, 'main/personal_account.html', context)
+def personal_account(request, pk):  # функция представления личного кабинета
+    if request.method == 'GET':
+
+        if request.user.is_authenticated:  # если зарегистрирован пользователь
+
+            images = request.user.profileuser  # извлекаем фотографию профиля
+            review = ReviewForm() # форма отправки отзыва об услугах
+            image = images.image
+            custom = request.user
+            form_profile = ProfileUserForm()  # поле для изменения фотографии
+            form = UserForm(instance=custom)  # заполняем поля формы редактирования, данными из БД User
+            date = User.objects.get(id=pk)  # получаем данные из БД User для заполнения карточки пользователя
+            context = {
+                'user': date,
+                'form': form,
+                'image': image,
+                'profile_image': form_profile,
+                'review': review
+            }
+            return render(request, 'main/personal_account.html', context)
+        else:  # иначе переход на страницу авторизации
+            messages.warning(request, 'Необходимо авторизация или регистрация')
+            return redirect('login')
+
     else:  # если метод POST отрабатывает форма редактирования данных пользователя
-        form = UserForm(request.POST, instance=request.user)  # записываем все данные из формы
+        form = UserForm(request.POST, instance=request.user)  # записываем все данные из User в форму
+        form_profile = ProfileUserForm(request.POST, request.FILES, instance=request.user.profileuser)
         if form.is_valid():
+            form_profile.save()
             form.save()  # сохраняем изменения в БД User
             messages.success(request, 'Профиль был удачно изменён')
-        return redirect('login')
+            # остаёмся на той же странице с отредактированным профилем
+            images = request.user.profileuser
+            image = images.image
+            custom = request.user
+            form = UserForm(instance=custom)  # заполняем поля формы редактирования, данными из БД User
+            date = User.objects.get(id=pk)  # получаем данные из БД User для заполнения карточки пользователя
+            context = {
+                'user': date,
+                'form': form,
+                'image': image,
+                'form_profile': form_profile,
+                'review_date': review_date
+            }
+            return render(request, 'main/personal_account.html', context)
 
 
 def write_reviews(request):  # метод для отзывов пока не реализован
     if request.method == 'GET' and request.user.is_authenticated:
-        u_form = UserForm(instance=request.user)
-        return render(request, 'main/personal_account.html', {'form': u_form})
+        u_form = ReviewForm()
+        return render(request, 'main/form_reviews.html', {'form': u_form})
     else:
-        messages.error(request, 'Отзыв может написать только зарегистрированный пользователь')
-        return redirect('enter')
+        if request.user.is_authenticated:
+            review_date = ReviewForm(request.POST, request.FILES, instance=request.user)
+            if review_date.is_valid():
+                review_date.save()
+                messages.success(request, 'Отзыв был успешно добавлен')
+                return redirect('reviews')

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import CalculateTableEx, ListOfWorks
+from .models import CalculateTableEx, ListOfWorks, ProfileUser, Review, RATING
 from django.forms import ModelForm
 
 
@@ -50,14 +50,27 @@ class SendMessageForm(forms.Form):
 
 
 class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'last_name', 'first_name', 'email']
+
+
+class UserUpdateForm(forms.ModelForm):  # класс для изменения данных профиля
 
     class Meta:
         model = User
         fields = ['username', 'last_name', 'first_name', 'email']
 
 
-class UserUpdateForm(forms.ModelForm):
+class ProfileUserForm(forms.ModelForm):
+    class Meta:
+        model = ProfileUser
+        fields = ['image']
+
+
+class ReviewForm(forms.ModelForm):
+    # location = forms.CharField(label='Месторасположения объекта работ', required=False)
 
     class Meta:
-        model = User
-        fields = ['username', 'last_name', 'first_name', 'email']
+        model = Review
+        fields = ['description', 'image', 'rating']

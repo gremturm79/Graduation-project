@@ -7,40 +7,51 @@
     <title>Ремонт ванной комнаты</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
+<body >
 {% block title %}
 <div class="title">
-<div class="mobile-nav">
-
-    <div class="b-nav">
-            <ul>
-                <li><a class="b-link b-link--active" href="{% url 'about' %}">Наши услуги</a></li>
-                <li><a class="b-link" href="{% url 'gallery' %}">Галерея</a></li>
-                <li><a class="b-link" href="{% url 'calculate' %}">Калькулятор</a></li>
-                <li><a class="b-link" href="{% url 'contact' %}">Контакты</a></li>
-                <li><a class="b-link" href="{% url 'login' %}">Войти</a></li>
-                <li><a class="b-link" href="{% url 'logout' %}">Выйти</a></li>
-                <li><a class="b-link" href="{% url 'personal_account'  user.id %}">Личный кабинет</a></li>
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Offcanvas dark navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Dark offcanvas</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'reviews' %}">Отзывы</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="{% url 'personal_account'  user.id %}">Личный кабинет</a></li>
+              <li><a class="dropdown-item" href="{% url 'login' %}">Войти</a></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="{% url 'contact' %}">Контакты</a></li>
             </ul>
-
-          <input type="text" class="mobile-search" placeholder="Enter keyword" name="">
-          <input type="submit" class="mobile-search-btn" value="Search">
-
+          </li>
+        </ul>
+        <form class="d-flex mt-3" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-success" type="submit">Search</button>
+        </form>
+      </div>
     </div>
-
-        <!-- Burger-Icon -->
-        <div class="b-container">
-          <div class="b-menu">
-            <div class="b-bun b-bun--top"></div>
-            <div class="b-bun b-bun--mid"></div>
-            <div class="b-bun b-bun--bottom"></div>
-          </div>
-
-          <!-- Burger-Brand -->
-          <a href="#" class="b-brand"></a>
-        </div>
-
   </div>
+</nav>
 </div>
 {% endblock %}
 {% if user.is_authenticated%}
@@ -50,7 +61,7 @@
             <li><a href="{% url 'about' %}" class="active" title="">Наши услуги</a></li>
             <li><a href="{% url 'bathroom_gallery' %}" class="active" title="">Галерея</a></li>
             <li><a href="{% url 'calculate' %}" class="active" title="">Калькулятор</a></li>
-            <li><a href="{% url 'contact' %}" class="active" title="">Привет {{ user.username }}</a></li>
+            <li><a href="{% url 'contact' %}" class="active" title="">Контакты</a></li>
         </ul>
     </div>
 </div>
@@ -99,5 +110,6 @@
 
 {% endblock %}
 <script src="{% static 'css/style1.js' %}"></script>
+
 </body>
 </html>

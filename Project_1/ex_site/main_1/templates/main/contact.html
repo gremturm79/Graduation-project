@@ -22,6 +22,7 @@
             {% endfor %}
         </div>
         <form action="" method="post" class="bg authorization">
+            <h3>Отправить сообщение</h3>
             {% csrf_token %}
               {{ form.as_p }}
             <div class="center">

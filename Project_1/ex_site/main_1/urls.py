@@ -1,14 +1,15 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('about/', views.main, name='about'),
     path('gallery/', views.gallery, name='gallery'),
     path('calculate/', views.calculate, name='calculate'),
-    path('reviews/', views.reviews, name='reviews'),
-    path('write-review/', views.write_reviews, name='write-reviews'),
-    # path('write-review/', views.update_profile, name='update-profile'),
+    path('reviews/', views.reviews, name='reviews'), # страница с отображением отзывов
+    path('write-review/', views.write_reviews, name='write-review'),
     path('contact/', views.contact, name='contact'),
     path('enter/', views.enter, name='enter'),
     path('logout/', views.logout_user, name='logout'),
@@ -17,3 +18,7 @@ urlpatterns = [
     path('personal_account/<str:pk>/', views.personal_account, name='personal_account'),
 
 ]
+
+# путь url для медиафайлов в режиме разработки сайта
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
