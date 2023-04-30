@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import PhotoOfWorks, TypeOfServices, ListOfWorks, ContactOfOrganization, ProfileUser, Review
+from .models import PhotoOfWorks, TypeOfServices, ListOfWorks, ContactOfOrganization, ProfileUser, Review, Company
 # UserCreationForm импорт формы которая создаёт пользователя
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -15,7 +15,14 @@ from django.contrib import messages
 
 
 def index(request):
-    return render(request, 'main/index.html')
+    company = Company.objects.all()
+    company_services = Company.objects.get(id=1)
+    company_all = company_services.typeofservices_set.all()
+    context = {
+        'company': company,
+        'company_all': company_all
+    }
+    return render(request, 'main/index.html', context)
 
 
 def main(request):
@@ -57,9 +64,11 @@ def calculate(request):
 
 
 def reviews(request):
+    # author = User.objects.filter(first_name='Grems')[0]
+    # review = Review.objects.filter(owner=author)  # находим данные из БД Review по имени автора статьи
     reviews_all = Review.objects.all()
     context = {
-        'reviews': reviews_all
+        'reviews': reviews_all,
     }
     return render(request, 'main/reviews.html', context)
 
@@ -104,6 +113,7 @@ def enter(request):
 
 def logout_user(request):
     logout(request)
+    messages.info(request, 'Вы вышли из сессии')
     return redirect('login')
 
 
@@ -115,8 +125,20 @@ def login_user(request):
         if user is None:  # если user возвращает None, тогда возвращаемся на страницу loginuser.html
             return render(request, 'main/loginuser.html', {'form': AuthenticationForm(), 'error': 'Неверные данные'})
         else:  # иначе, сохраняются данные пользователя в серверной части запроса пока пользователь находится в сессии
+
             login(request, user)
             return redirect('about')
+
+
+@login_required()
+def delete_user(request):
+    custom = request.user
+    if request.method == 'GET':
+        return render(request, 'main/delete.html')
+    else:
+        custom.delete()
+        messages.info(request, 'Аккаунт был успешно удалён')
+        return redirect('about')
 
 
 def calculate_table(request):  # функция калькуляции в виде таблицы checkbox
@@ -168,7 +190,7 @@ def personal_account(request, pk):  # функция представления 
         if request.user.is_authenticated:  # если зарегистрирован пользователь
 
             images = request.user.profileuser  # извлекаем фотографию профиля
-            review = ReviewForm() # форма отправки отзыва об услугах
+            review = ReviewForm()  # форма отправки отзыва об услугах
             image = images.image
             custom = request.user
             form_profile = ProfileUserForm()  # поле для изменения фотографии
@@ -192,7 +214,7 @@ def personal_account(request, pk):  # функция представления 
         if form.is_valid():
             form_profile.save()
             form.save()  # сохраняем изменения в БД User
-            messages.success(request, 'Профиль был удачно изменён')
+            messages.success(request, 'Профиль был успешно изменён')
             # остаёмся на той же странице с отредактированным профилем
             images = request.user.profileuser
             image = images.image
@@ -204,19 +226,30 @@ def personal_account(request, pk):  # функция представления 
                 'form': form,
                 'image': image,
                 'form_profile': form_profile,
-                'review_date': review_date
             }
             return render(request, 'main/personal_account.html', context)
 
 
 def write_reviews(request):  # метод для отзывов пока не реализован
-    if request.method == 'GET' and request.user.is_authenticated:
-        u_form = ReviewForm()
-        return render(request, 'main/form_reviews.html', {'form': u_form})
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            u_form = ReviewForm()
+            return render(request, 'main/form_reviews.html', {'form': u_form})
+        else:
+            messages.error(request, 'Для отзыва необходимо авторизация')
+            return redirect('enter')
     else:
         if request.user.is_authenticated:
-            review_date = ReviewForm(request.POST, request.FILES, instance=request.user)
+
+            review_date = ReviewForm(request.POST, request.FILES)
             if review_date.is_valid():
-                review_date.save()
+                res = review_date.save(commit=False)
+                # привязываем пользователя написавшего отзыв к самому отзыву, через связь Foreignkey
+                res.owner = request.user
+                res.save()
                 messages.success(request, 'Отзыв был успешно добавлен')
                 return redirect('reviews')
+            else:
+                u_form = ReviewForm()
+                messages.error(request, 'Заполните форму повторно')
+                return render(request, 'main/form_reviews.html', {'form': u_form})

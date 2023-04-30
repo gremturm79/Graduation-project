@@ -15,16 +15,20 @@
 </head>
 <body>
 {% block title %}
-<div class="title">
+
 <nav class="navbar navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Offcanvas dark navbar</a>
+    <a class="navbar-brand" href="{% url 'index' %}">Главная</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Dark offcanvas</h5>
+          {% if user.is_authenticated%}
+        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Пользователь {{ user.username }}</h5>
+          {% else %}
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Гость</h5>
+          {% endif %}
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
@@ -37,7 +41,7 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown
+              Меню пользователя
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
               <li><a class="dropdown-item" href="{% url 'personal_account'  user.id %}">Личный кабинет</a></li>
@@ -58,7 +62,7 @@
     </div>
   </div>
 </nav>
-</div>
+
 {% endblock %}
 {% if user.is_authenticated%}
 <div class="menu">
@@ -86,8 +90,28 @@
 </div>
 {% endif %}
 {% block content %}
-<div class="content">
+<div class="main_content">
+    <div class="main_content_wrap">
+        <div class="about_company">
+            {% for field in company %}
+            <h2>{{ field.title }}</h2>
+            <div class="about_company_description">{{ field.description }}</div>
+            {% endfor %}
+        </div>
+        <div class="about_company_services">
+            {% for field in company_all %}
+            <div class="company_services">
+                <div class="company_title_img">
+            <h2>{{ field.title }}</h2>
+            <img src="{{ field.services_image.image.url }}" style="width: 250px; height: 150px" alt="">
+                </div>
+            <h5>{{ field.description|slice:'800' }}</h5>
 
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
 </div>
 {% endblock %}
 {% block footer %}

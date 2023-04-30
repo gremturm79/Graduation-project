@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import CalculateTableEx, ListOfWorks, ProfileUser, Review, RATING
+from .models import CalculateTableEx, ListOfWorks, ProfileUser, Review
 from django.forms import ModelForm
 
 
@@ -74,3 +74,6 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ['description', 'image', 'rating']
+
+        labels = {'description': 'Поле для ввода текста', 'image': 'Выберите фото', 'rating': 'Поставить оценку'}
+

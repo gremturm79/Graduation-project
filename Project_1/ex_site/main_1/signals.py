@@ -2,7 +2,7 @@ from django.dispatch import receiver
 from django.core.signals import request_finished
 from django.db.models.signals import post_save, post_delete
 from django.contrib.auth.models import User
-from .models import ProfileUser
+from .models import ProfileUser, Review
 
 
 @receiver(request_finished)
@@ -17,5 +17,8 @@ def create_profile_user(sender, instance, created, **kwargs):
 
 
 @receiver(post_save, sender=User)
-def save_profile_user(sender, instance, **kwargs):
+def save_review_user(sender, instance, **kwargs):
     instance.profileuser.save()
+
+
+

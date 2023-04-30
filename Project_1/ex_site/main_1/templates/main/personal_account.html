@@ -24,7 +24,7 @@
     <li>{{ user.email }}</li>
 	  </ul>
       <input type="submit" value="Редактировать" id="edit_account">
-      <input type="submit" value="Оставить отзыв" class="leave_review" id="leave_review">
+      <a href="{% url 'delete' %}"><input type="submit" value="Удалить" class="leave_review" id="leave_review"></a>
 
 
   </div>
@@ -43,22 +43,6 @@
     </form>
 
 </div>
-    <div class="main_review_personal" id="main_review_personal">
-        <button type="button" class="btn-close" id="review_close" data-bs-dismiss="alert" aria-label="Close" ></button>
-        <form action="personal_account" method="post" class="" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% for field in review %}
-            {{ field.label }}
-            {{ field }}
-            {% endfor %}
-            <input type="submit" value="Отправить отзыв">
-        </form>
-
     </div>
-
-
-
-</div>
-
 <script src="{% static 'css/style1.js' %}"></script>
 {% endblock %}

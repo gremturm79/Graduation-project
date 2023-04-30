@@ -25,6 +25,14 @@ class PhotoOfWorks(models.Model):  # модель для хранения фот
         return f'{self.title}'
 
 
+class Company(models.Model):
+    title = models.CharField(max_length=150)
+    description = models.TextField(max_length=4000)
+
+    def __str__(self):
+        return f'{self.title}'
+
+
 class TypeOfServices(models.Model):  # модель видов предоставляемых услуг на сайте
     '''
     Класс TypeOfServices имеет 3 установленных поля: title - тип предоставляемой услуги, description - описание
@@ -34,11 +42,14 @@ class TypeOfServices(models.Model):  # модель видов предоста�
     title = models.CharField(max_length=250)  # название предоставляемых услуг
     description = models.TextField(max_length=3000)  # описание предоставляемых услуг
     services_image = models.ForeignKey(PhotoOfWorks, on_delete=models.CASCADE, null=True, blank=True)  # связь с
-
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
     # фотографиями работ
 
     def __str__(self):
         return self.title
+
+
+
 
 
 class CalculateTable(models.Model):  # модель не применяется
@@ -101,14 +112,20 @@ RATING = [
 
 
 class Review(models.Model):
-    owner = models.OneToOneField(User, on_delete=models.PROTECT, blank=True, null=True)
+    owner = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
+    name = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='reviews/', default='reviews/default_review.png')
+    image = models.ImageField(upload_to='reviews/', default='reviews/default_review.jpg')
     rating = models.PositiveSmallIntegerField(choices=RATING)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.rating}'
+        return f'{self.owner}'
 
     def get_rating(self):
-        return self.rating
+        rating = self.rating  # сохраняем в переменную значение рейтинга
+        rate = [i for i in range(rating)]  # создаём список с количеством элементов равным рейтингу
+        return rate
+
+    class Meta:
+        ordering = ['-date']

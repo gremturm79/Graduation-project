@@ -14,6 +14,7 @@ urlpatterns = [
     path('enter/', views.enter, name='enter'),
     path('logout/', views.logout_user, name='logout'),
     path('login/', views.login_user, name='login'),
+    path('delete/', views.delete_user, name='delete'),
     path('calculate_table/', views.calculate_table, name='calculate_table'),
     path('personal_account/<str:pk>/', views.personal_account, name='personal_account'),
 

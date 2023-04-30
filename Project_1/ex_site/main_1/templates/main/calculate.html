@@ -14,7 +14,7 @@
         <h1>Отправка данных об объекте</h1>
 <h2>{{ error }}</h2>
         {{ success }}
-        <form action="" method="post" enctype="multipart/form-data" class="bg authorization">
+        <form action="" method="post" enctype="multipart/form-data" class="bg">
             {% csrf_token %}
             {{ form.as_p }}
             <div class="center">
