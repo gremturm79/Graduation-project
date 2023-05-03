@@ -43,13 +43,21 @@ class TypeOfServices(models.Model):  # модель видов предоста�
     description = models.TextField(max_length=3000)  # описание предоставляемых услуг
     services_image = models.ForeignKey(PhotoOfWorks, on_delete=models.CASCADE, null=True, blank=True)  # связь с
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True)
+
     # фотографиями работ
 
     def __str__(self):
         return self.title
 
 
+class Pricing(models.Model):
+    dismantling = models.IntegerField()  # название работы
+    montage = models.IntegerField()
+    plaster = models.IntegerField()
+    putty = models.IntegerField()
 
+    def __str__(self):
+        return f'{self.dismantling}'
 
 
 class CalculateTable(models.Model):  # модель не применяется
@@ -65,18 +73,20 @@ class CalculateTable(models.Model):  # модель не применяется
 
 
 class CalculateTableEx(models.Model):  # модель для подсчёта стоимости работ
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
-    title = models.CharField(max_length=300, blank=True, null=True)  # заголовок таблицы
-    dismantling = models.IntegerField()  # название работы
-    montage = models.IntegerField()
-    plaster = models.IntegerField()
-    putty = models.IntegerField()
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    # title = models.CharField(max_length=300, blank=True, null=True)
+    dismantling = models.PositiveSmallIntegerField(blank=True, null=True, )  # название работы
+    montage = models.PositiveSmallIntegerField(blank=True, null=True)
+    plaster = models.PositiveSmallIntegerField(blank=True, null=True)
+    putty = models.PositiveSmallIntegerField(blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return f'{self.owner}'
 
 
 class ListOfWorks(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     title = models.TextField(max_length=100)
     price = models.IntegerField(null=False)
 
@@ -124,8 +134,17 @@ class Review(models.Model):
 
     def get_rating(self):
         rating = self.rating  # сохраняем в переменную значение рейтинга
-        rate = [i for i in range(rating)]  # создаём список с количеством элементов равным рейтингу
+        rate = [i for i in range(rating)]  # создаём список с количеством элементов равным числу рейтинга
         return rate
 
     class Meta:
-        ordering = ['-date']
+        ordering = ['-rating', '-date']
+
+
+class SummOfWorks(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    summ = models.IntegerField(blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.owner}'

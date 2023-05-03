@@ -1,0 +1,64 @@
+[33m9d7c861[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m HEAD@{0}: commit: send code
+[33mf82c4b3[m HEAD@{1}: commit: trial sending
+[33mb61f2b8[m[33m ([m[1;31morigin/master[m[33m)[m HEAD@{2}: commit: portfolio2
+[33md96f4ab[m HEAD@{3}: commit: portfolio 1
+[33ma40beb3[m HEAD@{4}: commit: add first
+[33mb677eed[m HEAD@{5}: commit: add folder course
+[33m4d18c33[m HEAD@{6}: commit: add homework1
+[33m5e2b17b[m HEAD@{7}: commit: add homework
+[33m9b96ce5[m HEAD@{8}: commit: add folder jinjalesson
+[33m940575e[m HEAD@{9}: commit: add db_7.txt
+[33mf0b7287[m HEAD@{10}: commit: add DB5.txt
+[33m96b0960[m HEAD@{11}: commit: add db2
+[33m26454f2[m HEAD@{12}: commit: add media
+[33mba9e731[m HEAD@{13}: commit: add view.py
+[33m76a5e44[m HEAD@{14}: commit: add lesson111
+[33mbde0f8e[m HEAD@{15}: commit: add lesson110
+[33m8d5a25f[m HEAD@{16}: commit: add capitals_user
+[33mdba8a63[m HEAD@{17}: commit: add lesson106
+[33mc926758[m HEAD@{18}: commit: lesson105
+[33m7d07d02[m HEAD@{19}: commit: add lesson
+[33m2aa52ed[m HEAD@{20}: commit: add lesson96
+[33m8827be2[m HEAD@{21}: commit: add lesson92
+[33m0f1c62d[m HEAD@{22}: commit: lesson90
+[33m860bfd7[m HEAD@{23}: commit: add lesson85
+[33mec66dc4[m HEAD@{24}: commit: add lesson79.py
+[33m68ecf71[m HEAD@{25}: commit: add lesson80
+[33m69a031b[m HEAD@{26}: commit: add lesson76
+[33me83b295[m HEAD@{27}: commit: add lesson75
+[33mdc45b53[m HEAD@{28}: commit: add lesson69
+[33m4780b9b[m HEAD@{29}: commit: add lesson64
+[33m15a1b00[m HEAD@{30}: commit: add lesson68
+[33mdea2ac2[m HEAD@{31}: commit: add lesson67
+[33m5c56c81[m HEAD@{32}: commit: add lesson66
+[33m6e744c4[m HEAD@{33}: commit: add lesson60
+[33m6904977[m HEAD@{34}: commit: add lesson58
+[33mc59ecef[m HEAD@{35}: commit: add lesson56
+[33m70adf0f[m HEAD@{36}: commit: delete lesson55
+[33m2325c14[m HEAD@{37}: commit: add lesson
+[33m83ef947[m HEAD@{38}: commit: delete lesson50
+[33m3cbef4f[m HEAD@{39}: commit: add lesson50
+[33m587858b[m HEAD@{40}: checkout: moving from new to master
+[33m587858b[m HEAD@{41}: checkout: moving from master to new
+[33m587858b[m HEAD@{42}: checkout: moving from readme to master
+[33m5146669[m HEAD@{43}: checkout: moving from master to readme
+[33m587858b[m HEAD@{44}: commit: delete lesson221
+[33m5146669[m HEAD@{45}: checkout: moving from readme to master
+[33m5146669[m HEAD@{46}: checkout: moving from new to readme
+[33m5146669[m HEAD@{47}: checkout: moving from master to new
+[33m5146669[m HEAD@{48}: checkout: moving from readme to master
+[33m5146669[m HEAD@{49}: checkout: moving from master to readme
+[33m5146669[m HEAD@{50}: commit: add gitignore
+[33mb5a2a07[m HEAD@{51}: commit: send lesson52
+[33mb941ddc[m HEAD@{52}: commit: print
+[33mf469d46[m HEAD@{53}: merge readme: Fast-forward
+[33md7c0559[m HEAD@{54}: checkout: moving from readme to master
+[33mf469d46[m HEAD@{55}: checkout: moving from master to readme
+[33md7c0559[m HEAD@{56}: checkout: moving from readme to master
+[33mf469d46[m HEAD@{57}: commit: create new file: readme.md
+[33md7c0559[m HEAD@{58}: checkout: moving from new to readme
+[33md7c0559[m HEAD@{59}: checkout: moving from master to new
+[33md7c0559[m HEAD@{60}: checkout: moving from readme to master
+[33md7c0559[m HEAD@{61}: checkout: moving from master to readme
+[33md7c0559[m HEAD@{62}: commit: added gitignore
+[33m95c5344[m HEAD@{63}: commit (initial): first commit

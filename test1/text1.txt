@@ -1,0 +1,39 @@
+<audio width="437" height="48" src="https://s.voicecards.ru/c/99412.mp3" class="mejs-player big-player" id="bigPlayer">
+<span id="player_me" data-card-id="99412">
+<p style="text-aling: center; width: 450px; padding: 20px">
+Внимание! У вас отключен JavaScript, или установлена старая версия
+проигрывателя Adobe Flash Player. <noindex><a rel="nofollow" href="http://www.adobe.com/go/getflashplayer/"></noindex>Загрузите
+последнюю версию флэш-проигрывателя</a>.
+</p>
+</span>
+</audio>
+</div>
+<div class="b-social-btns">
+<!--noindex-->
+<a class="odkl-klass-stat" rel="nofollow" href="https://www.voicecards.ru/item/pozdravleniya_s_prazdnikom/den_smekha/holiday/id/117/5440.html" onclick="ODKL.Share(this);
+return false;" ><span>0</span></a><!--<a rel="nofollow" target="_blank" style="margin-right: 10px;" class="odkl-klass" href="http://www.voicecards.ru/item/pozdravleniya_s_prazdnikom/den_smekha/holiday/id/117/5440.html" onclick="ODKL.Share(this);return false;" >Класс!</a>--><img src="https://i.voicecards.ru/images/player_101.png" class="g-hidden">
+
+<!-- Put this div tag to the place, where the Like block will be -->
+<div id="vk_like" style="margin: 3px 0 6px"></div>
+
+<div class="fb-like" data-href="https://www.voicecards.ru/item/pozdravleniya_s_prazdnikom/den_smekha/holiday/id/117/5440.html" data-layout="button" data-action="like" data-size="small" data-show-faces="false" data-share="false"></div>
+<!--/noindex-->
+</div>
+<!-- /.b-social-btns -->
+</div>
+<!-- /player -->
+
+<!-- /card text -->
+<div class="card-text">
+<h2>Текст открытки</h2>
+<p>Ваш оператор сотовой связи приветствует Вас! Мы рады сообщить Вам, что все средства с вашего счета были списаны в рамках акции "Будущее планеты". Баланс вашего лицевого счета - ноль рублей. Акция "Будущее планеты" направлена на поддержку голодающих детей Эфиопии. Мы благодарим Вас за проявленное участие и благородство.</p>
+<ul class="card-theme">
+<li>Праздники: <a href="/holiday/id/117/den_smekha/">Веселые и озорные поздравления с Днем смеха</a> </li><li>Тема открытки: <a href="/cat/rozygryshi/prikoly_na_mobilnyj/">розыгрыши и приколы над друзьями</a>, <a href="/cat/rozygryshi/ot_operatora/">розыгрыши и приколы от оператора связи</a> </li> </ul>
+<div class="card-tags">
+<p>Теги:</p>
+<ul>
+<li><a href="/tag/1/">парню</a></li><li><a href="/tag/2/">девушке</a></li><li><a href="/tag/16/">прикольные</a></li><li><a href="/tag/45/">мужчине</a></li><li><a href="/tag/46/">женщине</a></li><li><a href="/tag/151/">от оператора</a></li><li><a href="/tag/335/">розыгрыш</a></li> </ul>
+</div>
+
+</div>
+<!-- /card text -->

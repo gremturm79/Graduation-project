@@ -367,6 +367,7 @@ input {
     font-family: 'Times New Roman', Times, serif;
 }
 
+/* calculate_table.html */
 .table_calculate {
     display: flex;
     flex-direction: column;
@@ -388,11 +389,12 @@ input {
 
 form.form_calculate {
     width: 100%;
-    height: 700px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-content: center;
+    margin-top: 50px;
+    margin-bottom: 100px;
 }
 
 .wrap_field {
@@ -408,6 +410,7 @@ form.form_calculate {
     display: flex;
     justify-content: center;
     align-content: center;
+    height: fit-content;
 }
 
 .wrap_field_form {
@@ -753,28 +756,37 @@ body:after {
 
 /* Personal account */
 .personal_account {
-    width: 100%;
-    height: 700px;
+    width: 90%;
+    /* изменил ширину из-за carousel.html, увеличевало контейнер */
+    /*  height: 700px; */
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     margin-top: 50px;
     margin-left: 50px;
 
 }
 
+
 .main {
-    background-color: #b9dde7;
+    background-color: #FFF;
     border: solid 2px #7bd76b;
-    width: 400px;
-    height: 250px;
+    width: 450px;
+    height: fit-content;
     border-radius: 8px;
     box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.8);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    margin-bottom: 50px
 }
+
+/* .main div {
+    margin-bottom: 10px;
+} */
 
 .logo {
     border-bottom: solid 1px;
@@ -788,6 +800,12 @@ body:after {
 .contact {
     margin-right: 10px;
     margin-top: 10px;
+}
+
+.contact ul {
+    list-style: none;
+    padding: 10px;
+
 }
 
 .name li {
@@ -865,12 +883,18 @@ body:after {
 /* Card profil */
 .name_card {
     display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     margin-left: 25px;
     margin-top: 10px;
+    font-weight: bold;
+    font-size: 140%;
+}
+
+.name_card div {
+    margin-left: 20px;
 }
 
 /* Reviews */
@@ -1091,12 +1115,17 @@ body:after {
 
 }
 
+.about_company_description {
+    font-weight: bolder;
+    font-size: 120%;
+}
+
 .main_content_wrap {
     margin: 100px 150px 100px 150px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    background: cadetblue;
+    background: #FFF;
     padding: 15px;
     /*  height: 600px; */
 
@@ -1115,12 +1144,47 @@ body:after {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+    margin-bottom: 50px;
 }
 
 .company_title_img {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+.company_title_img h2 {
+    font-size: 230%;
+}
+
+.about_company_services {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+/* personal_account.html */
+.summ_container {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    background: beige;
+    height: max-content;
+    margin-top: 20px;
+}
+
+/* calculate_table.html */
+.wrap h1 {
+    padding-top: 50px;
+}
+
+/* carousel.html */
+.carousel {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }

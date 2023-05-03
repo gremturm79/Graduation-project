@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+{% if user.is_authenticated %}
+    <p>Вход на сайт как:{{ user.username }}</p>
+{% else %}
+    <p>Вход на сайт как: незарегистрированный пользователь</p>
+{% endif %}
+<div class="menu">
+    <div class="wrap">
+        <ul>
+            <li><a href="{% url 'index' %}">Главная</a></li>
+            <li><a href="{% url 'signupuser' %}">Зарегистрироваться</a></li>
+            <li><a href="{% url 'loginuser' %}">Авторизация</a></li>
+        </ul>
+    </div>
+</div>
+<h1>Калькулятор стоимости работ</h1>
+{% block content %}
+<div class="content">
+   <div class="wrap">
+       <form action="{% url 'index' %}" method="post">
+    {% csrf_token %}
+           <table>
+           <tr>
+    {% for i in date %}
+               <td>
+               <label class="form-check-label" for="table">{{ i.title }}</label>
+            <input class="form-check-input" type="checkbox" value="{{ i.price }}" id="table" name="checks[]">
+        </td>
+    {% endfor %}
+           </tr>
+           </table>
+           <div  class="btn">
+           <input type="submit" value="Рассчитать" >
+           <input type="text" name="sq">
+           </div>
+       </form>
+
+{% endblock %}
+    </div>
+</div>
+<h2>Сумма:{{ summa }}</h2>
+
+</body>
+</html>

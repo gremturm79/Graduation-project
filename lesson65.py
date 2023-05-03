@@ -1,0 +1,17 @@
+import requests  # импортируем библиотеку requests
+import re  # импортируем библиотеку для регулярных выражений
+
+url = input('Введите ссылку: ')  # поиск в определённой зоне
+
+html_text = requests.get(url).text  # делаем запрос и получаем html
+
+reg = r'[^"]\w+://\w\.\w+\.\w+/\w/\d+\.mp3'
+url1 = re.findall(reg, html_text, flags=re.MULTILINE)
+print(url1)
+r = requests.get(url1[0])
+print(r)
+if r:
+    print('ok')
+str1 = input('Сохранить как: ')
+with open(str1 + '.mp3', 'wb') as f:
+    f.write(r.content)

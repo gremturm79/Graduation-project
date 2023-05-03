@@ -13,7 +13,7 @@
 	<div class="main">
 
   <div class="name_card">
-      <img src="{{ image.url }} " style="width: 50px; height: 50px" alt="">
+      <img src="{{ image.url }} " style="width: 100px; height: 100px" alt="">
       <div>{{ user.first_name }}</div>
       <div>{{ user.last_name }}</div>
   </div>
@@ -25,10 +25,27 @@
 	  </ul>
       <input type="submit" value="Редактировать" id="edit_account">
       <a href="{% url 'delete' %}"><input type="submit" value="Удалить" class="leave_review" id="leave_review"></a>
-
-
   </div>
+        {% if summa %}
+                <div class="summ_container">
+    <h2>Предварительная сумма</h2>
+    {% for field in summa %}
+    <h3>{{ field.summ }} рублей</h3>
+    <h3>расчёт от {{ field.date }}</h3>
+    {% endfor %}
+                <form action="{% url 'delete_calculate' user.id %}" method="post">
+                    {% csrf_token %}
+                <input type="submit"  value="Удалить">
+                </form>
+    <input type="submit"  value="Отправить">
 </div>
+        {% else %}
+        <div>
+        <h3><a href="{% url 'calculate_table' %}">Рассчитать стоимость работ</a></h3>
+        </div>
+        {% endif %}
+</div>
+
     <div class="edit" id="edit">
     <form action="" method="post" class="bg authorization" enctype="multipart/form-data">
         <button type="button" class="btn-close edit_close" data-bs-dismiss="alert" aria-label="Close" ></button>
@@ -44,5 +61,6 @@
 
 </div>
     </div>
+
 <script src="{% static 'css/style1.js' %}"></script>
 {% endblock %}

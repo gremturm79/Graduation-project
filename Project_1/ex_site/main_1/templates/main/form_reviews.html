@@ -2,13 +2,16 @@
 {% block content %}
 {% load static %}
 <div class="warning">
-{% for message in messages %}
-<div class= "alert alert-success" role="alert">
-  {{ message }}<strong>!!!</strong>
+{% if count >= 1 %}
+    {% for message in messages %}
+<div class= "alert alert-info" role="alert">
+  <strong>{{ message }}!!!</strong>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-{% endfor %}
+    {% endfor %}
+{% endif %}
 </div>
+
 <div class="about">
     <h1>Оставить отзыв</h1>
  <div class="main_review">

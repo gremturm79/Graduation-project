@@ -1,0 +1,30 @@
+{% extends 'skills/base.html' %}
+{% load static %}
+{% block content %}
+<h1>Отправить сообщение</h1>
+<h2>{{ success }}</h2>
+<div class="container_contact">
+    <form method="post" class="contact_form">
+        {% csrf_token %}
+        <div class="form_control">
+            <div class="tag">Имя</div>
+            <input type="text" name="name">
+        </div>
+         <div class="form_control">
+            <div class="tag">Почта</div>
+            <input type="text" name="email">
+        </div>
+         <div class="form_control">
+            <div class="tag">Заголовок</div>
+            <input type="text" name="subject">
+        </div>
+         <div class="form_control">
+            <div class="tag">Сообщение</div>
+             <textarea name="message" cols="40" rows="10"></textarea>
+        </div>
+        <div class="form_control">
+        <input type="submit" class="submit_btn" value="Отправить">
+        </div>
+    </form>
+</div>
+{% endblock %}

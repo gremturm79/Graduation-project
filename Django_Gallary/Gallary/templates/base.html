@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic,900&subset=latin,cyrillic" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/owl.carousel.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/owl.theme.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/theme.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/animate.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/responsive.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" id="color" href="{% static 'css/color/default.css' %}">
+</head>
+<body>
+<div class="portfolio-wrapper">
+    <div class="container">
+                            <ul class="items col-4">
+                                {% for image in images %}
+                                <li class="item student exams meeting">
+                                    <div class="port-over"><img src="{{ image.image.url }}" alt="">
+                                        <div class="over-info">
+                                            <h4>Название проекта</h4>
+                                            <p>категория</p>
+                                            <div class="gallery-pop"><a href="images/img-1.jpg" data-source="images/img-1.jpg" title=""><i class="fa fa-search"></i></a>
+                                            </div><a href="#."><i class="fa fa-heart"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                          {% endfor %}
+                            </ul>
+        </div>
+ </div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends 'calculator/index.html' %}
+{% block content %}
+{% load static %}
+<h1>Регистрация</h1>
+<div>
+    <small>{{ error }}</small>
+</div>
+<form action="" method="post" class="register">
+    {% csrf_token %}
+{{ form.as_p }}
+    <button class="btn">Зарегистрироваться:</button>
+</form>
+{% endblock %}
