@@ -16,10 +16,7 @@ urlpatterns = [
     path('login/', views.login_user, name='login'),
     path('delete/', views.delete_user, name='delete'),
     path('calculate_table/', views.calculate_table, name='calculate_table'),
-    path('calculate-personal/<str:pk>/', views.calculate_personal, name='calculate-personal'),
     path('personal_account/<str:pk>/', views.personal_account, name='personal_account'),
-    path('delete_calculate/<str:pk>/', views.delete_calculate, name='delete_calculate'),
-    path('carousel/', views.carousel, name='carousel'),
 
 ]
 

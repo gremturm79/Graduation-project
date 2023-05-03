@@ -77,4 +77,3 @@ class ReviewForm(forms.ModelForm):
 
         labels = {'description': 'Поле для ввода текста', 'image': 'Выберите фото', 'rating': 'Поставить оценку'}
 
-

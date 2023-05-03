@@ -39,16 +39,12 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'reviews' %}">Отзывы</a>
           </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{% url 'carousel' %}">Карусель</a>
-          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Меню пользователя
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
               <li><a class="dropdown-item" href="{% url 'personal_account'  user.id %}">Личный кабинет</a></li>
-              <li><a class="dropdown-item" href="{% url 'calculate_table' %}">Калькулятор</a></li>
               <li><a class="dropdown-item" href="{% url 'login' %}">Войти</a></li>
               <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
               <li>
@@ -99,7 +95,7 @@
         <div class="about_company">
             {% for field in company %}
             <h2>{{ field.title }}</h2>
-            <div class="about_company_description">{{ field.description|linebreaks }}</div>
+            <div class="about_company_description">{{ field.description }}</div>
             {% endfor %}
         </div>
         <div class="about_company_services">
@@ -107,9 +103,9 @@
             <div class="company_services">
                 <div class="company_title_img">
             <h2>{{ field.title }}</h2>
-            <img src="{{ field.services_image.image.url }}" style="width: 300px; height: 150px" alt="">
+            <img src="{{ field.services_image.image.url }}" style="width: 250px; height: 150px" alt="">
                 </div>
-            <h5>{{ field.description|linebreaks }}<a href="{% url 'about' %}"><strong style="color: black">...</strong></a></h5>
+            <h5>{{ field.description|slice:'800' }}</h5>
 
             </div>
             {% endfor %}

@@ -1,17 +1,9 @@
 {% extends 'main/index.html' %}
 {% load static %}
 {% block content %}
-<div class="warning">
-{% for message in messages %}
-<div class= "alert alert-success" role="alert">
-  {{ message }}<strong>!!!</strong>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endfor %}
-</div>
 <div class="content">
    <div class="wrap">
-              <h1>Калькулятор стоимости работ</h1>
+       <h1>Сумма работ: {{ summ }} рублей</h1>
        <form action="{% url 'calculate_table' %}" method="post" class="form_calculate">
     {% csrf_token %}
             <div class="wrap_field_form">

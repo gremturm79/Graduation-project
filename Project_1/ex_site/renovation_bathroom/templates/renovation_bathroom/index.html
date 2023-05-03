@@ -17,7 +17,7 @@
 <div class="title">
     <nav class="navbar navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'index' %}">Главная</a>
+    <a class="navbar-brand" href="#">Offcanvas dark navbar</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -40,7 +40,6 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
               <li><a class="dropdown-item" href="{% url 'personal_account'  user.id %}">Личный кабинет</a></li>
-                <li><a class="dropdown-item" href="{% url 'calculate_table' %}">Калькулятор</a></li>
               <li><a class="dropdown-item" href="{% url 'login' %}">Войти</a></li>
               <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
               <li>
@@ -96,7 +95,7 @@
             <div class="our_works_wrapper_title">
                 <h1>Ремонт ванной комнаты</h1>
                 {% for field in works %}
-                <p>{{ field.binding.description|linebreaks }}</p>
+                <p>{{ field.binding.description }}</p>
                 {% endfor %}
             </div>
         </div>
