@@ -5,8 +5,8 @@ from .models import PricingAndSummWorks, SummOfWorks, ListOfWorks, ContactOfOrga
 
 
 def send_message(message):  # функция отправки расчёта заказчику
-    TOKEN = "6031325871:AAHDA97CVEhhqYgY8yiOTwyPHHaub7Nrmh4"  # @zakaz_cena_bot
-    CHAT_ID = '899584907'
+    TOKEN = ""  # @zakaz_cena_bot
+    CHAT_ID = ''
     # message = 'Отправка сообщения'
     # url = f"https://api.telegram.org/bot{TOKEN}/getUpdates" запрос всех данных
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={CHAT_ID}&text={message}"
