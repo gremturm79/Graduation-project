@@ -1,0 +1,44 @@
+{% extends 'main/index.html' %}
+{% load static %}
+<div class="warning">
+{% for message in messages %}
+<div class= "alert alert-success" role="alert">
+  {{ message }}<strong>!!!</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+</div>
+{% block content %}
+<div class="about">
+        <div class="tittle" style="margin-bottom: 50px">
+            <h1>Отзывы клиентов</h1>
+            <h2></h2>
+        </div>
+    </div>
+{% if reviews %}
+<div class="grid_review">
+{% for field in reviews %}
+<div class="card" style="width: 22rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{ field.owner }}</h5>
+      <div class="img_rating">
+      <img src="{{ field.image.url }}"  alt="..." style="width: 150px; height: 100px">
+          <div class="rating_star" >
+          {% for fields in field.get_rating %}
+          <img src="{% static 'images/star_icon.png' %}" style="width: 24px; height: 24px" alt="" >
+          {% endfor %}
+          </div>
+      </div>
+    <p class="card-text">{{ field.description }}</p>
+    <a href="{% url 'write-review' %}" class="card-link">оставить отзыв</a>
+    <a href="{% url 'personal_account' user.id  %}" class="card-link">перейти в личный кабинет</a>
+  </div>
+</div>
+    {% endfor %}
+    {% else %}
+    <a href="{% url 'write-review' %}"><h2>Отзывы отсутствуют, но вы можете оставить свой отзыв</h2></a>
+    {% endif %}
+
+
+</div>
+{% endblock %}

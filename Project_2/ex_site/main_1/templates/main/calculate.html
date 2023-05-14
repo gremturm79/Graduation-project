@@ -1,0 +1,28 @@
+{% extends 'main/index.html' %}
+{% block content %}
+
+<div class="block_register">
+    <div class="warning">
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>{{ message }}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+</div>
+    <div class="register_wrapper">
+        <h1>Отправка данных об объекте</h1>
+<h2>{{ error }}</h2>
+        {{ success }}
+        <form action="" method="post" enctype="multipart/form-data" class="bg">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="center">
+            <button class="btn_self">Отправить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,32 @@
+{% extends 'main/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="about">
+    <h1>Оставить отзыв</h1>
+ <div class="main_review">
+         <div class="warning">
+{% for message in messages %}
+<div class= "alert alert-warning" role="alert">
+  {{ message }}<strong>!!!</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+ </div>
+<form action="{% url 'write-review' %}"  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form_review">
+    {{ field.label }}
+    {{ field }}
+      </div>
+    {% endfor %}
+
+  <input type="submit" value="Оставить отзыв">
+
+    </form>
+
+
+</div>
+</div>
+{% endblock %}
