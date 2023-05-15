@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import ListOfWorksForm, SendMessageForm, ProfileUserForm, ReviewForm
 from django.contrib import messages
 from .utils import send_message, personal_view, cost_works
+import phonenumbers
 
 
 def index(request):
@@ -300,10 +301,14 @@ def personal_account(request, pk):  # функция представления 
                 context = personal_view(request, pk)
                 return render(request, 'main/personal_account.html', context)
             else:
-                raise ValueError('ошибка ввода номера')
+                #  raise ValueError('ошибка ввода номера')
+                messages.info(request, 'неправильный формат номера телефона')
+                context = personal_view(request, pk)
+                return render(request, 'main/personal_account.html', context)
 
         context = personal_view(request, pk)
         return render(request, 'main/personal_account.html', context)
+
 
 def write_reviews(request):
     contact_org = ContactOfOrganization.objects.all()

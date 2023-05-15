@@ -2,11 +2,12 @@ import requests
 from .forms import ReviewForm, ProfileUserForm, UserForm, ListOfWorksForm
 from django.contrib.auth.models import User
 from .models import PricingAndSummWorks, SummOfWorks, ListOfWorks, ContactOfOrganization, ProfileUser
+import phonenumbers
 
 
 def send_message(message):  # функция отправки расчёта заказчику
-    TOKEN = ""  # @zakaz_cena_bot
-    CHAT_ID = ''
+    TOKEN = "6031325871:AAHDA97CVEhhqYgY8yiOTwyPHHaub7Nrmh4"  # @zakaz_cena_bot
+    CHAT_ID = '899584907'
     # message = 'Отправка сообщения'
     # url = f"https://api.telegram.org/bot{TOKEN}/getUpdates" запрос всех данных
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={CHAT_ID}&text={message}"
@@ -53,7 +54,6 @@ def personal_view(request, pk):  # функция отображения дан�
         count_summ = custom.summofworks_set.all()
         count = len(count_summ)  # количество расчётов в у пользователя
         form = UserForm(instance=custom)# заполняем поля формы редактирования, данными из БД User
-        print(form)
         date = User.objects.get(id=pk)  # получаем данные из БД User для заполнения карточки пользователя
         context = {
             'user': date,
@@ -107,7 +107,7 @@ def cost_works(request):
         return summ, summ_send_telegram  # возвращает сумму и список площадей с ценами
 
     func_summ, description_works = total_summ(obj, all_square)
-    text_send_telegram = 'От:' + ' ' + str(custom) + '\n' + ''.join(description_works) \
+    text_send_telegram = 'От:' + ' ' + str(custom.first_name) + '\n' + ''.join(description_works) \
                          + 'Итоговая сумма: ' + str(func_summ) + ' ' + 'рублей'
 
     estimate_save = PricingAndSummWorks(owner=custom, estimate=text_send_telegram)
@@ -125,3 +125,15 @@ def cost_works(request):
         'summ': summ
     }
     return context
+
+
+def my_view(request, phone_number):
+    try:
+        parsed_number = phonenumbers.parse(phone_number, None)
+        if not phonenumbers.is_valid_number(parsed_number):
+            raise ValueError('Invalid phone number')
+    except phonenumbers.phonenumberutil.NumberParseException:
+        raise ValueError('Invalid phone number')
+    return phone_number
+
+
