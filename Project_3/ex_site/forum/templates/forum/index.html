@@ -1,0 +1,31 @@
+{% extends 'main/index.html' %}
+{% block content %}
+<div class="input-group mb-3" style="padding-top: 100px; width: 50%; margin: 0 auto">
+  <input type="text" class="form-control" placeholder="Поиск по форуму" aria-label="Recipient's username"
+         aria-describedby="button-addon2">
+  <button class="btn btn-outline-secondary bg-primary" type="button" id="button-addon2">Найти</button>
+</div>
+<div class="forum_block">
+
+    <div class="forum_wrapper">
+
+
+        <div class="forum_items">
+            {% for field in message %}
+        <div class="forum_item">
+        <h4>{{ field.author.first_name }}</h4>
+        <h4>{{ field.title }}</h4>
+        <h4>{{ field.content|truncatewords:10 }}</h4>
+        <h4>{{ field.created_at }}</h4>
+          <p><a href="{% url 'forum_discuss' field.id %}">{{ field.title }}</a></p>
+    </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+</div>
+
+
+
+{% endblock %}

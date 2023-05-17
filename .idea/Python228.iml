@@ -6,6 +6,9 @@
       <sourceFolder url="file://$MODULE_DIR$/fourth/devsearch" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Project_1/ex_site" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/calculate/formcalculate" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Project_3/ex_site" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Project_3/ex_site/ex_site" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Project_3/ex_site/forum" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
     <orderEntry type="inheritedJdk" />

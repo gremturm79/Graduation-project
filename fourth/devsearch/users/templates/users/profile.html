@@ -1,5 +1,7 @@
 {% extends 'projects/base.html' %}
 {% block content %}
+
+  <!-- Main Section -->
   <main class="profile my-md">
     <div class="container">
       <div class="layout">
@@ -9,27 +11,29 @@
               <img class="avatar avatar--xl" src="{{ profile.profile_image.url }}" />
               <h2 class="dev__name">{{ profile.name }}</h2>
               <p class="dev__title">{{ profile.short_intro }}</p>
+
               <ul class="dev__social">
                 {% if profile.social_github %}
                 <li>
-                  <a title="Github" href="{{ profile.social_github }}" target="_blank"><i
-                          class="fa fa-github-square"></i></a>
+                  <a title="Github" href="{{ profile.social_github }}" target="_blank"><i class="fa fa-github-square">Github</i></a>
                 </li>
                 {% endif %}
+
                 {% if profile.social_youtube %}
                 <li>
-                  <a title="Youtube" href="{{ profile.social_youtube }}"
-                     target="_blank"><i class="fa fa-youtube"></i></a>
+                  <a title="Youtube" href="{{ profile.social_youtube }}" target="_blank"><i class="fa fa-youtube">Youtube</i></a>
                 </li>
                 {% endif %}
+
                 {% if profile.social_website %}
                 <li>
-                  <a title="Personal Website" href="{{ profile.social_website }}" target="_blank"><i
-                          class="fa fa-sitemap"></i></a>
+                  <a title="Personal Website" href="{{profile.social_website}}" target="_blank"><i class="fa fa-sitemap">Website</i></a>
                 </li>
                 {% endif %}
               </ul>
-              <a href="#" class="btn btn--sub btn--lg">Send Message </a>
+              {% if request.user.profile.id != profile.id %}
+              <a href="{% url 'create-message' profile.id %}" class="btn btn--sub btn--lg">Send Message </a>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -51,6 +55,8 @@
                 </p>
               </div>
               {% endfor %}
+
+
               <h3 class="devInfo__subtitle">Other Skills</h3>
               <div class="devInfo__otherSkills">
                 {% for skill in other_skill %}
@@ -64,18 +70,18 @@
           <div class="devInfo">
             <h3 class="devInfo__title">Projects</h3>
             <div class="grid grid--two">
-              {% for project in profile.projects_set.all %}
+
+              {% for project in profile.project_set.all %}
               <div class="column">
                 <div class="card project">
                   <a href="{% url 'project' project.id %}" class="project">
                     <img class="project__thumbnail" src="{{ project.featured_image.url }}" alt="project thumbnail" />
                     <div class="card__body">
                       <h3 class="project__title">{{ project.title }}</h3>
-                      <p><a class="project__author" href="{% url 'user_profile' project.owner.id %}">
-                        By {{project.owner.name}}</a></p>
+                      <p><a class="project__author" href="{% url 'user_profile' project.owner.id %}">By {{project.owner.name}}</a></p>
                       <p class="project--rating">
-                        <span style="font-weight: bold;">{{ project.vote_ratio }}%</span> Positive
-                        Feedback ({{ project.vote_total }} Vote{{ project.vote_total|pluralize:'s' }})
+                        <span style="font-weight: bold;">{{ project.vote_ratio }}%</span> Postitive
+                        Feedback ({{ project.vote_total }} Vote{{ project.vote_total|pluralize:"s" }})
                       </p>
                       <div class="project__tags">
                         {% for tag in project.tags.all %}
@@ -89,11 +95,12 @@
                 </div>
               </div>
               {% endfor %}
-            </div>
 
+            </div>
           </div>
         </div>
       </div>
     </div>
   </main>
+
 {% endblock %}

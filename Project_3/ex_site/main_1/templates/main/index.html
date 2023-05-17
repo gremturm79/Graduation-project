@@ -19,7 +19,7 @@
   <div class="container-fluid">
    <a class="navbar-brand"
       href="{% url 'index' %}"><img src="{% static 'images/home.ico' %}" alt="" style="width: 25px; height: 25px"></a>
-    <a class="navbar-brand" href="{% url 'about' %}">Наши услуги</a>
+    <a class="navbar-brand" href="{% url 'main' %}">Наши услуги</a>
     <a class="navbar-brand" href="{% url 'gallery' %}">Галерея</a>
     <a class="navbar-brand" href="{% url 'contact' %}">Контакты</a>
       {% if user.is_authenticated%}
@@ -30,7 +30,7 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="offcanvas offcanvas-end style='background-color: #e3f2fd'" tabindex="-1" id="offcanvasDarkNavbar"
+    <div class="offcanvas offcanvas-end" style='background-color: #e3f2fd; width: fit-content' tabindex="-1" id="offcanvasDarkNavbar"
          aria-labelledby="offcanvasDarkNavbarLabel">
       <div class="offcanvas-header">
           {% if user.is_authenticated%}
@@ -43,8 +43,19 @@
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Обсуждение</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'forum' %}">Обсуждение</a>
+              <ul>
+
+                  {% for cat in forum %}
+                      <li>
+                  <a href="{% url 'forum_discuss' cat.id %}">{{ cat }}</a>
+                  </li>
+                  {% endfor %}
+
+              </ul>
+
           </li>
+
           <li class="nav-item">
             <a class="nav-link" href="{% url 'reviews' %}">Отзывы</a>
           </li>
@@ -67,10 +78,6 @@
             </ul>
           </li>
         </ul>
-        <form class="d-flex mt-3" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-success" type="submit">Search</button>
-        </form>
       </div>
     </div>
   </div>

@@ -3,11 +3,12 @@ from .forms import ReviewForm, ProfileUserForm, UserForm, ListOfWorksForm
 from django.contrib.auth.models import User
 from .models import PricingAndSummWorks, SummOfWorks, ListOfWorks, ContactOfOrganization, ProfileUser
 import phonenumbers
+from forum.forms import ThreadForm
 
 
 def send_message(message):  # функция отправки расчёта заказчику
-    TOKEN = ""  # @zakaz_cena_bot
-    CHAT_ID = ''
+    TOKEN = "6031325871:AAHDA97CVEhhqYgY8yiOTwyPHHaub7Nrmh4"  # @zakaz_cena_bot
+    CHAT_ID = '899584907'
     # message = 'Отправка сообщения'
     # url = f"https://api.telegram.org/bot{TOKEN}/getUpdates" запрос всех данных
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={CHAT_ID}&text={message}"
@@ -19,6 +20,7 @@ def personal_view(request, pk):  # функция отображения дан�
     if custom.pricingandsummworks_set.filter(owner=custom).exists():
         prof = request.user.profileuser  # извлекаем данные профиля
         review = ReviewForm()  # форма отправки отзыва об услугах
+        category_thread = ThreadForm()  # импорт из приложения forum формы модели Thread
         image = prof.image
         phone = prof.phone_number
         contact_org = ContactOfOrganization.objects.all()
@@ -39,13 +41,15 @@ def personal_view(request, pk):  # функция отображения дан�
             'summa': summ_personal,
             'summ_count': count,
             'message_view': message_view,
-            'contact': contact_org
+            'contact': contact_org,
+            'category': category_thread
         }
         return context
     else:
         contact_org = ContactOfOrganization.objects.all()
         prof = request.user.profileuser  # извлекаем фотографию профиля
         review = ReviewForm()  # форма отправки отзыва об услугах
+        category_thread = ThreadForm()  # импорт из приложения forum формы модели Thread
         phone = prof.phone_number
         image = prof.image
         form_profile = ProfileUserForm(instance=prof)  # поле для изменения данных
@@ -53,7 +57,7 @@ def personal_view(request, pk):  # функция отображения дан�
         summ_personal = custom.summofworks_set.all()
         count_summ = custom.summofworks_set.all()
         count = len(count_summ)  # количество расчётов в у пользователя
-        form = UserForm(instance=custom)# заполняем поля формы редактирования, данными из БД User
+        form = UserForm(instance=custom)  # заполняем поля формы редактирования, данными из БД User
         date = User.objects.get(id=pk)  # получаем данные из БД User для заполнения карточки пользователя
         context = {
             'user': date,
@@ -64,7 +68,8 @@ def personal_view(request, pk):  # функция отображения дан�
             'review': review,
             'summa': summ_personal,
             'summ_count': count,
-            'contact': contact_org
+            'contact': contact_org,
+            'category': category_thread
         }
         return context
 
@@ -76,6 +81,7 @@ def cost_works(request):
     form = ListOfWorksForm()  # данные полей формы ListOfWorksForm для страницы  calculate_table.html
     summ = 0
     summ_send_telegram = []
+
     #  text_send_telegram = ''
 
     def total_summ(pricing, squares):
@@ -135,5 +141,3 @@ def my_view(request, phone_number):
     except phonenumbers.phonenumberutil.NumberParseException:
         raise ValueError('Invalid phone number')
     return phone_number
-
-

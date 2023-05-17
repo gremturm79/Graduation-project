@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('about/', views.main, name='about'),
+    path('about/', views.main, name='main'),
     path('gallery/', views.gallery, name='gallery'),
     path('calculate/', views.calculate, name='calculate'),
     path('reviews/', views.reviews, name='reviews'), # страница с отображением отзывов

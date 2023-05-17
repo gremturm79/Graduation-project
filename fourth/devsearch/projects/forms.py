@@ -1,19 +1,38 @@
 from django.forms import ModelForm
-from .models import Projects
-from django import forms  # импортируем модуль forms для изменения типа данных поля tags
+from .models import Project, Review
+from django import forms
 
 
 class ProjectForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'input'})
+
+        # self.fields['title'].widget.attrs.update({'class': 'input'})
+        # self.fields['description'].widget.attrs.update({'class': 'input'})
+
     class Meta:
-        model = Projects # model, fields служебные переменные
+        model = Project
         fields = ['title', 'featured_image', 'description', 'demo_link', 'source_link', 'tags']
 
-        widgets = {'tags': forms.CheckboxSelectMultiple()}  # меняем тип данных
+        widgets = {'tags': forms.CheckboxSelectMultiple()}
+
+
+class ReviewForm(ModelForm):
+    class Meta:
+        model = Review
+        fields = ['value', 'body']
+
+        labels = {
+            'value': 'Place your vote',
+            'body': 'Add a comments with your vote'
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        for name, fields in self.fields.items():
-            fields.widget.attrs.update({'class': 'input'})
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'input'})
 
-#  self.fields['description'].widget.attrs.update({'class': 'input'})  # обновление и добавления аттрибутам

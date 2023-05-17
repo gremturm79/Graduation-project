@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'main_1.apps.Main1Config',
     'repair_of_apartments.apps.RepairOfApartmentsConfig',
     'renovation_bathroom.apps.RenovationBathroomConfig',
+    'forum.apps.ForumConfig',
     'phonenumber_field',
 ]
 

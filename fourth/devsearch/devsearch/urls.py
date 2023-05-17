@@ -20,10 +20,9 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('projects/', include('projects.urls')),  # подключение файла с приложения projects
-    path('', include('users.urls')),  # подключение файла с приложения projects
+    path('projects/', include('projects.urls')),
+    path('', include('users.urls')),
 ]
 
-# путь url для медиафайлов в режиме разработки сайта
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

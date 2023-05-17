@@ -13,10 +13,12 @@ from django.contrib.auth.decorators import login_required
 from .forms import ListOfWorksForm, SendMessageForm, ProfileUserForm, ReviewForm
 from django.contrib import messages
 from .utils import send_message, personal_view, cost_works
-import phonenumbers
+from forum.models import Thread, Category
+from forum.forms import ThreadForm
 
 
 def index(request):
+    category = Category.objects.all()
     contact_org = ContactOfOrganization.objects.all()
     company = Company.objects.all()
     company_services = Company.objects.get(id=1)
@@ -24,7 +26,8 @@ def index(request):
     context = {
         'company': company,
         'company_all': company_all,
-        'contact': contact_org
+        'contact': contact_org,
+        'forum': category
     }
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -39,11 +42,13 @@ def index(request):
 
 
 def main(request):
+    category = Category.objects.all()
     services = TypeOfServices.objects.all()
     contact_org = ContactOfOrganization.objects.all()
     context = {
         'services': services,
-        'contact': contact_org
+        'contact': contact_org,
+        'forum': category
     }
     return render(request, 'main/about.html', context)
 
@@ -288,6 +293,16 @@ def personal_account(request, pk):  # функция представления 
                 messages.success(request, 'Все расчёты были удалены !')
                 context = personal_view(request, pk=custom.id)
                 return render(request, 'main/personal_account.html', context)
+        elif request.POST.get('forum'):  # создание ветки на форуме
+            custom = request.user
+            category = ThreadForm(request.POST)
+            if category.is_valid():
+                thread = category.save(commit=False)
+                thread.author = custom
+                thread.save()
+                messages.info(request, 'Раздел был создан можете перейти к обсуждению')
+            context = personal_view(request, pk=custom.id)
+            return render(request, 'main/personal_account.html', context)
         else:
             form = UserForm(request.POST, instance=request.user)  # записываем все данные из User в форму
             # также поля из БД Profile

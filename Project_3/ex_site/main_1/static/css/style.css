@@ -1170,3 +1170,80 @@ body:after {
 }
 
 /* отправить номер телефона */
+/* app forum */
+.forum_block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+
+.forum_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 50px;
+}
+
+.block_text {
+    margin-top: 50px;
+    width: fit-content;
+    background: white;
+    margin-bottom: 120px;
+    width: 800px;
+}
+
+.dialog_forum {
+    padding-top: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
+}
+
+.bt_forum {
+    padding-top: 50px;
+}
+
+.simple_reply {
+    border: 1px solid green;
+    overflow: auto;
+    height: 400px;
+    padding: 10px 10px;
+}
+
+.all_thread {
+    background: burlywood;
+    width: 100%;
+
+    text-align: center;
+}
+
+.all_reply {
+    padding: 10px 10px
+}
+
+.forum_items {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.forum_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: justify;
+    width: 300px;
+    height: 300px;
+    background: white;
+    margin: 20px;
+    box-sizing: border-box;
+    padding: 10px;
+
+}
