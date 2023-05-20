@@ -19,6 +19,7 @@ from forum.forms import ThreadForm
 
 def index(request):
     category = Category.objects.all()
+    binding = Thread.objects.all()
     contact_org = ContactOfOrganization.objects.all()
     company = Company.objects.all()
     company_services = Company.objects.get(id=1)
@@ -27,7 +28,8 @@ def index(request):
         'company': company,
         'company_all': company_all,
         'contact': contact_org,
-        'forum': category
+        'forum': category,
+        'bind': binding
     }
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -54,11 +56,13 @@ def main(request):
 
 
 def gallery(request):
+    category = Category.objects.all()
     photo_list = PhotoOfWorks.objects.all()
     contact_org = ContactOfOrganization.objects.all()
     context = {
         'images': photo_list,
-        'contact': contact_org
+        'contact': contact_org,
+        'forum': category
     }
     return render(request, 'main/gallery.html', context)
 
@@ -81,11 +85,13 @@ def calculate(request):
         # else:
         # return render(request, 'main/calculate.html', {'form': form, 'success': 'Повторите отправку'})
     else:
+        category = Category.objects.all()
         contact_org = ContactOfOrganization.objects.all()
         form = ContactForm()
         context = {
             'form': form,
-            'contact': contact_org
+            'contact': contact_org,
+            'forum': category
         }
         return render(request, 'main/calculate.html', context)
 
@@ -94,22 +100,30 @@ def reviews(request):
     # author = User.objects.filter(first_name='Grems')[0]
     # review = Review.objects.filter(owner=author)  # находим данные из БД Review по имени автора статьи
     # напоминание о количестве отзывов
+    category = Category.objects.all()
     reviews_all = Review.objects.all()
     contact_org = ContactOfOrganization.objects.all()
     context = {
         'reviews': reviews_all,
-        'contact': contact_org
+        'contact': contact_org,
+        'forum': category
     }
     return render(request, 'main/reviews.html', context)
 
 
 def contact(request):  # функция отправки сообщения для 'админа'
     if request.method == 'GET':
+        category = Category.objects.all()
         contact_org = ContactOfOrganization.objects.all()
         form = SendMessageForm()
-        context = {'form': form, 'contact': contact_org}
+        context = {
+            'form': form,
+            'contact': contact_org,
+            'forum': category
+        }
         return render(request, 'main/contact.html', context)
     else:
+        category = Category.objects.all()
         contact_org = ContactOfOrganization.objects.all()
         name = request.POST['name']
         organization = request.POST['organization']
@@ -117,7 +131,11 @@ def contact(request):  # функция отправки сообщения дл
         content = request.POST['content']
         msg = send_mail(name, content, settings.EMAIL_HOST_USER, [email])
         msg.send()
-        context = {'success': 'письмо отравлено', 'contact': contact_org}
+        context = {
+            'success': 'письмо отравлено',
+            'contact': contact_org,
+            'forum': category
+        }
         return render(request, 'main/contact.html', context)
 
 
@@ -173,7 +191,7 @@ def login_user(request):
         else:  # иначе, сохраняются данные пользователя в серверной части запроса пока пользователь находится в сессии
 
             login(request, user)
-            return redirect('about')
+            return redirect('index')
 
 
 @login_required()
@@ -190,6 +208,7 @@ def delete_user(request):
 # @login_required(login_url='enter')
 def calculate_table(request):  # функция калькуляции в виде таблицы checkbox
     contact_org = ContactOfOrganization.objects.all()
+    category = Category.objects.all()
     if request.method == 'GET':
         custom = request.user
         if request.user.is_authenticated:
@@ -199,50 +218,59 @@ def calculate_table(request):  # функция калькуляции в вид
                 context = {
                     'form': form,
                     'obj': obj,
-                    'contact': contact_org
+                    'contact': contact_org,
+                    'forum': category
                 }
                 return render(request, 'main/calculate_table.html', context)
             else:
+                category = Category.objects.all()
                 form = ListOfWorksForm()
                 obj = ListOfWorks.objects.all()
                 context = {
                     'form': form,
                     'obj': obj,
-                    'contact': contact_org
+                    'contact': contact_org,
+                    'forum': category
                 }
                 messages.info(request, 'Удалите все расчёты в личном кабинете')
                 return render(request, 'main/calculate_table.html', context)
         else:
             messages.info(request, 'форма для незарегистрированных пользователей')
+            category = Category.objects.all()
             form = ContactForm()
             obj = ListOfWorks.objects.all()
             context = {
                 'form': form,
                 'obj': obj,
-                'contact': contact_org
+                'contact': contact_org,
+                'forum': category
             }
             return render(request, 'main/calculate.html', context)
     else:
         custom = request.user
         if request.user.is_authenticated and custom.pricingandsummworks_set.all().count() >= 1:
+            category = Category.objects.all()
             form = ListOfWorksForm()
             obj = ListOfWorks.objects.all()
             context = {
                 'form': form,
                 'obj': obj,
-                'contact': contact_org
+                'contact': contact_org,
+                'forum': category
             }
             messages.info(request, 'Удалите все расчёты в личном кабинете')
             return render(request, 'main/calculate_table.html', context)
         else:
             cost = cost_works(request)  # функция расчёта стоимости работ находится в utils.py
+            category = Category.objects.all()
             obj = ListOfWorks.objects.all()
             form = ContactForm()
             messages.info(request, 'Расчёт был посчитан')
             context = {
                 'form': form,
                 'obj': obj,
-                'contact': contact_org
+                'contact': contact_org,
+                'forum': category
             }
             return render(request, 'main/calculate_table.html', context)
 
@@ -327,6 +355,7 @@ def personal_account(request, pk):  # функция представления 
 
 def write_reviews(request):
     contact_org = ContactOfOrganization.objects.all()
+    category = Category.objects.all()
     if request.method == 'GET' and request.user.is_authenticated:
         custom = request.user
         count_reviews = Review.objects.filter(owner=custom).count()
@@ -334,21 +363,25 @@ def write_reviews(request):
             u_form = ReviewForm()
             context = {
                 'form': u_form,
-                'count': count_reviews
+                'count': count_reviews,
+                'forum': category
             }
             messages.info(request, 'Оставить отзыв можно только один раз')
             return render(request, 'main/form_reviews.html', context)
         else:
+            category = Category.objects.all()
             u_form = ReviewForm()
             context = {
                 'form': u_form,
                 'count': count_reviews,
-                'contact': contact_org
+                'contact': contact_org,
+                'forum': category
             }
             messages.info(request, 'Вы оставили отзыв, эта форма заполнения вам недоступна')
             return render(request, 'main/form_reviews.html', context)
     else:
         if request.user.is_authenticated:
+            category = Category.objects.all()
             custom = request.user
             count_reviews = Review.objects.filter(owner=custom).count()
             review_date = ReviewForm(request.POST, request.FILES)
@@ -362,7 +395,12 @@ def write_reviews(request):
             else:
                 u_form = ReviewForm()
                 messages.error(request, 'Вы пытаетесь заполнить форму дважды')
-                return render(request, 'main/form_reviews.html', {'form': u_form, 'contact': contact_org})
+                context = {
+                    'form': u_form,
+                    'contact': contact_org,
+                    'forum': category
+                }
+                return render(request, 'main/form_reviews.html', context)
 
 
 def delete_pricing(request):

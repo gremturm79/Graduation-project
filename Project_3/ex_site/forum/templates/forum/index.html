@@ -1,10 +1,15 @@
 {% extends 'main/index.html' %}
 {% block content %}
-<div class="input-group mb-3" style="padding-top: 100px; width: 50%; margin: 0 auto">
-  <input type="text" class="form-control" placeholder="Поиск по форуму" aria-label="Recipient's username"
-         aria-describedby="button-addon2">
-  <button class="btn btn-outline-secondary bg-primary" type="button" id="button-addon2">Найти</button>
-</div>
+
+    <form action="{% url 'forum' %}" method="get" id="search">
+        <div class="input-group mb-3" style="padding-top: 100px; width: 30%; margin: 0 auto">
+  <input type="text" name="search_query" class="form-control" placeholder="Поиск по форуму"
+         aria-label="Recipient's username"
+         aria-describedby="button-addon2" value="{{ search_query }}">
+  <button class="btn btn-outline-secondary bg-primary" type="submit" id="button-addon2">Найти</button>
+            </div>
+    </form>
+
 <div class="forum_block">
 
     <div class="forum_wrapper">
@@ -14,17 +19,60 @@
             {% for field in message %}
         <div class="forum_item">
         <h4>{{ field.author.first_name }}</h4>
-        <h4>{{ field.title }}</h4>
+        <h4><a href="{% url 'forum_discuss' field.id %}" style="text-decoration: none">
+            {{ field.title }}</a></h4>
         <h4>{{ field.content|truncatewords:10 }}</h4>
         <h4>{{ field.created_at }}</h4>
-          <p><a href="{% url 'forum_discuss' field.id %}">{{ field.title }}</a></p>
     </div>
             {% endfor %}
         </div>
-    </div>
-
-
+        {% if message.has_other_pages %}
+        <nav aria-label="...">
+  <ul class="pagination pagination-lg" style="padding-top: 30px;">
+      {% if message.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ message.previous_page_number }}" data-page="{{message.previous_page_number}}">
+          &#8249;</a>
+    </li>
+      {% endif %}
+{% for page in custom_range %}
+      {% if page == message.number %}
+    <li class="page-item active" aria-current="page">
+      <a class="page-link" href="?page={{page}}" data-page="{{page}}">{{ page }}</a>
+    </li>
+      {% else %}
+      <li class="page-item"><a class="page-link" href="?page={{page}}" data-page="{{page}}">{{ page }}</a></li>
+      {% endif %}
+     {% endfor %}
+      {% if message.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ message.next_page_number }}" data-page="{{message.next_page_number}}">&#8250;</a>
+    </li>
+        {% endif %}
+  </ul>
+</nav>
+        {% endif %}
 </div>
+    </div>
+ <!-- функция для передачи поиска запроса на все элементы списка -->
+<script>
+  let searchForm = document.getElementById('search');
+  let pageLink = document.querySelectorAll('.page-link');
+
+  if (searchForm){
+    for(let i=0; pageLink.length > i; i++){
+      pageLink[i].addEventListener('click', function(e){
+        e.preventDefault()
+
+        let page = this.dataset.page;
+
+        searchForm.innerHTML += `<input value=${page} name='page' type='hidden'>`
+        searchForm.submit()
+      })
+    }
+  }
+
+</script>
 
 
 

@@ -2,8 +2,8 @@ import requests
 from .forms import ReviewForm, ProfileUserForm, UserForm, ListOfWorksForm
 from django.contrib.auth.models import User
 from .models import PricingAndSummWorks, SummOfWorks, ListOfWorks, ContactOfOrganization, ProfileUser
-import phonenumbers
 from forum.forms import ThreadForm
+from forum.models import Thread, Category
 
 
 def send_message(message):  # функция отправки расчёта заказчику
@@ -18,9 +18,13 @@ def send_message(message):  # функция отправки расчёта з�
 def personal_view(request, pk):  # функция отображения данных профиля
     custom = request.user
     if custom.pricingandsummworks_set.filter(owner=custom).exists():
+        binding = Thread.objects.all()
         prof = request.user.profileuser  # извлекаем данные профиля
         review = ReviewForm()  # форма отправки отзыва об услугах
         category_thread = ThreadForm()  # импорт из приложения forum формы модели Thread
+        category = Category.objects.all() # Category модель категории форума
+        forum_branch = Thread.objects.filter(author=custom)
+        print(forum_branch)
         image = prof.image
         phone = prof.phone_number
         contact_org = ContactOfOrganization.objects.all()
@@ -42,14 +46,19 @@ def personal_view(request, pk):  # функция отображения дан�
             'summ_count': count,
             'message_view': message_view,
             'contact': contact_org,
-            'category': category_thread
+            'category': category_thread,
+            'forum': category,
+            'bind': binding,
+            'branch': forum_branch
         }
         return context
     else:
         contact_org = ContactOfOrganization.objects.all()
         prof = request.user.profileuser  # извлекаем фотографию профиля
+        binding = Thread.objects.all()
         review = ReviewForm()  # форма отправки отзыва об услугах
         category_thread = ThreadForm()  # импорт из приложения forum формы модели Thread
+        forum_branch = Thread.objects.filter(author=custom)
         phone = prof.phone_number
         image = prof.image
         form_profile = ProfileUserForm(instance=prof)  # поле для изменения данных
@@ -69,7 +78,9 @@ def personal_view(request, pk):  # функция отображения дан�
             'summa': summ_personal,
             'summ_count': count,
             'contact': contact_org,
-            'category': category_thread
+            'category': category_thread,
+            'bind': binding,
+            'branch': forum_branch
         }
         return context
 
@@ -133,11 +144,4 @@ def cost_works(request):
     return context
 
 
-def my_view(request, phone_number):
-    try:
-        parsed_number = phonenumbers.parse(phone_number, None)
-        if not phonenumbers.is_valid_number(parsed_number):
-            raise ValueError('Invalid phone number')
-    except phonenumbers.phonenumberutil.NumberParseException:
-        raise ValueError('Invalid phone number')
-    return phone_number
+

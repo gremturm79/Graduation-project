@@ -19,6 +19,9 @@ class Thread(models.Model):  # модель Thread для создания ру�
     def __str__(self):
         return self.title
 
+    class Meta:
+        ordering = ['-created_at']
+
 
 class Reply(models.Model):  # модель Reply для сообщений в модели Thread отдельной рубрике
     content = models.TextField()

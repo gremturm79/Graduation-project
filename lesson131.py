@@ -1,3 +1,2 @@
-rating = 5
-rate = [i for i in range(rating)]
-print(rate)
+print(len(range(2**100)))
+

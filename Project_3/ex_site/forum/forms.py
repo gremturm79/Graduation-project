@@ -10,7 +10,7 @@ class CategoryForm(ModelForm):
         labels = {'name': 'Название'}
 
 
-class ThreadForm(ModelForm):
+class ThreadForm(forms.ModelForm):
     class Meta:
         model = Thread
         fields = ['title', 'content', 'category']  # , 'author'

@@ -17,7 +17,7 @@
 <nav class="navbar fixed-top" style='background-color: #e3f2fd'>
   <div class="container-fluid">
    <a class="navbar-brand" href="{% url 'index' %}">Главная</a>
-    <a class="navbar-brand" href="{% url 'about' %}">Наши услуги</a>
+    <a class="navbar-brand" href="{% url 'main' %}">Наши услуги</a>
     <a class="navbar-brand" href="{% url 'bathroom_gallery' %}">Галерея</a>
     <a class="navbar-brand" href="{% url 'contact' %}">Контакты</a>
       {% if user.is_authenticated%}

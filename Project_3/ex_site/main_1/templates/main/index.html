@@ -44,15 +44,6 @@
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'forum' %}">Обсуждение</a>
-              <ul>
-
-                  {% for cat in forum %}
-                      <li>
-                  <a href="{% url 'forum_discuss' cat.id %}">{{ cat }}</a>
-                  </li>
-                  {% endfor %}
-
-              </ul>
 
           </li>
 

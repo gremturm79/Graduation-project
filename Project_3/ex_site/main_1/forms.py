@@ -64,6 +64,13 @@ class ProfileUserForm(forms.ModelForm):
         model = ProfileUser
         fields = ['image', 'phone_number']
         labels = {'image': 'Фотография', 'phone_number': 'Номер телефона'}
+        widgets = {
+            'phone_number': forms.NumberInput(attrs={
+                'pattern': '[9]{1}[0-9]{2}[0-9]{3}[0-9]{2}[0-9]{2}',
+                'placeholder': '9234566788, номер начинается с 9'
+            })
+        }
+
 
 
 class ReviewForm(forms.ModelForm):
@@ -74,5 +81,3 @@ class ReviewForm(forms.ModelForm):
         fields = ['description', 'image', 'rating']
 
         labels = {'description': 'Поле для ввода текста', 'image': 'Выберите фото', 'rating': 'Поставить оценку'}
-
-

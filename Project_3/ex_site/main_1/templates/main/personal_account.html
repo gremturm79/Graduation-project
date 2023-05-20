@@ -63,6 +63,9 @@
             <hr>
         {% endif %}
       <h6>Форум</h6>
+            {% for field in branch %}
+            <h6><a href="{% url 'forum_discuss' field.id %}">{{ field.title }}</a></h6>
+            {% endfor %}
           <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                   data-bs-target="#exampleModalforum">Создать раздел для обсуждения
           </button>
