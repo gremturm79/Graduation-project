@@ -7,8 +7,8 @@ from forum.models import Thread, Category
 
 
 def send_message(message):  # функция отправки расчёта заказчику
-    TOKEN = "6031325871:AAHDA97CVEhhqYgY8yiOTwyPHHaub7Nrmh4"  # @zakaz_cena_bot
-    CHAT_ID = '899584907'
+    TOKEN = ""  # @zakaz_cena_bot
+    CHAT_ID = ''
     # message = 'Отправка сообщения'
     # url = f"https://api.telegram.org/bot{TOKEN}/getUpdates" запрос всех данных
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={CHAT_ID}&text={message}"
@@ -24,7 +24,7 @@ def personal_view(request, pk):  # функция отображения дан�
         category_thread = ThreadForm()  # импорт из приложения forum формы модели Thread
         category = Category.objects.all() # Category модель категории форума
         forum_branch = Thread.objects.filter(author=custom)
-        print(forum_branch)
+        forum_count = forum_branch.count()
         image = prof.image
         phone = prof.phone_number
         contact_org = ContactOfOrganization.objects.all()
@@ -59,6 +59,7 @@ def personal_view(request, pk):  # функция отображения дан�
         review = ReviewForm()  # форма отправки отзыва об услугах
         category_thread = ThreadForm()  # импорт из приложения forum формы модели Thread
         forum_branch = Thread.objects.filter(author=custom)
+        forum_count = forum_branch.count()
         phone = prof.phone_number
         image = prof.image
         form_profile = ProfileUserForm(instance=prof)  # поле для изменения данных

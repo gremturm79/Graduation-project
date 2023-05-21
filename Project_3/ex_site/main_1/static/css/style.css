@@ -1246,3 +1246,36 @@ body:after {
     padding: 10px;
 
 }
+
+/* для избранного */
+.page {
+    width: 100%;
+    min-height: 100%;
+    position: relative;
+}
+
+.custom-checkbox {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+}
+
+.custom-checkbox-input {
+    display: none;
+    z-index: 1111;
+
+}
+
+.custom-checkbox-text {
+    padding: 1rem;
+    background-color: #aaa;
+    color: #555;
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-checkbox-input:checked~.custom-checkbox-text {
+    background-color: red;
+    color: white;
+}

@@ -323,14 +323,19 @@ def personal_account(request, pk):  # функция представления 
                 return render(request, 'main/personal_account.html', context)
         elif request.POST.get('forum'):  # создание ветки на форуме
             custom = request.user
-            category = ThreadForm(request.POST)
-            if category.is_valid():
-                thread = category.save(commit=False)
-                thread.author = custom
-                thread.save()
-                messages.info(request, 'Раздел был создан можете перейти к обсуждению')
-            context = personal_view(request, pk=custom.id)
-            return render(request, 'main/personal_account.html', context)
+            if custom.thread_set.all().count() < 1:
+                category = ThreadForm(request.POST)
+                if category.is_valid():
+                    thread = category.save(commit=False)
+                    thread.author = custom
+                    thread.save()
+                    messages.info(request, 'Раздел был создан можете перейти к обсуждению')
+                context = personal_view(request, pk=custom.id)
+                return render(request, 'main/personal_account.html', context)
+            else:
+                messages.info(request, 'Пользователь может создать один форум')
+                context = personal_view(request, pk=custom.id)
+                return render(request, 'main/personal_account.html', context)
         else:
             form = UserForm(request.POST, instance=request.user)  # записываем все данные из User в форму
             # также поля из БД Profile
