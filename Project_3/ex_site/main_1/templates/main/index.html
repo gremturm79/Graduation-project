@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Главная</title>
+    <title>{% block title_name %}Главная{% endblock %}</title>
     <link type="image/x-icon" href="{% static 'images/home.ico' %}" rel="shortcut icon">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
       href="{% url 'index' %}"><img src="{% static 'images/home.ico' %}" alt="" style="width: 25px; height: 25px"></a>
     <a class="navbar-brand" href="{% url 'main' %}">Наши услуги</a>
     <a class="navbar-brand" href="{% url 'gallery' %}">Галерея</a>
-    <a class="navbar-brand" href="{% url 'contact' %}">Контакты</a>
+    <a class="navbar-brand" href="{% url 'contact' %}">Обратная связь</a>
       {% if user.is_authenticated%}
     <a class="navbar-brand" href="{% url 'personal_account'  user.id %}">Личный кабинет</a>
       {% else %}
@@ -65,7 +65,7 @@
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" href="{% url 'contact' %}">Контакты</a></li>
+              <li><a class="dropdown-item" href="{% url 'contact' %}">Обратная связь</a></li>
             </ul>
           </li>
         </ul>
@@ -82,19 +82,7 @@
         <div class="about_company">
             {% for field in company %}
             <h2>{{ field.title }}</h2>
-            <div class="about_company_description">{{ field.description }}</div>
-            {% endfor %}
-        </div>
-        <div class="about_company_services">
-            {% for field in company_all %}
-            <div class="company_services">
-                <div class="company_title_img">
-            <h2>{{ field.title }}</h2>
-            <img src="{{ field.services_image.image.url }}" style="width: 250px; height: 150px" alt="">
-                </div>
-            <h5>{{ field.description|slice:'800' }}</h5>
-
-            </div>
+            <div class="about_company_description">{{ field.description|linebreaks }}</div>
             {% endfor %}
         </div>
 
@@ -105,17 +93,17 @@
 <div class="footer">
             {% for fields in contact %}
                 <ul class="contact_list">
-                    <li>
-                        <img src="{% static 'images/address_icon.png' %}" alt="">
-                        <p>{{ fields.address }}</p>
+                    <li class="contact_element">
+
+                        <img src="{% static 'images/address_icon.png' %}" alt=""><p>{{ fields.address }}</p>
                     </li>
-                    <li>
-                         <img src="{% static 'images/phone_icon.png' %}" alt="">
-                        <p>{{ fields.phone }}</p>
+                    <li class="contact_element">
+
+                        <img src="{% static 'images/phone_icon.png' %}" alt=""><p>{{ fields.phone }}</p>
                     </li>
-                     <li>
-                         <img src="{% static 'images/mail_icon.png' %}" alt="">
-                        <p>{{ fields.email }}</p>
+                     <li class="contact_element">
+
+                        <img src="{% static 'images/mail_icon.png' %}" alt=""><p>{{ fields.email }}</p>
                     </li>
                 </ul>
             {% endfor %}
@@ -130,7 +118,6 @@
                 </form>
     </div>
 </div>
-
 {% endblock %}
 <script src="{% static 'css/style1.js' %}"></script>
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>

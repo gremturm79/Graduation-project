@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import CalculateTableEx, ListOfWorks, ProfileUser, Review
 from django.forms import ModelForm
+from captcha.fields import CaptchaField
 
 
 class ContactForm(forms.Form):
@@ -10,6 +11,7 @@ class ContactForm(forms.Form):
     content = forms.CharField(widget=forms.Textarea, label='Описание:')  # help_text='текст рядом с полем',
     # strip=True удаление начальных и конечных пробелов
     file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), label='Загрузка файла:')
+    captcha = CaptchaField()
     # square = forms.DecimalField(max_value=1000, min_value=2, label='Укажите площадь помещения:')
     # CHOICES = (
     # ('Paris', 'France'),
@@ -38,12 +40,15 @@ class ListOfWorksForm(ModelForm):
 
 class SendMessageForm(forms.Form):
     '''
-    Класс SendMessageForm создаёт форму для отправки сообщения от клиента на странице contact.html
+    Класс SendMessageForm создаёт форму для отправки от не зарегистрированного клиента сообщения на странице
+    contact.html
     '''
     name = forms.CharField(max_length=250, label='Ваше имя:')
     organization = forms.CharField(max_length=250, label='Название организации:')
     email = forms.EmailField(max_length=250, label='Почтовый ящик:')
-    content = forms.CharField(widget=forms.Textarea, label='Текст сообщения:')
+    content = forms.CharField(widget=forms.Textarea(attrs=({'cols': 50, 'rows': 6})), label='Текст сообщения:')
+    captcha = CaptchaField()
+    # widget=forms.Textarea,
 
 
 class UserForm(ModelForm):
@@ -70,7 +75,6 @@ class ProfileUserForm(forms.ModelForm):
                 'placeholder': '9234566788, номер начинается с 9'
             })
         }
-
 
 
 class ReviewForm(forms.ModelForm):

@@ -9,6 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Project_3/ex_site" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Project_3/ex_site/ex_site" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Project_3/ex_site/forum" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Aja" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
     <orderEntry type="inheritedJdk" />

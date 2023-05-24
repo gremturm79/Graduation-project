@@ -7,12 +7,12 @@ from forum.models import Thread, Category
 
 
 def send_message(message):  # функция отправки расчёта заказчику
-    TOKEN = ""  # @zakaz_cena_bot
-    CHAT_ID = ''
+    TOKEN = "6031325871:AAHDA97CVEhhqYgY8yiOTwyPHHaub7Nrmh4"  # @zakaz_cena_bot
+    CHAT_ID = '899584907'
     # message = 'Отправка сообщения'
     # url = f"https://api.telegram.org/bot{TOKEN}/getUpdates" запрос всех данных
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={CHAT_ID}&text={message}"
-    requests.get(url).json()  # chat_id 899584907
+    requests.get(url).json()
 
 
 def personal_view(request, pk):  # функция отображения данных профиля

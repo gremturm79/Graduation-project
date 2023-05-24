@@ -1,4 +1,5 @@
 {% extends 'main/index.html' %}
+{% block title_name %}Галерея{% endblock %}
 {% block content %}
 <div class="gallery">
   <div class="gallery_wrap">
@@ -6,14 +7,12 @@
     	<ul>
             {% for image in images %}
         	<li>
-                <form action="" method="get">
-                <label class="custom-checkbox">
-  <input type="hidden" name="alarm" value="False" />
-  <input class="custom-checkbox-input" name="alarm" value="True" type="checkbox">
-  <span class="custom-checkbox-text">Alarm</span>
-</label>
-                </form>
-                <a href="#img_{{ image.id }}"><img src="{{ image.image.url }}"></a></li>
+
+                <a href="#img_{{ image.id }}">
+
+                    <img src="{{ image.image.url }}"></a>
+            </li>
+
             {% endfor %}
         </ul>
             {% for image in images %}

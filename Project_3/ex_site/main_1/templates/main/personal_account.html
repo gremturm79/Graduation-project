@@ -6,7 +6,7 @@
 	<div class="main">
 <div class="warning" >
 {% for message in messages %}
-<div class= "alert alert-success" role="alert" style="position: absolute" id="info">
+<div class= "alert alert-{{ message.tags }}" role="alert" style="position: absolute" id="info">
   <strong>{{ message }}</strong>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
@@ -30,10 +30,13 @@
   Удалить
 </button>
       <hr>
+      {% if user.review_set.all.count == 1 %}
+      <h6>Спасибо за отзыв !</h6>
+      {% else %}
       <button type="button" class="btn btn-success" data-bs-toggle="modal"
               data-bs-target="#exampleModalreview"><a href="{% url 'write-review' %}"
                           style="text-decoration: none; color: white">Оставить отзыв</a></button>
-
+    {% endif %}
       <hr>
 
         {% if summ_count == 0 %}
@@ -62,13 +65,16 @@
 
             <hr>
         {% endif %}
-      <h6>Форум</h6>
+      <h6>Ваша тема на форуме</h6>
+            {% if branch %}
             {% for field in branch %}
             <h6><a href="{% url 'forum_discuss' field.id %}">{{ field.title }}</a></h6>
             {% endfor %}
+            {% else %}
           <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                   data-bs-target="#exampleModalforum">Создать раздел для обсуждения
           </button>
+            {% endif %}
             <hr>
         </div>
 
@@ -97,8 +103,7 @@
 
                       <form action="{% url 'personal_account' user.id %}" method="post">
                 {% csrf_token %}
-             <input type="tel" id="phone" name="phone"
-           style="width: 160px"      placeholder="123-456-67-88" pattern="[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}"/>
+
                 <input type="hidden"  name="form_send" value="{{user.id}}" />
           <button type="submit" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Отправить</button>
 

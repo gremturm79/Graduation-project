@@ -17,8 +17,12 @@ class ThreadForm(forms.ModelForm):
         labels = {'title': 'Название', 'content': 'Текст', 'category': 'Категория'}  # ,'author': 'Автор'
 
 
-class ReplyForm(ModelForm):
+class ReplyForm(forms.ModelForm):
     class Meta:
         model = Reply
         fields = ['content', 'thread']  # , 'author'
         labels = {'content': 'Текст', 'thread': 'Тема'}  # , 'author': 'Автор'
+
+
+
+

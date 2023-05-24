@@ -1,7 +1,7 @@
 from .forms import ThreadForm, ReplyForm, CategoryForm
 from .models import Thread, Category, Reply
 from django.db.models import Q
-from django.core.paginator import Paginator
+from main_1.models import ContactOfOrganization
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
@@ -29,6 +29,7 @@ def content(request, pk):
     message = Thread.objects.get(id=pk)
     # response = Reply.objects.get(id=pk)
     response = message.reply_set.all()
+    contact_org = ContactOfOrganization.objects.all()
     form = ThreadForm()
     reply = ReplyForm()
     context = {
@@ -36,7 +37,8 @@ def content(request, pk):
         'reply': reply,
         'form': form,
         'message': message,
-        'response': response
+        'response': response,
+        'contact': contact_org,
     }
     return context
 

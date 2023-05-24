@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from .models import PhotoOfWorks, TypeOfServices, ListOfWorks, ContactOfOrganization, \
     Review, Company, SummOfWorks, PricingAndSummWorks
-# UserCreationForm импорт формы которая создаёт пользователя
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -67,8 +66,11 @@ def gallery(request):
     return render(request, 'main/gallery.html', context)
 
 
+@login_required(login_url='enter')
 def calculate(request):
     if request.method == 'POST':
+        category = Category.objects.all()
+        contact_org = ContactOfOrganization.objects.all()
         # form = ContactForm(request.POST)
         form = ContactForm(request.POST, request.FILES)
         # if form.is_valid():
@@ -80,7 +82,13 @@ def calculate(request):
         for f in files:
             msg.attach(f.name, f.read(), f.content_type)
         msg.send()
-        return redirect('about')
+        context = {
+            'form': form,
+            'contact': contact_org,
+            'forum': category
+        }
+        messages.success(request, 'Сообщение было отправлено')
+        return render(request, 'main/calculate.html', context)
 
         # else:
         # return render(request, 'main/calculate.html', {'form': form, 'success': 'Повторите отправку'})
@@ -111,7 +119,7 @@ def reviews(request):
     return render(request, 'main/reviews.html', context)
 
 
-def contact(request):  # функция отправки сообщения для 'админа'
+def contact(request):  # функция отправки сообщения на почту
     if request.method == 'GET':
         category = Category.objects.all()
         contact_org = ContactOfOrganization.objects.all()
@@ -123,16 +131,19 @@ def contact(request):  # функция отправки сообщения дл
         }
         return render(request, 'main/contact.html', context)
     else:
+        form = SendMessageForm()
         category = Category.objects.all()
         contact_org = ContactOfOrganization.objects.all()
         name = request.POST['name']
         organization = request.POST['organization']
         email = request.POST['email']
         content = request.POST['content']
-        msg = send_mail(name, content, settings.EMAIL_HOST_USER, [email])
-        msg.send()
+        msg = EmailMessage(name, content, settings.EMAIL_HOST_USER, [email])
+        if form.is_valid():
+            msg.send()
+        messages.success(request, 'Сообщение было отправлено')
         context = {
-            'success': 'письмо отравлено',
+            'form': form,
             'contact': contact_org,
             'forum': category
         }
@@ -290,17 +301,23 @@ def personal_account(request, pk):  # функция представления 
             if custom.pricingandsummworks_set.filter(owner=custom).exists():  # проверка на существование объекта
                 if custom.pricingandsummworks_set.all().count() == 1:
                     message_text = custom.pricingandsummworks_set.all()
-                    phone = '\n' + 'Контактный номер: ' + request.POST['phone']
-                    # message_view = custom.pricingandsummworks_set.get(owner=custom)
-                    #  get(owner=custom) берёт один элемент последний
-                    #  print(message_view)
-                    for i in range(len(message_text)):
-                        send_message(message_text[i].estimate + phone)
-                    # message = message_text[0].estimate + phone
-                    # send_message(message)
-                    messages.info(request, 'сообщение было отправлено')
-                    context = personal_view(request, pk)
-                    return render(request, 'main/personal_account.html', context)
+                    phone_num = request.user.profileuser.phone_number
+                    if phone_num:
+                        phone = '\n' + 'Контактный номер: ' + str(phone_num)
+                        # message_view = custom.pricingandsummworks_set.get(owner=custom)
+                        #  get(owner=custom) берёт один элемент последний
+                        #  print(message_view)
+                        for i in range(len(message_text)):
+                            send_message(message_text[i].estimate + phone)
+                        # message = message_text[0].estimate + phone
+                        # send_message(message)
+                        messages.info(request, 'сообщение было отправлено')
+                        context = personal_view(request, pk)
+                        return render(request, 'main/personal_account.html', context)
+                    else:
+                        messages.info(request, 'для отправки необходим номер телефона')
+                        context = personal_view(request, pk)
+                        return render(request, 'main/personal_account.html', context)
                 else:
                     messages.warning(request, 'Отправить можно только один расчёт')
                     context = personal_view(request, pk)

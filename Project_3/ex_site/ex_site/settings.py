@@ -12,10 +12,13 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv, find_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(find_dotenv())
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -32,10 +35,12 @@ ALLOWED_HOSTS = []
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'logvinov.al.m@gmail.com'
-EMAIL_HOST_PASSWORD = 'rxtukxvapogyjuxz'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = 'eptzqqawrupifnhy'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
-MY_PASSWORD_MAIL = os.getenv('MY_PASSWORD_MAIL')
+# EMAIL_HOST_USER = 'logvinov.al.m@gmail.com'
+# MY_PASSWORD_MAIL = os.getenv('MY_PASSWORD_MAIL')
 MY_HOST_MAIL = ''
 # Application definition
 
@@ -51,6 +56,7 @@ INSTALLED_APPS = [
     'renovation_bathroom.apps.RenovationBathroomConfig',
     'forum.apps.ForumConfig',
     'phonenumber_field',
+    "captcha",
 ]
 
 MIDDLEWARE = [
