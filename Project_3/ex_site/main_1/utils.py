@@ -1,10 +1,12 @@
 import requests
 from .forms import ReviewForm, ProfileUserForm, UserForm, ListOfWorksForm
 from django.contrib.auth.models import User
-from .models import PricingAndSummWorks, SummOfWorks, ListOfWorks, ContactOfOrganization, ProfileUser
+from .models import PricingAndSummWorks, SummOfWorks, ListOfWorks, ContactOfOrganization, Review
 from forum.forms import ThreadForm
 from forum.models import Thread, Category
-
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
+from django.contrib import messages
 
 def send_message(message):  # функция отправки расчёта заказчику
     TOKEN = "6031325871:AAHDA97CVEhhqYgY8yiOTwyPHHaub7Nrmh4"  # @zakaz_cena_bot
@@ -22,7 +24,7 @@ def personal_view(request, pk):  # функция отображения дан�
         prof = request.user.profileuser  # извлекаем данные профиля
         review = ReviewForm()  # форма отправки отзыва об услугах
         category_thread = ThreadForm()  # импорт из приложения forum формы модели Thread
-        category = Category.objects.all() # Category модель категории форума
+        category = Category.objects.all()  # Category модель категории форума
         forum_branch = Thread.objects.filter(author=custom)
         forum_count = forum_branch.count()
         image = prof.image
@@ -145,4 +147,34 @@ def cost_works(request):
     return context
 
 
+def paginate_reviews(request, reviews_all, results):
+    page = request.GET.get('page', 1)
+    # results = 2
+    paginator = Paginator(reviews_all, results, allow_empty_first_page=True)
+    reviews_all = paginator.get_page(page)
+    left_index = int(page) - 2
 
+    if left_index < 1:
+        left_index = 1
+    right_index = int(page) + 3
+    if right_index > paginator.num_pages:
+        right_index = paginator.num_pages + 1
+    custom_range = range(left_index, right_index)
+    return custom_range, reviews_all
+
+
+def search_reviews(request):
+    search_query = ''
+
+    if request.GET.get('search_query'):
+        search_query = request.GET.get('search_query')
+
+    message = Review.objects.filter(Q(name__iregex=search_query) | Q(description__iregex=search_query) |
+                                    Q(rating__contains=search_query) | Q(date__iregex=search_query) |
+                                    Q(owner__first_name__regex=search_query))
+    info = True
+    if not message.exists():
+        message = Review.objects.all()
+        info = messages.info(request, 'по запросу ничего не найдено')
+
+    return message, search_query, info

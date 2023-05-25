@@ -9,14 +9,6 @@
   <button class="btn btn-outline-secondary bg-primary" type="submit" id="button-addon2">Найти</button>
             </div>
     </form>
-<div class="warning">
-{% for message in messages %}
-<div class= "alert alert-{{ message.tags }}" role="alert" style="margin: 0 auto; width: 30%; text-align: center">
-  <strong>{{ message }}</strong>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endfor %}
-</div>
     {% else %}
     <h3 style="padding-top: 100px; width: 50%; margin: 0 auto">Вы можете создать раздел в
         <a href="{% url 'personal_account' user.id %}">личном кабинете</a></h3>
@@ -66,7 +58,8 @@
         {% endif %}
 </div>
     </div>
- <!-- функция для передачи поиска запроса на все элементы списка -->
+
+
 <script>
   let searchForm = document.getElementById('search');
   let pageLink = document.querySelectorAll('.page-link');
@@ -85,7 +78,4 @@
   }
 
 </script>
-
-
-
 {% endblock %}

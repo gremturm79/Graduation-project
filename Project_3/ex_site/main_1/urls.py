@@ -19,7 +19,6 @@ urlpatterns = [
     path('delete_pricing/', views.delete_pricing, name='delete_pricing'),
     # path('send_telegram/', views.send_telegram, name='send_telegram'),
     path('personal_account/<str:pk>/', views.personal_account, name='personal_account'),
-    path('captcha/', include('captcha.urls')),
 
 ]
 

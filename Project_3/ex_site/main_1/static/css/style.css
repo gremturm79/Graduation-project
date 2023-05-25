@@ -1088,9 +1088,17 @@ body:after {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: stretch;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
+    padding-top: 50px;
+
+}
+
+.nav_forum {
+    display: flex;
+    justify-content: center;
+    align-items: center
 }
 
 .img_rating {

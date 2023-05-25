@@ -14,9 +14,6 @@
 
 {% endfor %}
 </div>
-        <div>
-            <small>{{ error }}</small>
-        </div>
 <form action="" method="post" class="bg">
     {% csrf_token %}
     {{ form.as_p }}

@@ -3,6 +3,7 @@ from .models import Thread, Category, Reply
 from django.db.models import Q
 from main_1.models import ContactOfOrganization
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib import messages
 
 
 def paginate_forum(request, message, results):
@@ -53,6 +54,9 @@ def search_forum(request):
                                     Q(author__first_name__iregex=search_query) | Q(
         created_at__iregex=search_query) | Q(category__name__iregex=search_query))
 
-    # cat = Category.objects.all()
+    info = True
+    if not message.exists():
+        message = Thread.objects.all()
+        info = messages.info(request, 'по запросу ничего не найдено')
 
-    return message, search_query
+    return message, search_query, info

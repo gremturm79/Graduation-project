@@ -11,7 +11,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from .forms import ListOfWorksForm, SendMessageForm, ProfileUserForm, ReviewForm
 from django.contrib import messages
-from .utils import send_message, personal_view, cost_works
+from .utils import send_message, personal_view, cost_works, search_reviews, paginate_reviews
 from forum.models import Thread, Category
 from forum.forms import ThreadForm
 
@@ -105,16 +105,17 @@ def calculate(request):
 
 
 def reviews(request):
-    # author = User.objects.filter(first_name='Grems')[0]
-    # review = Review.objects.filter(owner=author)  # находим данные из БД Review по имени автора статьи
-    # напоминание о количестве отзывов
+    reviews_all, search_query, info = search_reviews(request)
+    custom_range, reviews_all = paginate_reviews(request, reviews_all, 3)
     category = Category.objects.all()
-    reviews_all = Review.objects.all()
     contact_org = ContactOfOrganization.objects.all()
     context = {
         'reviews': reviews_all,
         'contact': contact_org,
-        'forum': category
+        'forum': category,
+        'search_query': search_query,
+        'custom_range': custom_range,
+        'info': info
     }
     return render(request, 'main/reviews.html', context)
 
@@ -127,7 +128,8 @@ def contact(request):  # функция отправки сообщения на
         context = {
             'form': form,
             'contact': contact_org,
-            'forum': category
+            'forum': category,
+            'recaptcha_site_key': settings.RECAPTCHA_PUBLIC_KEY
         }
         return render(request, 'main/contact.html', context)
     else:

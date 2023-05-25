@@ -7,14 +7,15 @@ from .utils import content, search_forum, paginate_forum
 
 
 def index(request):
-    message, search_query = search_forum(request)
+    message, search_query, info = search_forum(request)
     custom_range, message = paginate_forum(request, message, 2)
     contact_org = ContactOfOrganization.objects.all()
     context = {
         'custom_range': custom_range,
         'message': message,
         'search_query': search_query,
-        'contact': contact_org
+        'contact': contact_org,
+        'info': info
     }
     return render(request, 'forum/index.html', context)
 
