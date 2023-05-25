@@ -146,6 +146,5 @@ PHONENUMBER_DEFAULT_REGION = 'RU'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-RECAPTCHA_PUBLIC_KEY = '6Lf-_DgmAAAAAGfa2G9PuSWkiHBNcud21guf9uZi'
-RECAPTCHA_PRIVATE_KEY = '6Lf-_DgmAAAAAI38Pl8GOUxnpgOJvvAZ1SyI-ier'
+
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
