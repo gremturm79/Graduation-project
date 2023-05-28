@@ -55,9 +55,28 @@ myModal.addEventListener('shown.bs.modal', () => {
 })
 /* убрать информационное окно */
 
-let info = document.getElementById('info')
-function removeInfo() {
-    info.style.display = 'none'
-}
-setTimeout(removeInfo, 3000)
+$('.add-favourite').on('click', function () {
 
+    let image_id = $(this).data('id');
+
+    $.ajax({
+
+        url: '/add-favourite/',
+
+        type: 'GET',
+
+        data: {
+
+            'image_id': image_id
+
+        },
+
+        success: function (data) {
+
+            alert('Image added to favourites!');
+
+        }
+
+    });
+
+});

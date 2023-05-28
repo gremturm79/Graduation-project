@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from .models import PhotoOfWorks, TypeOfServices, ListOfWorks, ContactOfOrganization, \
-    Review, Company, SummOfWorks, PricingAndSummWorks
+    Review, Company, SummOfWorks, PricingAndSummWorks, ApartmentPrice
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -14,6 +14,8 @@ from django.contrib import messages
 from .utils import send_message, personal_view, cost_works, search_reviews, paginate_reviews
 from forum.models import Thread, Category
 from forum.forms import ThreadForm
+from django.db.models import Q
+from django.http import JsonResponse
 
 
 def index(request):
@@ -66,6 +68,26 @@ def gallery(request):
     return render(request, 'main/gallery.html', context)
 
 
+def add_favourite(request):
+    if request.method == 'GET':
+        image_id = request.GET.get('image_id')
+        image = PhotoOfWorks.objects.get(id=image_id)
+        if image.is_favourite:
+            image.is_favourite = False
+        else:
+            image.is_favourite = True
+        image.save()
+        return JsonResponse({'success': True})
+
+
+def favourite_images(request):
+    images = PhotoOfWorks.objects.filter(is_favourite=True)
+    context = {
+        'images': images
+    }
+    return render(request, 'main/favourite_images.html', context)
+
+
 @login_required(login_url='enter')
 def calculate(request):
     if request.method == 'POST':
@@ -73,14 +95,20 @@ def calculate(request):
         contact_org = ContactOfOrganization.objects.all()
         # form = ContactForm(request.POST)
         form = ContactForm(request.POST, request.FILES)
-        # if form.is_valid():
         name = request.POST['name']
         content = request.POST['content']
         email = request.POST['email']
         files = request.FILES.getlist('file')
-        msg = EmailMessage(name, content, settings.EMAIL_HOST_USER, [email])
+        body = {
+            'name': name,
+            'email': email,
+            'content': content,
+
+        }
+        message = '\n'.join(body.values())
+        msg = EmailMessage(name, message, settings.EMAIL_HOST_USER, [email])
         for f in files:
-            msg.attach(f.name, f.read(), f.content_type)
+            msg.attach(f.name, f.read(), f.content_type)  #
         msg.send()
         context = {
             'form': form,
@@ -129,7 +157,6 @@ def contact(request):  # функция отправки сообщения на
             'form': form,
             'contact': contact_org,
             'forum': category,
-            'recaptcha_site_key': settings.RECAPTCHA_PUBLIC_KEY
         }
         return render(request, 'main/contact.html', context)
     else:
@@ -138,16 +165,16 @@ def contact(request):  # функция отправки сообщения на
         contact_org = ContactOfOrganization.objects.all()
         name = request.POST['name']
         organization = request.POST['organization']
+        email_from = settings.EMAIL_HOST_USER
         email = request.POST['email']
         content = request.POST['content']
-        msg = EmailMessage(name, content, settings.EMAIL_HOST_USER, [email])
-        if form.is_valid():
-            msg.send()
+        msg = EmailMessage(name, content, email, [email_from])  # name,
+        msg.send()
         messages.success(request, 'Сообщение было отправлено')
         context = {
             'form': form,
             'contact': contact_org,
-            'forum': category
+            'forum': category,
         }
         return render(request, 'main/contact.html', context)
 
@@ -155,7 +182,6 @@ def contact(request):  # функция отправки сообщения на
 def enter(request):
     if request.method == 'GET':  # при методе GET возвращаем страницу с формой регистрации
         contact_org = ContactOfOrganization.objects.all()
-        messages.info(request, 'Пройдите регистрацию для доступа к дополнительному функционалу')
         return render(request, 'main/enter.html',
                       {'form': UserCreationForm(), 'contact': contact_org})  # модель Form импорт из
         # django.contrib
@@ -437,3 +463,13 @@ def delete_pricing(request):
             return render(request, 'main/personal_account.html', context)
     else:
         return redirect(request, 'personal_account')
+
+
+def price_list(request):
+    dismantling = ApartmentPrice.objects.filter(Q(title__startswith='Стен') | Q(title__icontains='демонтаж'))
+    putty = ApartmentPrice.objects.filter(title__startswith='Штукатурка')
+    context = {
+        'dismantling': dismantling,
+        'putty': putty
+    }
+    return render(request, 'main/prise_list.html', context)

@@ -1,0 +1,35 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+<div class="table_block">
+<table class="title_table">
+    <thead>
+    <tr style="font-size: 120%">
+        <th>Наименование работ</th>
+        <th>Цена</th>
+        <th>Ед.изм.</th>
+    </tr>
+    </thead>
+          <tr>
+            <th colspan="3" style="background: grey">Демонтаж</th>
+        </tr>
+    {% for field in dismantling %}
+    <tr style="width: 20px;height: 40px">
+        <td>{{ field.title }}</td>
+        <td>{{ field.price }}</td>
+        <td>{{ field.unit }}</td>
+    </tr>
+    {% endfor %}
+              <tr>
+            <th colspan="3" style="background: grey">Штукатурка</th>
+        </tr>
+    {% for field in putty %}
+    <tr style="width: 20px;height: 40px">
+        <td>{{ field.title }}</td>
+        <td>{{ field.price }}</td>
+        <td>{{ field.unit }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endblock %}

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://unpkg.com/@popperjs/core@2">
      <script src="https://use.fontawesome.com/a6f0361695.js"></script>
      <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 </head>
 <body>
 {% block title %}
@@ -53,6 +54,9 @@
             <li class="nav-item">
             <a class="nav-link" href="{% url 'calculate' %}">Заявка на расчёт работ</a>
           </li>
+                <li class="nav-item">
+            <a class="nav-link" href="{% url 'price_list' %}">Прайс лист</a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Меню пользователя
@@ -60,6 +64,7 @@
             <ul class="dropdown-menu dropdown-menu-dark">
               <li><a class="dropdown-item" href="{% url 'personal_account'  user.id %}">Личный кабинет</a></li>
               <li><a class="dropdown-item" href="{% url 'calculate_table' %}">Калькулятор</a></li>
+              <li><a class="dropdown-item" href="{% url 'favourite_images' %}">Фотографии</a></li>
               <li><a class="dropdown-item" href="{% url 'login' %}">Войти</a></li>
               <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
               <li>
@@ -122,19 +127,6 @@
 <script src="{% static 'css/style1.js' %}"></script>
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'css/style.js' %}"></script>
- <script src="https://www.google.com/recaptcha/api.js"></script>
- <script>
-   function onSubmit(token) {
-     document.getElementById("demo-form").submit();
-   }
- </script>
-<script src="https://www.google.com/recaptcha/enterprise.js?render=9"></script>
-<script>
-grecaptcha.enterprise.ready(function() {
-    grecaptcha.enterprise.execute('', {action: 'login'}).then(function(token) {
-       ...
-    });
-});
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 </body>
 </html>

@@ -124,11 +124,10 @@ body {
 
 
 .block_register {
-    margin-top: 100px;
-    margin: 0 auto;
-    margin-bottom: 50px;
-    width: 600px;
-    padding-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 100px;
 
 }
 
@@ -182,6 +181,11 @@ input {
     box-sizing: border-box;
     border-radius: 6px;
     background: #FFF;
+    width: 100%;
+}
+
+.form-group {
+    padding-bottom: 10px;
 }
 
 .authorization form {
@@ -326,7 +330,7 @@ input {
     /* height: 500px; */
     padding: 20px;
     background: #FFF;
-    box-shadow: 20px 20px 50px 10px rgb(102, 230, 123) inset;
+    /* box-shadow: 20px 20px 50px 10px rgb(102, 230, 123) inset; */
 }
 
 .column1_text {
@@ -358,7 +362,7 @@ input {
     justify-content: space-evenly;
     align-items: center;
     flex-wrap: wrap;
-    margin-top: 70px;
+    padding-top: 80px;
 }
 
 .about {
@@ -1265,4 +1269,67 @@ ul.contact_list>li {
 
 li.contact_element>p {
     margin-left: 15px;
+}
+
+/* всплывающее окно calculate.html кнопка выбрать файлы */
+#id_file[data-tooltip] {
+    position: relative;
+    /* Относительное позиционирование */
+}
+
+#id_file[data-tooltip]::after {
+    content: attr(data-tooltip);
+    /* Выводим текст */
+    position: absolute;
+    /* Абсолютное позиционирование */
+    width: fit-content;
+    /* Ширина подсказки */
+    left: 0;
+    top: 0;
+    margin-top: -30px;
+    text-align: center;
+    padding: 0;
+    /* Положение подсказки */
+    background: #3989c9;
+    /* Синий цвет фона */
+    color: #fff;
+    /* Цвет текста */
+    /* padding: 0.5em; */
+    /* Поля вокруг текста */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    /* Параметры тени */
+    pointer-events: none;
+    /* Подсказка */
+    opacity: 0;
+    /* Подсказка невидима */
+    transition: 1s;
+    /* Время появления подсказки */
+}
+
+#id_file[data-tooltip]:hover::after {
+    opacity: 1;
+    /* Показываем подсказку */
+    top: 2em;
+    /* Положение подсказки */
+}
+
+/* price_list.html */
+.table_block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 90px;
+}
+
+.title_table {
+    margin-bottom: 10px;
+    background: beige
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: 1.0rem;
 }

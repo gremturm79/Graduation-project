@@ -13,20 +13,16 @@
 </div>
 {% endfor %}
 </div>
+        <a href="{% url 'index' %}"><img src="{% static 'images/home.ico' %}"
+                                         style="width: 25px; height: 25px; margin-top: -40px"></a>
+
             {% csrf_token %}
-              {{ form.as_p }}
-             <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+            {{ form.as_p }}
             <div class="center">
             <button class="btn_self">Отправить</button>
             </div>
         </form>
     </div>
 </div>
-  <script>
-    grecaptcha.ready(function() {
-      grecaptcha.execute('{{recaptcha_site_key}}', {action: {% url 'contact' %}).then(function(token) {
-        document.getElementById('g-recaptcha-response').value = token;
-      });
-    });
-  </script>
+
 {% endblock %}

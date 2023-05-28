@@ -15,8 +15,11 @@ urlpatterns = [
     path('logout/', views.logout_user, name='logout'),
     path('login/', views.login_user, name='login'),
     path('delete/', views.delete_user, name='delete'),
+    path('add-favourite/', views.add_favourite, name='add_favourite'),
+    path('favourite-images/', views.favourite_images, name='favourite_images'),
     path('calculate_table/', views.calculate_table, name='calculate_table'),
     path('delete_pricing/', views.delete_pricing, name='delete_pricing'),
+    path('price_list/', views.price_list, name='price_list'),
     # path('send_telegram/', views.send_telegram, name='send_telegram'),
     path('personal_account/<str:pk>/', views.personal_account, name='personal_account'),
 

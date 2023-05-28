@@ -24,7 +24,7 @@ load_dotenv(find_dotenv())
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#$gwg@7cd*0or1xcqj)2c*3*vb@od$*y7f9uhf%^jllf^^dy1%'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'renovation_bathroom.apps.RenovationBathroomConfig',
     'forum.apps.ForumConfig',
     'phonenumber_field',
-    'captcha',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -145,6 +145,7 @@ PHONENUMBER_DEFAULT_REGION = 'RU'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
+# RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
 
-
-SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+# SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']

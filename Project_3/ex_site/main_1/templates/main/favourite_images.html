@@ -20,31 +20,4 @@
     </div>
 </div>
 </div>
-<script>
-$('.add-favourite').on('click', function () {
-
-    let image_id = $(this).data('id');
-
-    $.ajax({
-
-        url: '/add-favourite/',
-
-        type: 'GET',
-
-        data: {
-
-            'image_id': image_id
-
-        },
-
-        success: function (data) {
-
-            alert('Image added to favourites!');
-
-        }
-
-    });
-
-});
-</script>
 {% endblock %}

@@ -12,6 +12,7 @@ class PhotoOfWorks(models.Model):  # модель для хранения фот
     image = models.ImageField(upload_to='gallery/')  # в корневой директории создастся папка media в ней создастся
     # папка gallery, в которой будут храниться загруженные админом фотографии
     time = models.DateTimeField(auto_now_add=True)
+    is_favourite = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.title}'
@@ -140,3 +141,13 @@ class PricingAndSummWorks(models.Model):
 
     def __str__(self):
         return f'{self.owner}'
+
+
+class ApartmentPrice(models.Model):
+    title = models.CharField(max_length=100, blank=True, null=True)
+    price = models.IntegerField(blank=True, null=True)
+    unit = models.CharField(max_length=20, blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title

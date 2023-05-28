@@ -14,13 +14,29 @@
 
 {% endfor %}
 </div>
-<form action="" method="post" class="bg">
+<form action="" method="post" class="bg" style="width: 400px">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn_self">Зарегистрироваться</button>
-    <div class="authorization">
-            <h2><a href="{% url 'login' %}">Авторизация</a></h2>
-        </div>
+    {% load widget_tweaks %}
+<div class="form-group">
+{% render_field form.username  type="text" class="form-control" id="exampleInputUsername" placeholder="Username" %}
+
+</div>
+
+<div class="form-group">
+{% render_field form.password1  type="password" class="form-control" id="exampleInputPassword" placeholder="Password" %}
+
+</div>
+<div class="form-group">
+{% render_field form.password2  type="password" class="form-control" id="exampleInputPassword1" placeholder="Confirm Password" %}
+
+
+
+</div>
+     <div class="form-group">
+        <button type="submit" class="btn btn-info">Регистрация</button>
+    </div>
+    <button type="button" class="btn btn-success"><a href="{% url 'login' %}"
+                                                     style="text-decoration: none; color: white">Авторизация</a></button>
 </form>
 
     </div>

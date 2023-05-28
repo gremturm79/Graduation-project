@@ -12,15 +12,23 @@
 
 {% endfor %}
 
-<form method="post" class="bg authorization">
+<form method="post" class="bg authorization" style="width: 400px">
     {% csrf_token %}
-    {{ form.as_p }}
-    <div class="center">
-        <button class="btn_self">Авторизация</button>
+{% load widget_tweaks %}
+<div class="form-group">
+  {% render_field form.username type="text" class="form-control" id="exampleInputUsername" placeholder="Username" %}
+</div>
+    <div class="form-group">
+  {% render_field form.password type="password" class="form-control" id="exampleInputPassword" placeholder="Password" %}
+</div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-info">Авторизация</button>
     </div>
-       <div class="center">
-    <a href="{% url 'enter' %}">Регистрация</a>
-    </div>
+    <button type="button" class="btn btn-success"><a href="{% url 'enter' %}" style="text-decoration: none; color: white">Регистрация</a></button>
+
+
+
+
 </form>
 </div>
     </div>

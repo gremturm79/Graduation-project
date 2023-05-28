@@ -2,8 +2,6 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import CalculateTableEx, ListOfWorks, ProfileUser, Review
 from django.forms import ModelForm
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV2Checkbox
 
 
 class ContactForm(forms.Form):
@@ -11,11 +9,14 @@ class ContactForm(forms.Form):
     email = forms.EmailField(max_length=250, label='Почтовый ящик:')
     content = forms.CharField(widget=forms.Textarea, label='Описание:')  # help_text='текст рядом с полем',
     # strip=True удаление начальных и конечных пробелов
-    file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), label='Загрузка файла:')
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+    file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True,
+                                                                  'data-tooltip': 'при отправке нескольких файлов необходимо их выделить'}),
+                           label='Выбрать файлы:')
+
+
     # square = forms.DecimalField(max_value=1000, min_value=2, label='Укажите площадь помещения:')
     # CHOICES = (
-    # ('Paris', 'France'),
+    # ('Paris', 'France'),6LfACDkmAAAAAPlBl1gUHmP4xRrUzDKp7JLw1Y7n
     # ('Moscow', 'Russia'),
     # )
     # position = forms.ChoiceField(choices=CHOICES) choices именованный параметр для тега select в html
@@ -48,7 +49,7 @@ class SendMessageForm(forms.Form):
     organization = forms.CharField(max_length=250, label='Название организации:')
     email = forms.EmailField(max_length=250, label='Почтовый ящик:')
     content = forms.CharField(widget=forms.Textarea(attrs=({'cols': 50, 'rows': 6})), label='Текст сообщения:')
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
+    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
     # widget=forms.Textarea,
 
 
