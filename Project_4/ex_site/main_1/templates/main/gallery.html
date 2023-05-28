@@ -1,0 +1,25 @@
+{% extends 'main/index.html' %}
+{% block title_name %}Галерея{% endblock %}
+{% block content %}
+<div class="gallery">
+  <div class="gallery_wrap">
+	<div class="top">
+    	<ul>
+            {% for image in images %}
+        	<li>
+
+                <a href="#img_{{ image.id }}">
+
+                    <img src="{{ image.image.url }}"></a>
+            </li>
+
+            {% endfor %}
+        </ul>
+            {% for image in images %}
+        <a href="#_{{ image.id }}" class="lightbox trans" id="img_{{ image.id }}"> <img src="{{ image.image.url }}"></a>
+
+            {% endfor %}
+    </div>
+</div>
+</div>
+{% endblock %}

@@ -11,22 +11,15 @@ body {
     padding: 0;
     background-size: 100%100%;
     background-repeat: no-repeat;
-    background-image: url("../images/repair.jpg");
+    background-image: url("../images/repair.png");
     font-family: 'PT Sans', Arial, Verdana;
     background-color: #a3e293;
 }
 
-/* .title {
-    width: 100%;
-    height: 80px;
-    background: #7bd76b;
-    margin: 0;
-    font-size: 120%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.title {
+    padding-top: 50px;
 
-} */
+}
 
 
 .prime_main {
@@ -52,8 +45,9 @@ body {
 }
 
 .wrap {
-    height: 100%;
+    margin-top: 50px;
     text-align: center;
+    margin-bottom: 80px;
 }
 
 .wrap ul {
@@ -79,16 +73,34 @@ body {
 
 .footer {
     width: 100%;
-    height: 120px;
-    background: #98a7de;
-    /* margin-bottom: 20px; */
+    height: fit-content;
+    background: #e3f2fd;
+    margin-top: 50px;
+    color: #000;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer img {
+    height: 25px;
+    width: 25px;
+}
+
+.footer>ul {
+    padding-top: 15px;
 }
 
 .footer_wrap {
     height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-right: 50px;
 }
 
-.footer_wrap ul {
+/* .footer_wrap ul {
     width: 100%;
     height: 100%;
     list-style: none;
@@ -98,19 +110,24 @@ body {
     justify-content: space-evenly;
     align-content: center;
     margin-top: 0;
-}
+} */
 
 .about {
     width: 100%;
+    margin-top: 100px;
+    text-align: center;
+}
 
+.about h1 {
+    padding-top: 50px;
 }
 
 
 .block_register {
-    margin: 0 auto;
-    margin-bottom: 50px;
-    width: 600px;
-    /* height: 600px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 100px;
 
 }
 
@@ -163,6 +180,12 @@ input {
     padding: 40px;
     box-sizing: border-box;
     border-radius: 6px;
+    background: #FFF;
+    width: 100%;
+}
+
+.form-group {
+    padding-bottom: 10px;
 }
 
 .authorization form {
@@ -180,6 +203,7 @@ input {
     overflow: hidden;
     position: relative;
     text-align: center;
+    margin-top: 50px;
 }
 
 .trans {
@@ -274,6 +298,7 @@ input {
 }
 
 .lightbox:target {
+    padding-top: 50px;
     outline: none;
     top: 0;
     opacity: 1;
@@ -302,10 +327,10 @@ input {
     justify-content: center;
     align-items: center;
     width: 400px;
-    height: 500px;
+    /* height: 500px; */
     padding: 20px;
     background: #FFF;
-    box-shadow: 20px 20px 50px 10px rgb(102, 230, 123) inset;
+    /* box-shadow: 20px 20px 50px 10px rgb(102, 230, 123) inset; */
 }
 
 .column1_text {
@@ -388,11 +413,12 @@ input {
 
 form.form_calculate {
     width: 100%;
-    height: 700px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-content: center;
+    margin-top: 50px;
+
 }
 
 .wrap_field {
@@ -408,11 +434,11 @@ form.form_calculate {
     display: flex;
     justify-content: center;
     align-content: center;
+    margin-top: 50px;
 }
 
 .wrap_field_form {
     width: 100%;
-    height: 50%;
     background: #e5e5e5;
     box-shadow: 20px 20px 50px 10px rgb(102, 230, 123) inset;
     padding: 20px;
@@ -471,13 +497,13 @@ input.btn_calculate {
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+    padding-top: 100px;
 }
 
 .contact_block {
-    width: 100%;
-    height: 100%;
-    margin-top: 100px;
-    margin-bottom: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
 }
 
@@ -485,6 +511,7 @@ input.btn_calculate {
 ul.contact_list>li {
     padding-top: 5px;
     padding-bottom: 5px;
+    list-style: none;
 }
 
 /* Burger menu */
@@ -754,26 +781,31 @@ body:after {
 /* Personal account */
 .personal_account {
     width: 100%;
-    height: 700px;
+    height: fit-content;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: flex-start;
     margin-top: 50px;
+    margin-bottom: 100px;
+    padding-top: 80px;
+    padding-bottom: 70px;
     margin-left: 50px;
 
 }
 
 .main {
-    background-color: #b9dde7;
+    background-color: #FFF;
     border: solid 2px #7bd76b;
     width: 400px;
-    height: 250px;
+    height: fit-content;
     border-radius: 8px;
     box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.8);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: flex-start;
 }
 
 .logo {
@@ -786,8 +818,14 @@ body:after {
 
 .name,
 .contact {
+    padding-left: 15px;
     margin-right: 10px;
     margin-top: 10px;
+}
+
+.contact ul {
+    list-style: none;
+    padding-left: 15px
 }
 
 .name li {
@@ -820,8 +858,9 @@ body:after {
     /*   color: black; */
 }
 
+
 .container {
-    /*   border: solid 1px red; */
+
     position: relative;
     width: 140px;
     height: 60px;
@@ -869,7 +908,7 @@ body:after {
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
-    margin-left: 25px;
+    margin-right: 30px;
     margin-top: 10px;
 }
 
@@ -1009,10 +1048,12 @@ body:after {
 }
 
 .warning {
-    display: flex;
+    /*     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: center;  */
     margin: 0 auto;
+    margin-right: 0;
+
 }
 
 /* edit user */
@@ -1051,9 +1092,17 @@ body:after {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: stretch;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
+    padding-top: 50px;
+
+}
+
+.nav_forum {
+    display: flex;
+    justify-content: center;
+    align-items: center
 }
 
 .img_rating {
@@ -1096,7 +1145,7 @@ body:after {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    background: cadetblue;
+    background: #fff;
     padding: 15px;
     /*  height: 600px; */
 
@@ -1123,4 +1172,164 @@ body:after {
     width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+/* отправить номер телефона */
+/* app forum */
+.forum_block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+
+.forum_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 50px;
+}
+
+.block_text {
+    margin-top: 50px;
+    width: fit-content;
+    background: white;
+    margin-bottom: 120px;
+    width: 800px;
+}
+
+.dialog_forum {
+    padding-top: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
+}
+
+.bt_forum {
+    padding-top: 50px;
+}
+
+.simple_reply {
+    border: 1px solid green;
+    overflow: auto;
+    height: 400px;
+    padding: 10px 10px;
+}
+
+.all_thread {
+    background: burlywood;
+    width: 100%;
+
+    text-align: center;
+}
+
+.all_reply {
+    padding: 10px 10px
+}
+
+.forum_items {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.forum_item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    width: 300px;
+    height: 300px;
+    background: #fff;
+    margin: 20px;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 15px;
+
+}
+
+/* footer */
+.footer>ul {
+    margin-bottom: 0;
+}
+
+.contact_element {
+    display: flex;
+}
+
+ul.contact_list>li {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+li.contact_element>p {
+    margin-left: 15px;
+}
+
+/* всплывающее окно calculate.html кнопка выбрать файлы */
+#id_file[data-tooltip] {
+    position: relative;
+    /* Относительное позиционирование */
+}
+
+#id_file[data-tooltip]::after {
+    content: attr(data-tooltip);
+    /* Выводим текст */
+    position: absolute;
+    /* Абсолютное позиционирование */
+    width: fit-content;
+    /* Ширина подсказки */
+    left: 0;
+    top: 0;
+    margin-top: -30px;
+    text-align: center;
+    padding: 0;
+    /* Положение подсказки */
+    background: #3989c9;
+    /* Синий цвет фона */
+    color: #fff;
+    /* Цвет текста */
+    /* padding: 0.5em; */
+    /* Поля вокруг текста */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    /* Параметры тени */
+    pointer-events: none;
+    /* Подсказка */
+    opacity: 0;
+    /* Подсказка невидима */
+    transition: 1s;
+    /* Время появления подсказки */
+}
+
+#id_file[data-tooltip]:hover::after {
+    opacity: 1;
+    /* Показываем подсказку */
+    top: 2em;
+    /* Положение подсказки */
+}
+
+/* price_list.html */
+.table_block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 90px;
+}
+
+.title_table {
+    margin-bottom: 10px;
+    background: beige
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid rgb(200, 200, 200);
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: 1.0rem;
 }

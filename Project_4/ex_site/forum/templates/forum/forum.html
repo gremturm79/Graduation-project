@@ -1,0 +1,50 @@
+{% extends 'main/index.html' %}
+{% block content %}
+<div class="dialog_forum">
+
+
+<div class="block_text">
+    <div class="all_thread">
+        <h4>{{ message.author.first_name }}</h4>
+        <h4>{{ message.title }}</h4>
+        <h4>{{ message.content }}</h4>
+        <h4>{{ message.created_at }}</h4>
+    </div>
+    <div class="all_reply">
+        <div class="simple_reply" style="overflow: auto; height:400px;">
+            {% for field in response %}
+        <h4>{{ field.author.first_name }}</h4>
+        <h4 style="color: blue">{{ field.content }}</h4>
+        <h4>{{ field.created_at }}</h4>
+            {% endfor %}
+        </div>
+    </div>
+    <button type="button" class="btn btn-success btn-lg" style="float: right" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+            Ответ</button>
+</div>
+
+<!-- Ответить -->
+<div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel1">Ответ</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="{% url 'forum_discuss' message.id %}" method="post">
+              {% csrf_token %}
+              {{ reply.as_p }}
+              <button type="submit" class="btn btn-primary">Отправить</button>
+              <input type="hidden"  name="reply" value="{{user.id}}" />
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
+{% endblock %}

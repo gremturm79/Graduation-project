@@ -1,0 +1,187 @@
+{% extends 'main/index.html' %}
+{% block content %}
+{% load static %}
+
+<div class="personal_account">
+	<div class="main">
+<div class="warning" >
+{% for message in messages %}
+<div class= "alert alert-{{ message.tags }}" role="alert" style="position: absolute" id="info">
+  <strong>{{ message }}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+</div>
+  <div class="name_card">
+      <img src="{{ image.url }} " style="width: 75px; height: 75px" alt="">
+      <div>{{ user.first_name }}</div>
+      <div>{{ user.last_name }}</div>
+  </div>
+  <div class="contact">
+	  <ul>
+          <li>{{ phone }}</li>
+    <li>{{ user.email }}</li>
+	  </ul>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Редактировать
+</button>
+
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModaldeleteUser">
+  Удалить
+</button>
+      <hr>
+      {% if user.review_set.all.count == 1 %}
+      <h6>Спасибо за отзыв !</h6>
+      {% else %}
+      <button type="button" class="btn btn-success" data-bs-toggle="modal"
+              data-bs-target="#exampleModalreview"><a href="{% url 'write-review' %}"
+                          style="text-decoration: none; color: white">Оставить отзыв</a></button>
+    {% endif %}
+      <hr>
+
+        {% if summ_count == 0 %}
+      <h6>У Вас нет расчётов</h6>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+              data-bs-target="#exampleModalreview"><a href="{% url 'calculate_table' %}"
+                          style="text-decoration: none; color: white">перейти к расчёту</a></button>
+      <hr>
+      {% else %}
+        <div class="personal_summa">
+            <form action="{% url 'personal_account' user.id %}" method="post">
+                {% csrf_token %}
+            <h4>Сумма стоимости работ:</h4>
+                {% for field in summa %}
+            <h5>{{ field.summ }} рублей</h5>
+            <h5>от {{ field.date }}</h5>
+                {% endfor %}
+                <button type="submit" class="btn btn-danger btn-lg" data-bs-toggle="modal"
+                        data-bs-target="#exampleModalDelete">
+                    Удалить</button>
+                <input type="hidden"  name="delete_pricing" value="{{user.id}}" />
+            <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Отправить расчёт
+</button>
+            </form>
+
+            <hr>
+        {% endif %}
+      <h6>Ваша тема на форуме</h6>
+            {% if branch %}
+            {% for field in branch %}
+            <h6><a href="{% url 'forum_discuss' field.id %}">{{ field.title }}</a></h6>
+            {% endfor %}
+            {% else %}
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                  data-bs-target="#exampleModalforum">Создать раздел для обсуждения
+          </button>
+            {% endif %}
+            <hr>
+        </div>
+
+</div>
+
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+
+
+<!-- Отправить сообщение -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Отправка сообщения</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+          {{ message_view.estimate|linebreaks }}
+
+      </div>
+      <div class="modal-footer">
+
+                      <form action="{% url 'personal_account' user.id %}" method="post">
+                {% csrf_token %}
+
+                <input type="hidden"  name="form_send" value="{{user.id}}" />
+          <button type="submit" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Отправить</button>
+
+            </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Редактирование -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Редактирование профиля</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="" method="post"  enctype="multipart/form-data">
+         {% csrf_token %}
+              {{ profile.as_p }}
+        {% for field in form %}
+        {{ field.label }}
+        {{ field }}
+        {% endfor %}
+              <button type="submit" class="btn btn-primary">Редактировать</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+           </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Удаление -->
+<div class="modal fade" id="exampleModaldeleteUser" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabeldeleteUser">Вы действительно хотите удалить аккаунт ?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+              <form action="{% url 'delete' %}" method="post">
+          {% csrf_token %}
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <button type="submit" class="btn btn-primary">Удалить</button>
+                        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Создать ветку на форуме -->
+<div class="modal fade" id="exampleModalforum" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabelforum">Написать</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form action="{% url 'personal_account' user.id %}" method="post">
+              {% csrf_token %}
+              {{ category.as_p }}
+              <button type="submit" class="btn btn-primary">Создать</button>
+              <input type="hidden"  name="forum" value="{{user.id}}" />
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'css/style1.js' %}"></script>
+{% endblock %}
+
