@@ -81,6 +81,28 @@
 </div>
 
   </div>
+      <div class="gallery_wrap" style="text-align: center; color: red">
+          <h2>Избранные фотографии</h2>
+	<div class="top">
+    	<ul>
+            {% for image in images_favorite %}
+        	<li style="display: flex; display: {{ display }}" >
+                <a href="#img_{{ image.id }}">
+                    <img src="{{ image.image.image.url }}"></a>
+                 <div class="like-image" title="Удалить">
+                <button class="button button-like remove-favourite" data-id="{{ image.id }}">
+                    <i class='fa fa-remove' style='color: red'></i>
+                  </button>
+                </div>
+            </li>
+
+            {% endfor %}
+        </ul>
+            {% for image in images_favorite %}
+        <a href="#_{{ image.id }}" class="lightbox trans" id="img_{{ image.id }}"> <img src="{{ image.image.url }}"></a>
+            {% endfor %}
+    </div>
+</div>
 </div>
 
 <!-- Button trigger modal -->
@@ -183,5 +205,44 @@
   </div>
 </div>
 <script src="{% static 'css/style1.js' %}"></script>
+<script>
+$('.remove-favourite').on('click', function () {
+
+    let image_id = $(this).data('id');
+
+
+    $.ajax({
+
+        url: '/remove-favourite/',
+
+        type: 'GET',
+
+        data: {
+
+            'image_id': image_id,
+
+
+        },
+
+        success: function (data) {
+
+            alert('Image remove!');
+
+        }
+
+    });
+
+});
+$(document).foundation();
+
+$(function() {
+  $('.button-like')
+    .bind('click', function(event) {
+      $(".button-like").toggleClass("liked");
+    })
+});
+
+
+</script>
 {% endblock %}
 

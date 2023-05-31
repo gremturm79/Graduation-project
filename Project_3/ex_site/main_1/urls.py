@@ -17,6 +17,7 @@ urlpatterns = [
     path('delete/', views.delete_user, name='delete'),
     path('add-favourite/', views.add_favourite, name='add_favourite'),
     path('favourite-images/', views.favourite_images, name='favourite_images'),
+    path('remove-favourite/', views.remove_favourite, name='remove_favourite'),
     path('calculate_table/', views.calculate_table, name='calculate_table'),
     path('delete_pricing/', views.delete_pricing, name='delete_pricing'),
     path('price_list/', views.price_list, name='price_list'),

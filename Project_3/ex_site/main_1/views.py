@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from .models import PhotoOfWorks, TypeOfServices, ListOfWorks, ContactOfOrganization, \
-    Review, Company, SummOfWorks, PricingAndSummWorks, ApartmentPrice
+    Review, Company, SummOfWorks, PricingAndSummWorks, ApartmentPrice, ImageFavorite
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -57,35 +57,70 @@ def main(request):
 
 
 def gallery(request):
+    if request.user.is_authenticated:
+        custom = request.user
+        category = Category.objects.all()
+        photo_list = PhotoOfWorks.objects.all()
+        contact_org = ContactOfOrganization.objects.all()
+        favourite = ImageFavorite.objects.filter(owner=custom)
+        display = 'block'  # None
+        context = {
+            'images': photo_list,
+            'contact': contact_org,
+            'forum': category,
+            'display': display
+        }
+        return render(request, 'main/gallery.html', context)
+    # custom = request.user
     category = Category.objects.all()
     photo_list = PhotoOfWorks.objects.all()
     contact_org = ContactOfOrganization.objects.all()
+    # favourite = ImageFavorite.objects.filter(owner=custom)
+    display = None
     context = {
         'images': photo_list,
         'contact': contact_org,
-        'forum': category
+        'forum': category,
+        'display': display
     }
     return render(request, 'main/gallery.html', context)
 
 
 def add_favourite(request):
     if request.method == 'GET':
-        image_id = request.GET.get('image_id')
-        image = PhotoOfWorks.objects.get(id=image_id)
-        if image.is_favourite:
-            image.is_favourite = False
-        else:
-            image.is_favourite = True
+        custom = User.objects.get(id=request.user.id)  # получаем id пользователя
+        image_id_page = request.GET.get('image_id')  # получаем id объекта
+        image = PhotoOfWorks.objects.get(id=image_id_page)
+        if custom.imagefavorite_set.filter(image=image_id_page).exists():
+            return JsonResponse({'success': False})
+        image_favorite = ImageFavorite.objects.create(owner=custom, image=image, knot=True)
+        image_favorite.save()
+        image.is_favourite = True
         image.save()
         return JsonResponse({'success': True})
 
 
 def favourite_images(request):
-    images = PhotoOfWorks.objects.filter(is_favourite=True)
+    custom = request.user
+    images = ImageFavorite.objects.filter(owner=custom)
     context = {
         'images': images
     }
     return render(request, 'main/favourite_images.html', context)
+
+
+def remove_favourite(request):
+    # custom = User.objects.get(id=request.user.id)  получаем id пользователя
+    image_id_page = request.GET.get('image_id')
+    # image = PhotoOfWorks.objects.get(id=image_id_page)   получаем id объекта фотографий
+    image_favorite = ImageFavorite.objects.get(id=image_id_page)
+    image_favorite_id = image_favorite.image
+    image = image_favorite.image
+    image.is_favourite = False
+    image.save()
+    image_favorite.delete()
+    display = None
+    return JsonResponse({'success': True, 'display': display})
 
 
 @login_required(login_url='enter')
@@ -467,9 +502,14 @@ def delete_pricing(request):
 
 def price_list(request):
     dismantling = ApartmentPrice.objects.filter(Q(title__startswith='Стен') | Q(title__icontains='демонтаж'))
-    putty = ApartmentPrice.objects.filter(title__startswith='Штукатурка')
+    plaster = ApartmentPrice.objects.filter(title__startswith='Штукатурка')
+    painting = ApartmentPrice.objects.filter(title__startswith='Покраска')
+    putty = ApartmentPrice.objects.filter(title__startswith='Шпатлевка')
+    print(putty)
     context = {
         'dismantling': dismantling,
+        'plaster': plaster,
+        'painting': painting,
         'putty': putty
     }
     return render(request, 'main/prise_list.html', context)

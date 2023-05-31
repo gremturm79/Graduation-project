@@ -13,6 +13,7 @@ class PhotoOfWorks(models.Model):  # модель для хранения фот
     # папка gallery, в которой будут храниться загруженные админом фотографии
     time = models.DateTimeField(auto_now_add=True)
     is_favourite = models.BooleanField(default=False)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return f'{self.title}'
@@ -151,3 +152,12 @@ class ApartmentPrice(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ImageFavorite(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ForeignKey(PhotoOfWorks, on_delete=models.CASCADE, blank=True, null=True)
+    knot = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.owner}'

@@ -1,12 +1,13 @@
 import requests
 from .forms import ReviewForm, ProfileUserForm, UserForm, ListOfWorksForm
 from django.contrib.auth.models import User
-from .models import PricingAndSummWorks, SummOfWorks, ListOfWorks, ContactOfOrganization, Review
+from .models import PricingAndSummWorks, SummOfWorks, ListOfWorks, ContactOfOrganization, Review, ImageFavorite
 from forum.forms import ThreadForm
 from forum.models import Thread, Category
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
 from django.contrib import messages
+
 
 def send_message(message):  # функция отправки расчёта заказчику
     TOKEN = "6031325871:AAHDA97CVEhhqYgY8yiOTwyPHHaub7Nrmh4"  # @zakaz_cena_bot
@@ -27,9 +28,11 @@ def personal_view(request, pk):  # функция отображения дан�
         category = Category.objects.all()  # Category модель категории форума
         forum_branch = Thread.objects.filter(author=custom)
         forum_count = forum_branch.count()
+        display = 'block'  # избранные фотографии
         image = prof.image
         phone = prof.phone_number
         contact_org = ContactOfOrganization.objects.all()
+        images_favorite = ImageFavorite.objects.filter(owner=custom)
         form_profile = ProfileUserForm(instance=prof)  # поле для изменения данных Бд Profile
         message_view = custom.pricingandsummworks_set.get()
         summ_personal = custom.summofworks_set.all()
@@ -51,7 +54,9 @@ def personal_view(request, pk):  # функция отображения дан�
             'category': category_thread,
             'forum': category,
             'bind': binding,
-            'branch': forum_branch
+            'branch': forum_branch,
+            'images_favorite': images_favorite,
+            'display': display
         }
         return context
     else:
@@ -61,7 +66,9 @@ def personal_view(request, pk):  # функция отображения дан�
         review = ReviewForm()  # форма отправки отзыва об услугах
         category_thread = ThreadForm()  # импорт из приложения forum формы модели Thread
         forum_branch = Thread.objects.filter(author=custom)
+        images_favorite = ImageFavorite.objects.filter(owner=custom)
         forum_count = forum_branch.count()
+        display = 'block'  # избранные фотографии
         phone = prof.phone_number
         image = prof.image
         form_profile = ProfileUserForm(instance=prof)  # поле для изменения данных
@@ -83,7 +90,9 @@ def personal_view(request, pk):  # функция отображения дан�
             'contact': contact_org,
             'category': category_thread,
             'bind': binding,
-            'branch': forum_branch
+            'branch': forum_branch,
+            'images_favorite': images_favorite,
+            'display': display
         }
         return context
 

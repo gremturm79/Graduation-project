@@ -8,7 +8,7 @@
             {% for image in images %}
         	<li>
                 <a href="#img_{{ image.id }}">
-                    <img src="{{ image.image.url }}"></a>
+                    <img src="{{ image.image.image.url }}"></a>
                 <button class="add-favourite" data-id="{{ image.id }}">Add to Favourites</button>
             </li>
 
@@ -20,4 +20,14 @@
     </div>
 </div>
 </div>
+<script>
+    $(document).foundation();
+
+$(function() {
+  $('.button-like')
+    .bind('click', function(event) {
+      $(".button-like").toggleClass("liked");
+    })
+});
+</script>
 {% endblock %}

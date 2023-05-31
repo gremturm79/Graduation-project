@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import PhotoOfWorks, TypeOfServices, CalculateTableEx, ListOfWorks,\
-    ContactOfOrganization,ProfileUser, Review, Company, SummOfWorks, PricingAndSummWorks, ApartmentPrice
+    ContactOfOrganization,ProfileUser, Review, Company, SummOfWorks, PricingAndSummWorks, ApartmentPrice, \
+    ImageFavorite
 
 
 admin.site.register(PhotoOfWorks)
@@ -14,3 +15,6 @@ admin.site.register(Company)
 admin.site.register(SummOfWorks)
 admin.site.register(PricingAndSummWorks)
 admin.site.register(ApartmentPrice)
+admin.site.register(ImageFavorite)
+
+

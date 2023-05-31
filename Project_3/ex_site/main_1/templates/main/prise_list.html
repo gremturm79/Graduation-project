@@ -23,6 +23,26 @@
               <tr>
             <th colspan="3" style="background: grey">Штукатурка</th>
         </tr>
+    {% for field in plaster %}
+    <tr style="width: 20px;height: 40px">
+        <td>{{ field.title }}</td>
+        <td>{{ field.price }}</td>
+        <td>{{ field.unit }}</td>
+    </tr>
+    {% endfor %}
+                 <tr>
+            <th colspan="3" style="background: grey">Покраска</th>
+        </tr>
+    {% for field in painting %}
+    <tr style="width: 20px;height: 40px">
+        <td>{{ field.title }}</td>
+        <td>{{ field.price }}</td>
+        <td>{{ field.unit }}</td>
+    </tr>
+    {% endfor %}
+                    <tr>
+            <th colspan="3" style="background: grey">Шпатлёвка</th>
+        </tr>
     {% for field in putty %}
     <tr style="width: 20px;height: 40px">
         <td>{{ field.title }}</td>

@@ -2,14 +2,36 @@
 {% block title_name %}Галерея{% endblock %}
 {% block content %}
 <div class="gallery">
+    <div class="warning" >
+{% for message in messages %}
+<div class= "alert alert-{{ message.tags }}" role="alert" style="position: absolute" id="info">
+  <strong>{{ message }}</strong>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+</div>
+    {% if data %}
+    <h1>{{ send }}</h1>
+    {% endif %}
   <div class="gallery_wrap">
 	<div class="top">
     	<ul>
             {% for image in images %}
-        	<li>
+        	<li style="display: flex">
                 <a href="#img_{{ image.id }}">
-                    <img src="{{ image.image.url }}"></a>
-                <button class="add-favourite" data-id="{{ image.id }}">Add to Favourites</button>
+                    <img src="{{ image.image.url }}">
+                </a>
+                <!-- <button class="add-favourite" data-id="{{ image.id }}">Add to Favourites</button> -->
+               <!--  {% if image.is_favourite == False %} -->
+                <div class="like-image" style="display: {{ display }}">
+                <button class="button button-like add-favourite" data-id="{{ image.id }}">
+                    <i class="fa fa-heart"></i>
+                    <!-- <span>Like</span> -->
+                  </button>
+                </div>
+<!--                 {% else %}
+                <div class="like_add"></div>
+                {% endif %} -->
             </li>
 
             {% endfor %}
@@ -46,5 +68,15 @@ $('.add-favourite').on('click', function () {
     });
 
 });
+$(document).foundation();
+
+$(function() {
+  $('.button-like')
+    .bind('click', function(event) {
+      $(".button-like").toggleClass("liked");
+    })
+});
+
+
 </script>
 {% endblock %}
