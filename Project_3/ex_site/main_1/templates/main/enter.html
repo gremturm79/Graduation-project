@@ -18,8 +18,12 @@
     {% csrf_token %}
     {% load widget_tweaks %}
 <div class="form-group">
-{% render_field form.username  type="text" class="form-control" id="exampleInputUsername" placeholder="Username" %}
+{% render_field form.username  type="text" class="form-control" id="exampleInputUsername" placeholder="Username"  hx-post='/check-username/' hx-trigger='keyup' hx-target='#username-error' hx-swap='outerhtml' %}
 
+
+
+
+<div id="username-error"></div>
 </div>
 
 <div class="form-group">

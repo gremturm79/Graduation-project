@@ -84,7 +84,7 @@
             <div class="our_works_wrapper_title">
                 <h1>Ремонт квартиры</h1>
                 {% for field in works %}
-                <p>{{ field.binding.description|slice:'1000' }}</p>
+                <p>{{ field.binding.description|linebreaks }}</p>
                 {% endfor %}
             </div>
 

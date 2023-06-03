@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, HttpResponse
 from .models import PhotoOfWorks, TypeOfServices, ListOfWorks, ContactOfOrganization, \
     Review, Company, SummOfWorks, PricingAndSummWorks, ApartmentPrice, ImageFavorite
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -16,6 +16,9 @@ from forum.models import Thread, Category
 from forum.forms import ThreadForm
 from django.db.models import Q
 from django.http import JsonResponse
+from django.contrib.auth import get_user_model
+from django.core.serializers import serialize
+import json
 
 
 def index(request):
@@ -90,6 +93,8 @@ def add_favourite(request):
     if request.method == 'GET':
         custom = User.objects.get(id=request.user.id)  # получаем id пользователя
         image_id_page = request.GET.get('image_id')  # получаем id объекта
+        display = '.close-block' + image_id_page
+        print(display)
         image = PhotoOfWorks.objects.get(id=image_id_page)
         if custom.imagefavorite_set.filter(image=image_id_page).exists():
             return JsonResponse({'success': False})
@@ -97,7 +102,7 @@ def add_favourite(request):
         image_favorite.save()
         image.is_favourite = True
         image.save()
-        return JsonResponse({'success': True})
+        return JsonResponse({'success': True, 'display': display})
 
 
 def favourite_images(request):
@@ -110,8 +115,12 @@ def favourite_images(request):
 
 
 def remove_favourite(request):
+    custom = request.user
     # custom = User.objects.get(id=request.user.id)  получаем id пользователя
     image_id_page = request.GET.get('image_id')
+    # display = request.GET.get('display')
+    display = '.close-block' + image_id_page
+    # print(display)
     # image = PhotoOfWorks.objects.get(id=image_id_page)   получаем id объекта фотографий
     image_favorite = ImageFavorite.objects.get(id=image_id_page)
     image_favorite_id = image_favorite.image
@@ -119,8 +128,12 @@ def remove_favourite(request):
     image.is_favourite = False
     image.save()
     image_favorite.delete()
-    display = None
-    return JsonResponse({'success': True, 'display': display})
+    # images_favorite = ImageFavorite.objects.filter(owner=custom)
+    # print(images_favorite)
+    # images_favorite = serialize("json", images_favorite)
+    # images_favorite = json.loads(images_favorite)
+    # display = None
+    return JsonResponse({'success': True, 'display': display})  # images_favorite, safe=False, status=200
 
 
 @login_required(login_url='enter')
@@ -505,7 +518,6 @@ def price_list(request):
     plaster = ApartmentPrice.objects.filter(title__startswith='Штукатурка')
     painting = ApartmentPrice.objects.filter(title__startswith='Покраска')
     putty = ApartmentPrice.objects.filter(title__startswith='Шпатлевка')
-    print(putty)
     context = {
         'dismantling': dismantling,
         'plaster': plaster,
@@ -513,3 +525,23 @@ def price_list(request):
         'putty': putty
     }
     return render(request, 'main/prise_list.html', context)
+
+
+def check_username(request):
+    username = request.POST.get('username')
+    if get_user_model().objects.filter(username=username).exists():
+        return HttpResponse('<div id="username-error" class="error_name">Имя не доступно</div>')
+    else:
+        return HttpResponse('<div id="username-error" class="success_name">Имя доступно</div>')
+
+
+def found_price(request):
+    search = request.GET.get('search')
+    if ApartmentPrice.objects.filter(Q(title__startswith=search)).exists():
+        found = ApartmentPrice.objects.filter(Q(title__icontains=f'{search}'))[1]
+        prise = ApartmentPrice.objects.get(id=found.id)
+        return HttpResponse(f'<div class="price_success" id="found-price" >{found} цена за м2 {prise.price}</div>')
+
+    else:
+        return HttpResponse('<div class="price_error" id="found_price_none" >Не найдено</div>')
+

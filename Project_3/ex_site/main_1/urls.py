@@ -26,6 +26,13 @@ urlpatterns = [
 
 ]
 
+htmx_urlpatterns = [
+    path('check-username/', views.check_username, name='check-username'),
+    path('found-price/', views.found_price, name='found-price'),
+]
+
+urlpatterns += htmx_urlpatterns
+
 # путь url для медиафайлов в режиме разработки сайта
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

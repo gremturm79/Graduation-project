@@ -11,6 +11,7 @@
      <script src="https://use.fontawesome.com/a6f0361695.js"></script>
      <script src="https://www.google.com/recaptcha/api.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.2" integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h" crossorigin="anonymous"></script>
 </head>
 <body>
 {% block title %}
@@ -86,7 +87,9 @@
         <div class="about_company">
             {% for field in company %}
             <h2>{{ field.title }}</h2>
-            <div class="about_company_description">{{ field.description|linebreaks }}</div>
+            <div class="about_company_description">
+                <p class="paragrph_text{{field.id}}">{{ field.description|linebreaks }}</p>
+            </div>
             {% endfor %}
         </div>
 

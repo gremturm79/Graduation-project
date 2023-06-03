@@ -1,7 +1,22 @@
 {% extends 'main/index.html' %}
-
+{% load static %}
 {% block content %}
+<!-- hx-indicator=".htmx-indicator" -->
 <div class="table_block">
+    <form action="">
+
+    <div class="search_prise">
+    <input class="form-control" hx-get="/found-price/" type="search" name="search"  hx-trigger="keyup"
+           hx-target="#found-price{{field.id}}"  hx-swap="outerhtml">
+    </div>
+
+    </form>
+
+    <div id="found-price">
+    </div>
+    <div id="found_price_none" ></div>
+
+
 <table class="title_table">
     <thead>
     <tr style="font-size: 120%">

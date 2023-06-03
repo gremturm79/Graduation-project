@@ -15,6 +15,16 @@ editclose.addEventListener('click', closeEditAccount)
 function closeEditAccount() {
     edit.style.display = 'none'
 }
+
+let imagefavourite = document.querySelector('image-window')
+let butimage = document.getElementById('close-block-{{ image.id }}')
+imagefavourite.addEventListener('click', clouseImageFavourite)
+function clouseImageFavourite() {
+    butimage.style.display = 'none'
+}
+
+
+
 let leavereview = document.getElementById('leave_review')
 let formreviewpersonal = document.getElementById('main_review_personal')
 leavereview.addEventListener('click', openFormReview)
@@ -80,3 +90,4 @@ $('.add-favourite').on('click', function () {
     });
 
 });
+

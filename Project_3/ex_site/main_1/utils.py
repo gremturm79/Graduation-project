@@ -28,7 +28,7 @@ def personal_view(request, pk):  # функция отображения дан�
         category = Category.objects.all()  # Category модель категории форума
         forum_branch = Thread.objects.filter(author=custom)
         forum_count = forum_branch.count()
-        display = 'block'  # избранные фотографии
+        display = 'flex'  # избранные фотографии
         image = prof.image
         phone = prof.phone_number
         contact_org = ContactOfOrganization.objects.all()
@@ -68,7 +68,7 @@ def personal_view(request, pk):  # функция отображения дан�
         forum_branch = Thread.objects.filter(author=custom)
         images_favorite = ImageFavorite.objects.filter(owner=custom)
         forum_count = forum_branch.count()
-        display = 'block'  # избранные фотографии
+        display = 'flex'  # избранные фотографии
         phone = prof.phone_number
         image = prof.image
         form_profile = ProfileUserForm(instance=prof)  # поле для изменения данных

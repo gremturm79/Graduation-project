@@ -31,7 +31,7 @@
 
         </div>
 
-                <div><a href="{% url 'repair_of_apartments' %}">Перейти</a></div>
+                <div><a href="{% url 'repair_of_apartments' %}">&gt</a></div>
            {% else %}
                   <div class="column1_text">
               {{ service.description|truncatechars:252 }}
@@ -40,7 +40,7 @@
            <a href="{% url 'bathroom_gallery' %}"><img src="{{ service.services_image.image.url }}"
                            alt="" border="0" class="about_img" /></a>
         </div>
-           <div><a href="{% url 'renovation_bathroom' %}">Перейти</a></div>
+           <div><a href="{% url 'renovation_bathroom' %}">&gt</a></div>
            {% endif %}
       </div>
         {% endfor %}

@@ -1,7 +1,7 @@
 {% extends 'main/index.html' %}
 {% block content %}
 {% load static %}
-
+<div class="personal-cabinet">
 <div class="personal_account">
 	<div class="main">
 <div class="warning" >
@@ -86,11 +86,12 @@
 	<div class="top">
     	<ul>
             {% for image in images_favorite %}
-        	<li style="display: flex; display: {{ display }}" >
+        	<li style="display: flex " id="close-block" data-block="{{ image.id }}" class="close-block{{image.id}}">
                 <a href="#img_{{ image.id }}">
                     <img src="{{ image.image.image.url }}"></a>
                  <div class="like-image" title="Удалить">
-                <button class="button button-like remove-favourite" data-id="{{ image.id }}">
+                <button class="button button-like remove-favourite" data-id="{{ image.id }}"
+                        id="image-window" >
                     <i class='fa fa-remove' style='color: red'></i>
                   </button>
                 </div>
@@ -104,7 +105,10 @@
     </div>
 </div>
 </div>
-
+    <div  hx-post="/mouse_entered" hx-trigger="mouseenter" >
+        [Mouse]
+    </div>
+</div>
 <!-- Button trigger modal -->
 
 
@@ -209,7 +213,7 @@
 $('.remove-favourite').on('click', function () {
 
     let image_id = $(this).data('id');
-
+    let image = $('#close-block').data('block');
 
     $.ajax({
 
@@ -220,12 +224,12 @@ $('.remove-favourite').on('click', function () {
         data: {
 
             'image_id': image_id,
-
+            'display': image
 
         },
-
         success: function (data) {
 
+            $(data.display).css('display', 'none');
             alert('Image remove!');
 
         }
@@ -244,5 +248,6 @@ $(function() {
 
 
 </script>
+<script src="https://unpkg.com/htmx.org@1.9.2" integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h" crossorigin="anonymous"></script>
 {% endblock %}
 

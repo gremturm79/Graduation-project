@@ -23,7 +23,7 @@
                 </a>
                 <!-- <button class="add-favourite" data-id="{{ image.id }}">Add to Favourites</button> -->
                <!--  {% if image.is_favourite == False %} -->
-                <div class="like-image" style="display: {{ display }}">
+                <div class="like-image close-block{{image.id}}" style="display: {{ display }}" data-block="{{ image.id }}">
                 <button class="button button-like add-favourite" data-id="{{ image.id }}">
                     <i class="fa fa-heart"></i>
                     <!-- <span>Like</span> -->
@@ -46,6 +46,7 @@
 $('.add-favourite').on('click', function () {
 
     let image_id = $(this).data('id');
+    let image = $('#close-block').data('block');
 
     $.ajax({
 
@@ -55,12 +56,14 @@ $('.add-favourite').on('click', function () {
 
         data: {
 
-            'image_id': image_id
+            'image_id': image_id,
+            'display': image
 
         },
 
         success: function (data) {
 
+            $(data.display).css('display', 'none');
             alert('Image added to favourites!');
 
         }
