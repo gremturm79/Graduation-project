@@ -9,16 +9,14 @@ from .forms import ContactForm, UserForm
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from .forms import ListOfWorksForm, SendMessageForm, ProfileUserForm, ReviewForm
+from .forms import ListOfWorksForm, SendMessageForm, ProfileUserForm, ReviewForm, ApartmentPriceForm
 from django.contrib import messages
-from .utils import send_message, personal_view, cost_works, search_reviews, paginate_reviews
+from .utils import send_message, personal_view, cost_works, search_reviews, paginate_reviews, cost_works_apartments
 from forum.models import Thread, Category
 from forum.forms import ThreadForm
 from django.db.models import Q
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
-from django.core.serializers import serialize
-import json
 
 
 def index(request):
@@ -406,7 +404,7 @@ def personal_account(request, pk):  # функция представления 
         elif request.POST.get('delete_pricing'):  # удаление расчёта стоимости работ
             if request.user.is_authenticated:
                 custom = request.user
-                message_view = custom.pricingandsummworks_set.get(owner=custom)
+                # message_view = custom.pricingandsummworks_set.get(owner=custom)
                 pricing = SummOfWorks.objects.filter(owner=custom)
                 pricing_all_text = PricingAndSummWorks.objects.filter(owner=custom)
                 pricing_all_text.delete()
@@ -518,16 +516,20 @@ def price_list(request):
     plaster = ApartmentPrice.objects.filter(title__startswith='Штукатурка')
     painting = ApartmentPrice.objects.filter(title__startswith='Покраска')
     putty = ApartmentPrice.objects.filter(title__startswith='Шпатлевка')
+    wallpaper = ApartmentPrice.objects.filter(title__startswith='Оклейка')
+    montage_wall = ApartmentPrice.objects.filter(title__startswith='Монтаж')
     context = {
         'dismantling': dismantling,
         'plaster': plaster,
         'painting': painting,
-        'putty': putty
+        'putty': putty,
+        'wallpaper': wallpaper,
+        'montage_wall': montage_wall
     }
     return render(request, 'main/prise_list.html', context)
 
 
-def check_username(request):
+def check_username(request):  # проверка имён пользователей на существование
     username = request.POST.get('username')
     if get_user_model().objects.filter(username=username).exists():
         return HttpResponse('<div id="username-error" class="error_name">Имя не доступно</div>')
@@ -537,11 +539,98 @@ def check_username(request):
 
 def found_price(request):
     search = request.GET.get('search')
-    if ApartmentPrice.objects.filter(Q(title__startswith=search)).exists():
-        found = ApartmentPrice.objects.filter(Q(title__icontains=f'{search}'))[1]
-        prise = ApartmentPrice.objects.get(id=found.id)
-        return HttpResponse(f'<div class="price_success" id="found-price" >{found} цена за м2 {prise.price}</div>')
+    if search:
+        if ApartmentPrice.objects.filter(Q(title__startswith=search)).exists():
+            found = ApartmentPrice.objects.filter(Q(title__iregex=f'{search}'))
+            val = found.values_list()
+            lst = []
+            for i in range(len(val)):
+                lst.extend([val[i][1], str(val[i][2]), '\n'])
+            print(lst)
+            # prise = ApartmentPrice.objects.get(id=found.id)
+            lst_text = ''.join(lst)
+            # print(lst_text)
+            return HttpResponse(f'<div class="price_success" id="found-price" >{lst_text}</div>')
+
+        else:
+            return HttpResponse('<div class="price_error" id="found_price_none" >Не найдено</div>')
 
     else:
-        return HttpResponse('<div class="price_error" id="found_price_none" >Не найдено</div>')
+        return HttpResponse('<div id="found_price_none"></div>')
 
+
+def found_price_page(request):
+    search = request.GET.get('search')
+    if search != '':
+        if ApartmentPrice.objects.filter(Q(title__startswith=search)).exists():
+            found = ApartmentPrice.objects.filter(Q(title__iregex=f'{search}'))
+            context = {
+                'found': found
+            }
+            return render(request, 'main/found.html', context)
+        else:
+            return HttpResponse('<div id="not" hx-get="/clear/" hx-trigger="load delay:2s">поиск не найден</div>')
+    else:
+        return HttpResponse('<div id="not" hx-get="/clear/" hx-trigger="load delay:2s">начните поиск</div>')
+
+        # not_found = 'Не найдено'
+        # context = {
+        # 'not_found': not_found
+        # }
+        # return render(request, 'main/found.html', context)
+
+
+def clear_tag(request):  # функция убирающая тег messages
+    return HttpResponse("")
+
+
+def calculate_apartments(request):
+    if request.method == 'GET':
+        custom = request.user
+        if request.user.is_authenticated:
+            if custom.pricingandsummworks_set.all().count() < 1:
+                price = ApartmentPrice.objects.all()
+                context = {
+                    'price': price
+                }
+                return render(request, 'main/calculate_apartments.html', context)
+            else:
+                price = ApartmentPrice.objects.all()
+                context = {
+                    'price': price
+                }
+                messages.info(request, 'Удалите все расчёты в личном кабинете')
+                return render(request, 'main/calculate_apartments.html', context)
+        messages.info(request, 'Необходимо зарегистрироваться')
+        return redirect('enter')
+    else:
+        custom = request.user
+        if request.user.is_authenticated and custom.pricingandsummworks_set.all().count() >= 1:
+            form = ApartmentPriceForm()
+            price = ApartmentPrice.objects.all()
+            context = {
+                'form': form,
+                'price': price
+            }
+            messages.info(request, 'Удалите все расчёты в личном кабинете')
+            return render(request, 'main/calculate_apartments.html', context)
+        else:
+            cost = cost_works_apartments(request)  # функция расчёта стоимости работ находится в utils.py
+            if cost == 'ничего не выбрано':
+                form = ApartmentPriceForm()
+                price = ApartmentPrice.objects.all()
+                context = {
+                    'form': form,
+                    'price': price
+                }
+                messages.info(request, 'Ничего не выбрано')
+                return render(request, 'main/calculate_apartments.html', context)
+            # print(cost['summ'])
+            form = ApartmentPriceForm()
+            price = ApartmentPrice.objects.all()
+            context = {
+                'form': form,
+                'price': price
+            }
+            messages.info(request, 'Расчёт произведён и находится в личном кабинете')
+            return render(request, 'main/calculate_apartments.html', context)

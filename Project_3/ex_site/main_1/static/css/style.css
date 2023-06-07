@@ -21,6 +21,12 @@ body {
 
 }
 
+img.icon {
+    width: 25px;
+    height: 25px;
+    margin-top: -20px;
+    margin-bottom: 10px;
+}
 
 .prime_main {
     width: 100%;
@@ -780,7 +786,6 @@ body:after {
 
 /* Personal account */
 .personal_account {
-
     padding-bottom: 70px;
 
 }
@@ -798,7 +803,7 @@ body:after {
 .main {
     background-color: #FFF;
     border: solid 2px #7bd76b;
-    width: 400px;
+    flex-wrap: wrap;
     height: fit-content;
     border-radius: 8px;
     box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.8);
@@ -806,6 +811,8 @@ body:after {
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .personal-cabinet {
@@ -1342,8 +1349,19 @@ li.contact_element>p {
     padding-top: 90px;
 }
 
+#not {
+    color: red;
+    padding-bottom: 10px
+}
+
 .price_success {
     background-color: #2abc67;
+    width: 400px;
+
+}
+
+.found {
+    background-color: #fff;
 }
 
 .price_error {
@@ -1363,6 +1381,7 @@ table {
     letter-spacing: 1px;
     font-family: sans-serif;
     font-size: 1.0rem;
+
 }
 
 /* gallery.html */

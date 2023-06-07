@@ -63,8 +63,8 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
               <li><a class="dropdown-item" href="{% url 'personal_account'  user.id %}">Личный кабинет</a></li>
-              <li><a class="dropdown-item" href="{% url 'calculate_table' %}">Калькулятор</a></li>
-              <li><a class="dropdown-item" href="{% url 'favourite_images' %}">Фотографии</a></li>
+              <li><a class="dropdown-item" href="{% url 'calculate-apartments' %}">Калькулятор</a></li>
+              <!-- <li><a class="dropdown-item" href="{% url 'favourite_images' %}">Фотографии</a></li> -->
               <li><a class="dropdown-item" href="{% url 'login' %}">Войти</a></li>
               <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
               <li>
@@ -87,6 +87,9 @@
         <div class="about_company">
             {% for field in company %}
             <h2>{{ field.title }}</h2>
+            <a
+                    href="{% url 'index' %}"><img class="icon" style="float: right; margin-top: -35px"
+                                                  src="{% static 'images/home.ico' %}"></a>
             <div class="about_company_description">
                 <p class="paragrph_text{{field.id}}">{{ field.description|linebreaks }}</p>
             </div>
@@ -130,5 +133,10 @@
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'css/style.js' %}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script>
+document.body.addEventListener('htmx:configRequest', (event) => {
+    event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}'; // add a new parameter into the mix
+});
+</script>
 </body>
 </html>

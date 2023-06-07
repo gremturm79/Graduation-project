@@ -1,0 +1,20 @@
+{% if found %}
+<table class="title_table">
+    <thead>
+    <tr style="font-size: 120%">
+        <th>Наименование работ</th>
+        <th>Цена</th>
+        <th>Ед.изм.</th>
+    </tr>
+    </thead>
+    {% for field in found %}
+    <tr style="width: 20px;height: 40px">
+        <td>{{ field.title }}</td>
+        <td>{{ field.price }}</td>
+        <td>{{ field.unit }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+{% else %}
+<div id="not"></div>
+{% endif %}

@@ -1,7 +1,8 @@
 import requests
-from .forms import ReviewForm, ProfileUserForm, UserForm, ListOfWorksForm
+from .forms import ReviewForm, ProfileUserForm, UserForm, ListOfWorksForm, ApartmentPriceForm
 from django.contrib.auth.models import User
-from .models import PricingAndSummWorks, SummOfWorks, ListOfWorks, ContactOfOrganization, Review, ImageFavorite
+from .models import PricingAndSummWorks, SummOfWorks, ListOfWorks, ContactOfOrganization, Review, ImageFavorite, \
+    ApartmentPrice
 from forum.forms import ThreadForm
 from forum.models import Thread, Category
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -10,11 +11,11 @@ from django.contrib import messages
 
 
 def send_message(message):  # функция отправки расчёта заказчику
-    TOKEN = "6031325871:AAHDA97CVEhhqYgY8yiOTwyPHHaub7Nrmh4"  # @zakaz_cena_bot
-    CHAT_ID = '899584907'
+    token = ''  # @zakaz_cena_bot
+    chat_id = ''
     # message = 'Отправка сообщения'
     # url = f"https://api.telegram.org/bot{TOKEN}/getUpdates" запрос всех данных
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={CHAT_ID}&text={message}"
+    url = f"https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&text={message}"
     requests.get(url).json()
 
 
@@ -187,3 +188,65 @@ def search_reviews(request):
         info = messages.info(request, 'по запросу ничего не найдено')
 
     return message, search_query, info
+
+
+def cost_works_apartments(request):
+    custom = request.user
+    obj = ApartmentPrice.objects.all()  # данные из модели БД ListOfWorks
+    all_square = request.POST.getlist('square')  # получаем список указанных площадей в теге input name="square"
+    check_all_square = set(all_square)
+    if check_all_square == {''}:
+        return 'ничего не выбрано'
+    form = ApartmentPriceForm()  # данные полей формы ListOfWorksForm для страницы  calculate_table.html
+    summ = 0
+    summ_send_telegram = []
+
+    #  text_send_telegram = ''
+
+    def total_summ(pricing, squares):
+
+        '''
+        функция total_summ рассчитывает сумму оплаты всех работ: выбранных клиентом также учитывая квадратные метры
+        :param pricing: объект запроса данных из БД модели ListOfWorks
+        :type pricing: class 'django.db.models.query.QuerySet'
+        :param squares: список с данными из ListOfWorksForm тегов input с аттрибутом name="square"
+        :type squares: class 'list'
+        :return:
+        :rtype:
+        '''
+
+        nonlocal summ
+        lst_pricing = []
+        lst_title = []
+        for i in pricing:
+            lst_pricing.append(i.price)  # в пустой список заносим данные поля price
+            lst_title.append(i.title)
+        if squares:  # если список
+            for j in range(len(squares)):  # проходим по его списку
+                if all_square[j].isdigit():  # если это цифры, берём элемент по этому индексу из списка lst_pricing
+                    total = int(lst_pricing[j]) * int(squares[j])
+                    summ_send_telegram.append(lst_title[j])
+                    summ_send_telegram.append(' ' + squares[j] + 'm2')
+                    summ_send_telegram.append(' ' + str(lst_pricing[j]) + ' ' + 'рублей' + '\n')
+                    summ += total
+        return summ, summ_send_telegram  # возвращает сумму и список площадей с ценами
+    # print(summ)
+    func_summ, description_works = total_summ(obj, all_square)
+    text_send_telegram = 'От:' + ' ' + str(custom.first_name) + '\n' + ''.join(description_works) \
+                         + 'Итоговая сумма: ' + str(func_summ) + ' ' + 'рублей'
+
+    estimate_save = PricingAndSummWorks(owner=custom, estimate=text_send_telegram)
+    estimate_save.save()
+    count = custom.pricingandsummworks_set.all()  # count()  количество расчётов работ
+    # пользователя
+    for i in range(len(count)):
+        print(count[i].estimate)
+
+    summ_pricing = SummOfWorks(owner=custom, summ=func_summ)
+    summ_pricing.save()
+    context = {
+        'form': form,
+        'obj': obj,
+        'summ': summ
+    }
+    return context

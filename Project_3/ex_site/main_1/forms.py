@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import CalculateTableEx, ListOfWorks, ProfileUser, Review
+from .models import CalculateTableEx, ListOfWorks, ProfileUser, Review, ApartmentPrice
 from django.forms import ModelForm
 
 
@@ -12,7 +12,6 @@ class ContactForm(forms.Form):
     file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True,
                                                                   'data-tooltip': 'при отправке нескольких файлов необходимо их выделить'}),
                            label='Выбрать файлы:')
-
 
     # square = forms.DecimalField(max_value=1000, min_value=2, label='Укажите площадь помещения:')
     # CHOICES = (
@@ -87,3 +86,11 @@ class ReviewForm(forms.ModelForm):
         fields = ['description', 'image', 'rating']
 
         labels = {'description': 'Поле для ввода текста', 'image': 'Выберите фото', 'rating': 'Поставить оценку'}
+
+
+class ApartmentPriceForm(forms.ModelForm):
+    square = forms.IntegerField(min_value=0, max_value=1000)
+
+    class Meta:
+        model = ApartmentPrice
+        fields = ['title', 'price']

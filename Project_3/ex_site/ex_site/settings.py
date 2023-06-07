@@ -25,7 +25,8 @@ load_dotenv(find_dotenv())
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
-
+TOKEN_TELEGRAM_BOT = os.getenv('TOKEN_TELEGRAM')
+CHAT_ID_TELEGRAM = os.getenv('CHAT_ID_TELEGRAM')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,6 +41,7 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 MY_HOST_MAIL = ''
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',

@@ -4,15 +4,16 @@
 <div class="personal-cabinet">
 <div class="personal_account">
 	<div class="main">
-<div class="warning" >
+<div class="warning" hx-get="/clear/" hx-trigger="load delay:2s">
 {% for message in messages %}
 <div class= "alert alert-{{ message.tags }}" role="alert" style="position: absolute" id="info">
   <strong>{{ message }}</strong>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endfor %}
 </div>
   <div class="name_card">
+      <a href="{% url 'index' %}"><img class="icon" src="{% static 'images/home.ico' %}"></a>
+
       <img src="{{ image.url }} " style="width: 75px; height: 75px" alt="">
       <div>{{ user.first_name }}</div>
       <div>{{ user.last_name }}</div>
@@ -42,7 +43,7 @@
         {% if summ_count == 0 %}
       <h6>У Вас нет расчётов</h6>
             <button type="button" class="btn btn-success" data-bs-toggle="modal"
-              data-bs-target="#exampleModalreview"><a href="{% url 'calculate_table' %}"
+              data-bs-target="#exampleModalreview"><a href="{% url 'calculate-apartments' %}"
                           style="text-decoration: none; color: white">перейти к расчёту</a></button>
       <hr>
       {% else %}
@@ -77,22 +78,19 @@
             {% endif %}
             <hr>
         </div>
-
-</div>
-
-  </div>
-      <div class="gallery_wrap" style="text-align: center; color: red">
+        <!-- тег избранные фото начало-->
+        <div class="gallery_wrap" style="text-align: center; width: 400px">
           <h2>Избранные фотографии</h2>
 	<div class="top">
     	<ul>
             {% for image in images_favorite %}
         	<li style="display: flex " id="close-block" data-block="{{ image.id }}" class="close-block{{image.id}}">
                 <a href="#img_{{ image.id }}">
-                    <img src="{{ image.image.image.url }}"></a>
+                    <img src="{{ image.image.image.url }}" style="width: 200px; height: 150px"></a>
                  <div class="like-image" title="Удалить">
                 <button class="button button-like remove-favourite" data-id="{{ image.id }}"
                         id="image-window" >
-                    <i class='fa fa-remove' style='color: red'></i>
+                    <i class='fa fa-remove' style='color: rgb(25, 24, 24)'></i>
                   </button>
                 </div>
             </li>
@@ -100,14 +98,18 @@
             {% endfor %}
         </ul>
             {% for image in images_favorite %}
-        <a href="#_{{ image.id }}" class="lightbox trans" id="img_{{ image.id }}"> <img src="{{ image.image.url }}"></a>
+        <a href="#_{{ image.id }}" class="lightbox trans" id="img_{{ image.id }}">
+            <img src="{{ image.image.image.url }}"></a>
             {% endfor %}
     </div>
 </div>
 </div>
-    <div  hx-post="/mouse_entered" hx-trigger="mouseenter" >
-        [Mouse]
-    </div>
+        <!-- тег избранные фото конец  -->
+
+</div>
+
+  </div>
+
 </div>
 <!-- Button trigger modal -->
 
@@ -230,7 +232,6 @@ $('.remove-favourite').on('click', function () {
         success: function (data) {
 
             $(data.display).css('display', 'none');
-            alert('Image remove!');
 
         }
 

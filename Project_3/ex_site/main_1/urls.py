@@ -21,7 +21,9 @@ urlpatterns = [
     path('calculate_table/', views.calculate_table, name='calculate_table'),
     path('delete_pricing/', views.delete_pricing, name='delete_pricing'),
     path('price_list/', views.price_list, name='price_list'),
-    # path('send_telegram/', views.send_telegram, name='send_telegram'),
+    path('found/', views.found_price_page, name='found'),
+    path('clear/', views.clear_tag, name='clear'),
+    path('calculate-apartments/', views.calculate_apartments, name='calculate-apartments'),
     path('personal_account/<str:pk>/', views.personal_account, name='personal_account'),
 
 ]
