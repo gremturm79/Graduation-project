@@ -29,7 +29,6 @@ def forum(request, pk):
         custom = request.user
         # thread = get_object_or_404(Thread, pk=pk)
         message = Thread.objects.get(id=pk)
-
         # category = get_object_or_404(Category, pk=pk)
         context = content(request, pk)
         if request.POST.get('write'):  # открытие нового раздела
@@ -51,13 +50,18 @@ def forum(request, pk):
                 form = ReplyForm(request.POST)
                 if form.is_valid():
                     reply = form.save(commit=False)
+                    # print(message)
+                    # reply.content = request.POST['content']
+                    # print(reply.content)
                     reply.tread = message
+                    # print(reply.tread)
                     reply.author = custom
                     reply.save()
                     return render(request, 'forum/forum.html', context)
                 else:
+                    messages.info(request, 'Отправка сообщений только для зарегистрированных пользователей')
                     return render(request, 'forum/forum.html', context)
             else:
-                messages.info(request, 'Только для зарегистрированных пользователей')
+                messages.info(request, 'Отправка сообщений только для зарегистрированных пользователей')
                 return render(request, 'forum/forum.html', context)
     return render(request, 'forum/forum.html', context)

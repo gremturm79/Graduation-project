@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect, reverse, HttpResponse
+from django.shortcuts import render, redirect, reverse, HttpResponse, get_object_or_404
 from .models import PhotoOfWorks, TypeOfServices, ListOfWorks, ContactOfOrganization, \
-    Review, Company, SummOfWorks, PricingAndSummWorks, ApartmentPrice, ImageFavorite
+    Review, Company, SummOfWorks, PricingAndSummWorks, ApartmentPrice, ImageFavorite, LocationObjects, MyObject
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -9,55 +9,101 @@ from .forms import ContactForm, UserForm
 from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from .forms import ListOfWorksForm, SendMessageForm, ProfileUserForm, ReviewForm, ApartmentPriceForm
+from .forms import ListOfWorksForm, SendMessageForm, ProfileUserForm, ReviewForm, ApartmentPriceForm, MyObjectForm
 from django.contrib import messages
-from .utils import send_message, personal_view, cost_works, search_reviews, paginate_reviews, cost_works_apartments
+from .utils import send_message, personal_view, cost_works, search_reviews, paginate_reviews, cost_works_apartments, \
+    add_image, check_city
 from forum.models import Thread, Category
 from forum.forms import ThreadForm
 from django.db.models import Q
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
+from bing_image_downloader.downloader import download
+from transliterate import translit
+import io
+import datetime
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib import colors
+from reportlab.lib.units import inch
+import reportlab
+import os
 
 
 def index(request):
+    if request.method == 'POST':
+        location_all_city = LocationObjects.objects.values_list('city', flat=True)  # список локаций
+        # print(location_all_city)
+        # location_href = LocationObjects.location_city(request, *location_all_city)
+        # location = LocationObjects.objects.get(city='Светлогорск').bind.all()
+        # print(location_href)
+        location = LocationObjects.objects.all()
+        category = Category.objects.all()
+        binding = Thread.objects.all()
+        contact_org = ContactOfOrganization.objects.all()
+        company = Company.objects.all()
+        company_services = Company.objects.get(id=1)
+        company_all = company_services.typeofservices_set.all()
+        color = 'radial-gradient(#8cc2cc, transparent)'
+        context = {
+            'company': company,
+            'company_all': company_all,
+            'contact': contact_org,
+            'forum': category,
+            'bind': binding,
+            'color': color,
+            'location': location,
+            'location_href': location_all_city
+        }
+
+        if request.user.is_authenticated:
+            message = request.POST['phone']
+            message_text = 'Вас просят перезвонить по номеру ' + '\n' + '+7-' + message
+            send_message(message_text)
+            return render(request, 'main/index.html', context)
+        # else:
+        # messages.info(request, 'Необходимо зарегистрироваться')
+        # return redirect('enter')
+    location_all_city = LocationObjects.objects.values_list('city', flat=True)  # список локаций
+    location = LocationObjects.objects.all()
     category = Category.objects.all()
     binding = Thread.objects.all()
     contact_org = ContactOfOrganization.objects.all()
     company = Company.objects.all()
     company_services = Company.objects.get(id=1)
     company_all = company_services.typeofservices_set.all()
+    color = 'radial-gradient(#8cc2cc, transparent)'  # выделение раздела нахождения в меню
     context = {
         'company': company,
         'company_all': company_all,
         'contact': contact_org,
         'forum': category,
-        'bind': binding
+        'bind': binding,
+        'color': color,
+        'location': location,
+        'location_href': location_all_city
     }
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            message = request.POST['phone']
-            message_text = 'Вас просят перезвонить по номеру ' + '\n' + '+7-' + message
-            send_message(message_text)
-            return render(request, 'main/index.html', context)
-        else:
-            messages.info(request, 'Необходимо зарегистрироваться')
-            return redirect('enter')
-    return render(request, 'main/index.html', context)
+    return render(request, 'main/index.html', context)  # return render(request, 'enter/index.html', context)
 
 
 def main(request):
     category = Category.objects.all()
     services = TypeOfServices.objects.all()
     contact_org = ContactOfOrganization.objects.all()
+    color_our = 'radial-gradient(#8cc2cc, transparent)'
     context = {
         'services': services,
         'contact': contact_org,
-        'forum': category
+        'forum': category,
+        'color_our': color_our
     }
     return render(request, 'main/about.html', context)
 
 
 def gallery(request):
+    color = 'radial-gradient(#8cc2cc, transparent)'
     if request.user.is_authenticated:
         custom = request.user
         category = Category.objects.all()
@@ -69,7 +115,8 @@ def gallery(request):
             'images': photo_list,
             'contact': contact_org,
             'forum': category,
-            'display': display
+            'display': display,
+            'color_gallery': color
         }
         return render(request, 'main/gallery.html', context)
     # custom = request.user
@@ -82,17 +129,17 @@ def gallery(request):
         'images': photo_list,
         'contact': contact_org,
         'forum': category,
-        'display': display
+        'display': display,
+        'color_gallery': color
     }
     return render(request, 'main/gallery.html', context)
 
 
-def add_favourite(request):
+def add_favourite(request):  # функция добавления избранных фотографий на AJAX
     if request.method == 'GET':
         custom = User.objects.get(id=request.user.id)  # получаем id пользователя
         image_id_page = request.GET.get('image_id')  # получаем id объекта
         display = '.close-block' + image_id_page
-        print(display)
         image = PhotoOfWorks.objects.get(id=image_id_page)
         if custom.imagefavorite_set.filter(image=image_id_page).exists():
             return JsonResponse({'success': False})
@@ -103,7 +150,7 @@ def add_favourite(request):
         return JsonResponse({'success': True, 'display': display})
 
 
-def favourite_images(request):
+def favourite_images(request):  # функция не задействована
     custom = request.user
     images = ImageFavorite.objects.filter(owner=custom)
     context = {
@@ -112,7 +159,7 @@ def favourite_images(request):
     return render(request, 'main/favourite_images.html', context)
 
 
-def remove_favourite(request):
+def remove_favourite(request):  # функция удаления выбранных фотографий AJAX
     custom = request.user
     # custom = User.objects.get(id=request.user.id)  получаем id пользователя
     image_id_page = request.GET.get('image_id')
@@ -134,8 +181,8 @@ def remove_favourite(request):
     return JsonResponse({'success': True, 'display': display})  # images_favorite, safe=False, status=200
 
 
-@login_required(login_url='enter')
-def calculate(request):
+@login_required(login_url='enter')  # перенаправление незарегистрированных пользователей
+def calculate(request):  # форма отправка сообщений с фотографиями
     if request.method == 'POST':
         category = Category.objects.all()
         contact_org = ContactOfOrganization.objects.all()
@@ -152,7 +199,7 @@ def calculate(request):
 
         }
         message = '\n'.join(body.values())
-        msg = EmailMessage(name, message, settings.EMAIL_HOST_USER, [email])
+        msg = EmailMessage(name, message, email, [settings.EMAIL_HOST_USER])  # settings.EMAIL_HOST_USER, [email]
         for f in files:
             msg.attach(f.name, f.read(), f.content_type)  #
         msg.send()
@@ -178,7 +225,7 @@ def calculate(request):
         return render(request, 'main/calculate.html', context)
 
 
-def reviews(request):
+def reviews(request):  # функция вывода отзывов, с пагинацией и поиском на JS
     reviews_all, search_query, info = search_reviews(request)
     custom_range, reviews_all = paginate_reviews(request, reviews_all, 3)
     category = Category.objects.all()
@@ -194,7 +241,8 @@ def reviews(request):
     return render(request, 'main/reviews.html', context)
 
 
-def contact(request):  # функция отправки сообщения на почту
+def contact(request):  # функция отправки сообщения на почту без фотографий
+    color = 'radial-gradient(#8cc2cc, transparent)'
     if request.method == 'GET':
         category = Category.objects.all()
         contact_org = ContactOfOrganization.objects.all()
@@ -203,6 +251,7 @@ def contact(request):  # функция отправки сообщения на
             'form': form,
             'contact': contact_org,
             'forum': category,
+            'color_contact': color
         }
         return render(request, 'main/contact.html', context)
     else:
@@ -214,22 +263,29 @@ def contact(request):  # функция отправки сообщения на
         email_from = settings.EMAIL_HOST_USER
         email = request.POST['email']
         content = request.POST['content']
-        msg = EmailMessage(name, content, email, [email_from])  # name,
+        msg = EmailMessage(name, content, email_from, [email])  # name,  email_from, [email]
         msg.send()
         messages.success(request, 'Сообщение было отправлено')
         context = {
             'form': form,
             'contact': contact_org,
             'forum': category,
+            'color_contact': color
         }
         return render(request, 'main/contact.html', context)
 
 
 def enter(request):
+    color = 'radial-gradient(#8cc2cc, transparent)'
     if request.method == 'GET':  # при методе GET возвращаем страницу с формой регистрации
         contact_org = ContactOfOrganization.objects.all()
-        return render(request, 'main/enter.html',
-                      {'form': UserCreationForm(), 'contact': contact_org})  # модель Form импорт из
+        context = {
+            'form': UserCreationForm(),
+            'contact': contact_org,
+            'color_enter': color
+        }
+        return render(request, 'main/enter.html', context)  # модель Form импорт из
+
         # django.contrib
     else:  # при методе POST регистрируем пользователя со своей проверкой на соответствие паролей и проверкой Django
         # на наличие имени пользователя
@@ -245,13 +301,18 @@ def enter(request):
                 context = {
                     'form': UserCreationForm(),
                     'error': 'Такое имя пользователя существует выберите другое',
-                    'contact': contact_org
+                    'contact': contact_org,
+                    'color_enter': color
                 }
                 return render(request, 'main/enter.html', context)
 
         else:
-            return render(request, 'main/enter.html', {'form': UserCreationForm(),
-                                                       'error': 'Пароли не совпадают'})
+            context = {
+                'form': UserCreationForm(),
+                'error': 'Пароли не совпадают',
+                'color_enter': color
+            }
+            return render(request, 'main/enter.html')
 
 
 def logout_user(request):
@@ -261,15 +322,18 @@ def logout_user(request):
 
 
 def login_user(request):
+    color = 'radial-gradient(#8cc2cc, transparent)'
     contact_org = ContactOfOrganization.objects.all()
     if request.method == 'GET':  # авторизация зарегистрированного пользователя
-        return render(request, 'main/loginuser.html', {'form': AuthenticationForm(), 'contact': contact_org})
+        return render(request, 'main/loginuser.html', {'form': AuthenticationForm(), 'contact': contact_org,
+                                                       'color_login': color})
     else:  # authenticate метод проверки существующего пользователя
         user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
         if user is None:  # если user возвращает None, тогда возвращаемся на страницу loginuser.html
             context = {
                 'form': AuthenticationForm(),
-                'contact': contact_org
+                'contact': contact_org,
+                'color_login': color
             }
             messages.info(request, 'Пользователя с таким именем не существует')
             return render(request, 'main/loginuser.html', context)
@@ -280,14 +344,14 @@ def login_user(request):
 
 
 @login_required()
-def delete_user(request):
+def delete_user(request):  # удаление пользователя
     custom = request.user
     if request.method == 'GET':
         return render(request, 'main/delete.html')
     else:
         custom.delete()
         messages.info(request, 'Аккаунт был успешно удалён')
-        return redirect('about')
+        return redirect('enter')
 
 
 # @login_required(login_url='enter')
@@ -370,7 +434,7 @@ def personal_account(request, pk):  # функция представления 
             return redirect('login')
 
     else:
-        if request.POST.get('form_send'):
+        if request.POST.get('form_send'):  # отпарвка сообщения на телеграм
             custom = request.user
             if custom.pricingandsummworks_set.filter(owner=custom).exists():  # проверка на существование объекта
                 if custom.pricingandsummworks_set.all().count() == 1:
@@ -427,7 +491,47 @@ def personal_account(request, pk):  # функция представления 
                 messages.info(request, 'Пользователь может создать один форум')
                 context = personal_view(request, pk=custom.id)
                 return render(request, 'main/personal_account.html', context)
-        else:
+        elif request.POST.get('my_object'):  # POST.get('my_object')
+            custom = request.user
+            city = request.POST.get('city')
+            street = request.POST.get('street')
+            description = request.POST.get('description')
+            image = request.FILES.get('image')
+            types = request.POST.get('types')
+            form = MyObjectForm(request.POST, request.FILES)
+            if form.is_valid():
+                types_service = TypeOfServices.objects.get(id=types)
+                owner_object = User.objects.get(id=custom.id)
+                my_object = MyObject.objects.create(city=city, street=street,
+                                                    description=description, image=image, types=types_service,
+                                                    owner=owner_object)
+                if LocationObjects.objects.filter(city=city).exists():  # если объект с локацией по этому городу есть,
+                    # добавляем его к этой локации
+                    loc = LocationObjects.objects.get(city=city)
+                    loc.bind.add(my_object)
+                    messages.info(request, 'Объект был добавлен')
+                    context = personal_view(request, pk=custom.id)
+                    return render(request, 'main/personal_account.html', context)
+                else:
+                    city = request.POST.get('city')
+                    city_lower = city.lower()
+                    ru_text = translit(city_lower, language_code='ru', reversed=True)
+                    download(ru_text, limit=1, output_dir='media/objects', adult_filter_off=True, force_replace=False,
+                             timeout=60,
+                             verbose=True)
+                    loc = LocationObjects.objects.create(city=city, image=f'objects/{ru_text}/image_1.jpg')
+                    # если новая локация, то создаём объект "локацию" по названию
+                    # города и добавляем его к этой локации
+                    loc.bind.add(my_object)
+                    # <div id="exampleModalobject" style="display: none"></div
+                    messages.info(request, 'Объект был добавлен')
+                    context = personal_view(request, pk=custom.id)
+                    return render(request, 'main/personal_account.html', context)
+            else:
+                messages.warning(request, 'Выберите ближайший районный центр, для сохранения объекта')
+                context = personal_view(request, pk=custom.id)
+                return render(request, 'main/personal_account.html', context)
+        else:  # условие выполнения редактирования профиля
             form = UserForm(request.POST, instance=request.user)  # записываем все данные из User в форму
             # также поля из БД Profile
             form_profile = ProfileUserForm(request.POST, request.FILES, instance=request.user.profileuser)
@@ -518,26 +622,28 @@ def price_list(request):
     putty = ApartmentPrice.objects.filter(title__startswith='Шпатлевка')
     wallpaper = ApartmentPrice.objects.filter(title__startswith='Оклейка')
     montage_wall = ApartmentPrice.objects.filter(title__startswith='Монтаж')
+    contact_org = ContactOfOrganization.objects.all()
     context = {
         'dismantling': dismantling,
         'plaster': plaster,
         'painting': painting,
         'putty': putty,
         'wallpaper': wallpaper,
-        'montage_wall': montage_wall
+        'montage_wall': montage_wall,
+        'contact': contact_org
     }
     return render(request, 'main/prise_list.html', context)
 
 
-def check_username(request):  # проверка имён пользователей на существование
+def check_username(request):  # проверка имён пользователей на существование htmx
     username = request.POST.get('username')
-    if get_user_model().objects.filter(username=username).exists():
+    if get_user_model().objects.filter(username=username).exists():  # django метод проверки в БД User
         return HttpResponse('<div id="username-error" class="error_name">Имя не доступно</div>')
     else:
         return HttpResponse('<div id="username-error" class="success_name">Имя доступно</div>')
 
 
-def found_price(request):
+def found_price(request):  # функция не используется поиск по наименованию работ htmx , вывод текстом
     search = request.GET.get('search')
     if search:
         if ApartmentPrice.objects.filter(Q(title__startswith=search)).exists():
@@ -546,7 +652,6 @@ def found_price(request):
             lst = []
             for i in range(len(val)):
                 lst.extend([val[i][1], str(val[i][2]), '\n'])
-            print(lst)
             # prise = ApartmentPrice.objects.get(id=found.id)
             lst_text = ''.join(lst)
             # print(lst_text)
@@ -559,8 +664,8 @@ def found_price(request):
         return HttpResponse('<div id="found_price_none"></div>')
 
 
-def found_price_page(request):
-    search = request.GET.get('search')
+def found_price_page(request):  # поиск по наименованию работ htmx , вывод в виде таблицы
+    search = request.GET.get('search').capitalize()
     if search != '':
         if ApartmentPrice.objects.filter(Q(title__startswith=search)).exists():
             found = ApartmentPrice.objects.filter(Q(title__iregex=f'{search}'))
@@ -573,31 +678,29 @@ def found_price_page(request):
     else:
         return HttpResponse('<div id="not" hx-get="/clear/" hx-trigger="load delay:2s">начните поиск</div>')
 
-        # not_found = 'Не найдено'
-        # context = {
-        # 'not_found': not_found
-        # }
-        # return render(request, 'main/found.html', context)
-
 
 def clear_tag(request):  # функция убирающая тег messages
     return HttpResponse("")
 
 
-def calculate_apartments(request):
+def calculate_apartments(request):  # функция вывода таблицы для расчёта стоимости работ
     if request.method == 'GET':
         custom = request.user
         if request.user.is_authenticated:
             if custom.pricingandsummworks_set.all().count() < 1:
                 price = ApartmentPrice.objects.all()
+                contact_org = ContactOfOrganization.objects.all()
                 context = {
-                    'price': price
+                    'price': price,
+                    'contact': contact_org,
                 }
                 return render(request, 'main/calculate_apartments.html', context)
             else:
                 price = ApartmentPrice.objects.all()
+                contact_org = ContactOfOrganization.objects.all()
                 context = {
-                    'price': price
+                    'price': price,
+                    'contact': contact_org,
                 }
                 messages.info(request, 'Удалите все расчёты в личном кабинете')
                 return render(request, 'main/calculate_apartments.html', context)
@@ -608,9 +711,11 @@ def calculate_apartments(request):
         if request.user.is_authenticated and custom.pricingandsummworks_set.all().count() >= 1:
             form = ApartmentPriceForm()
             price = ApartmentPrice.objects.all()
+            contact_org = ContactOfOrganization.objects.all()
             context = {
                 'form': form,
-                'price': price
+                'price': price,
+                'contact': contact_org,
             }
             messages.info(request, 'Удалите все расчёты в личном кабинете')
             return render(request, 'main/calculate_apartments.html', context)
@@ -619,18 +724,162 @@ def calculate_apartments(request):
             if cost == 'ничего не выбрано':
                 form = ApartmentPriceForm()
                 price = ApartmentPrice.objects.all()
+                contact_org = ContactOfOrganization.objects.all()
                 context = {
                     'form': form,
-                    'price': price
+                    'price': price,
+                    'contact': contact_org,
                 }
                 messages.info(request, 'Ничего не выбрано')
                 return render(request, 'main/calculate_apartments.html', context)
-            # print(cost['summ'])
             form = ApartmentPriceForm()
             price = ApartmentPrice.objects.all()
+            contact_org = ContactOfOrganization.objects.all()
             context = {
                 'form': form,
-                'price': price
+                'price': price,
+                'contact': contact_org,
             }
             messages.info(request, 'Расчёт произведён и находится в личном кабинете')
             return render(request, 'main/calculate_apartments.html', context)
+
+
+def data_page(request):  # данные запроса не используется
+    host = request.META["HTTP_HOST"]  # получаем адрес сервера
+    user_agent = request.META["HTTP_USER_AGENT"]  # получаем данные браузера
+    path = request.path  # получаем запрошенный путь
+    #  us = request.path["REMOTE_USER"] аутентификационные данные клиента (при наличии) <p>Data: {us}</p>
+
+    return HttpResponse(f"""
+        <p>Host: {host}</p>
+        <p>Path: {path}</p>
+        
+        <p>User-agent: {user_agent}</p>
+        
+    """)
+
+
+def create_my_object(request):  # функция создания объекта ремонта помещения htmx
+    custom = request.user
+    if request.POST:
+        city = request.POST.get('city')  # city = check_city(city)
+        street = request.POST.get('street')
+        description = request.POST.get('description')
+        image = request.FILES.get('image')
+        types = request.POST.get('types')
+        types_service = TypeOfServices.objects.get(id=types)
+        owner_object = User.objects.get(id=custom.id)
+        my_object = MyObject.objects.create(city=city, street=street,
+                                            description=description, image=image, types=types_service,
+                                            owner=owner_object)
+        if LocationObjects.objects.filter(city=city).exists():  # если объект с локацией по этому городу есть,
+            # добавляем его к этой локации
+            loc = LocationObjects.objects.get(city=city)
+            loc.bind.add(my_object)
+            return HttpResponse('')
+        else:
+            city = request.POST.get('city')
+            image = add_image(request, city)
+            loc = LocationObjects.objects.create(city=city, image=image)
+
+            # если новая локация, то создаём объект "локацию" по названию
+            # города и добавляем его к этой локации
+            loc.bind.add(my_object)
+            # <div id="exampleModalobject" style="display: none"></div
+        return HttpResponse('')
+    return HttpResponse('')
+
+
+def delete_object(request):  # удаление объекта ремонта помещений htmx
+    custom = request.user
+    # object_id = request.GET.get('object')
+    my_object = MyObject.objects.filter(owner=custom)
+    my_object.delete()
+    return HttpResponse(
+        '<h5>Ваш объект ремонта</h5><button type="button" class="btn btn-success" data-bs-toggle="modal"  data-bs-target="#exampleModalobject"> Создатьобъект</button> <div id="see"></div>')
+
+
+def location_objects(request, pk):
+    my_object = LocationObjects.objects.get(city=pk).bind.all()
+    contact_org = ContactOfOrganization.objects.all()
+    context = {
+        'my_object': my_object,
+        'contact': contact_org
+    }
+    return render(request, 'main/location-objects.html', context)
+
+
+def send_htmx_message(request):  # отправка сообщения вызов обратного звонка при помощи htmx library
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            message = request.POST['phone']
+            message_text = 'Вас просят перезвонить по номеру ' + '\n' + '+7-' + message
+            send_message(message_text)
+        else:
+            return HttpResponse('<div class="footer_wrap" hx-get="/clear/" hx-trigger="load delay:6s">Необходимо '
+                                'зарегистрироваться</div>')
+    return HttpResponse('<div class="footer_wrap" hx-get="/clear/" hx-trigger="load delay:6s">Сообщение '
+                        'отправлено</div>')
+
+
+def search_city(request):  # проверка на существование города России htmx
+    search = request.GET.get('city')
+    if search:
+        city = check_city(search)  # парсер по списку городов России
+        return HttpResponse(f'<div id="check_city" hx-get="/clear/" hx-trigger="load delay:5s">{city}</div>')
+
+
+def delete_threed(request):  # удаление ветки форума htmx
+    custom = request.user
+    forum = Thread.objects.get(author=custom)
+    forum.delete()
+    return HttpResponse('<h6 id="delete-forum" style="display: none"></h6>')
+
+
+def spinner(request):
+    return JsonResponse({'success': True})
+
+
+def some_view(request):  # функция вывода расчёта стоимости работ в PDF
+    contact = ContactOfOrganization.objects.get(id=1)
+    company = Company.objects.get(id=1)
+    dt = datetime.datetime.today()
+    pdfmetrics.registerFont(TTFont('Roboto-Medium', 'main_1/static/font/Roboto-Medium.ttf', 'UTF-8'))
+    custom = request.user
+    if PricingAndSummWorks.objects.filter(owner=custom).exists():
+        order = PricingAndSummWorks.objects.get(owner=custom)  # print(order.estimate)
+        ord_str = order.estimate
+        # res = []
+        # for sub in ord_str:
+        # res.append(sub.replace("\n", " "))
+        # rus_res = ''.join(res)
+        # print(len(rus_res))
+        report_derictory = os.path.dirname(reportlab.__file__)  # расположение файла библиотеки reportlab
+        fonts = os.path.join(report_derictory, 'fonts')
+        custom_font = os.path.join(fonts, 'Roboto-Black_rus.ttf')  # расположение шрифта кириллицы
+        rus_font = TTFont("custom-rus", custom_font)
+        pdfmetrics.registerFont(rus_font)  # регистрация шрифта
+        # lst = list(ord_str)
+        buffer = io.BytesIO()
+        p = canvas.Canvas(buffer, bottomup=1)
+        #  p.saveState()
+        # p.rotate(180)
+        p.drawImage('main_1/static/images/home.ico', 10, 760, width=50, height=50)  # address_icon.png
+        #  p.restoreState()
+        text = p.beginText(85, 800)
+        text.setFont('custom-rus', 16)
+        text.textLine(company.title)
+        text.setFont('custom-rus', 14)
+        text.textLine('Расчёт стоимости работ')
+        text.setFont('custom-rus', 11)
+        text.textLines(ord_str)
+        text.textLine(dt.strftime('%d.%m.%Y %H:%M'))
+        text.setFont('custom-rus', 10)
+        text.setFillColorRGB(0.5, 0.1, 0)
+        text.textLine(contact.address)
+        text.textLine(contact.phone)
+        text.textLine(contact.email)
+        p.drawText(text)
+        p.save()
+        buffer.seek(0)
+        return FileResponse(buffer, as_attachment=True, filename="Расчёт.pdf")

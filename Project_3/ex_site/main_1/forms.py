@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import CalculateTableEx, ListOfWorks, ProfileUser, Review, ApartmentPrice
-from django.forms import ModelForm
+from .models import CalculateTableEx, ListOfWorks, ProfileUser, Review, ApartmentPrice, MyObject
+from django.forms import ModelForm, ValidationError
+import requests
+import bs4
 
 
 class ContactForm(forms.Form):
@@ -94,3 +96,38 @@ class ApartmentPriceForm(forms.ModelForm):
     class Meta:
         model = ApartmentPrice
         fields = ['title', 'price']
+
+
+class MyObjectForm(forms.ModelForm):
+    def clean_city(self):
+        data = self.cleaned_data['city']
+        city_check = data.capitalize()
+        url = 'https://ru.wikipedia.org/wiki/Список_городов_России'
+        request_result = requests.get(url)
+        soup = bs4.BeautifulSoup(request_result.text, "html.parser")
+        data_lst = []
+        table = soup.find('table')
+        table_body = table.find('tbody')
+
+        rows = table_body.find_all('tr')
+        for row in rows:
+            cols = row.find_all('td')
+            cols = [ele.text.strip() for ele in cols]
+            data_lst.append([ele for ele in cols if ele])  # Get rid of empty values
+
+        for i in data_lst:
+            if city_check in i:
+                return data
+        raise ValidationError('Города нет в базе данных')
+
+    class Meta:
+        model = MyObject
+        fields = ['city', 'street', 'description', 'image', 'types']  # , 'owner'
+
+        labels = {
+            'city': 'город',
+            'street': 'улица',
+            'description': 'Поле для ввода текста',
+            'image': 'Выберите фото',
+            'types': 'тип ремонта'
+        }

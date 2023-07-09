@@ -17,8 +17,9 @@
 {% block title %}
 <nav class="navbar fixed-top" style='background-color: #e3f2fd'>
   <div class="container-fluid">
-   <a class="navbar-brand" href="{% url 'index' %}">Главная</a>
+   <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'images/home.ico' %}" alt="" style="width: 25px; height: 25px"></a>
     <a class="navbar-brand" href="{% url 'main' %}">Наши услуги</a>
+    <a class="navbar-brand" href="{% url 'info-objects' %}">Наши работы</a>
     <a class="navbar-brand" href="{% url 'apartment_gallery' %}">Галерея</a>
     <a class="navbar-brand" href="{% url 'contact' %}">Контакты</a>
       {% if user.is_authenticated%}
@@ -75,13 +76,15 @@
 {% block content %}
 <div class="content">
         <div class="our_works_wrapper">
-            <div class="our_works_img">
-                 {% for field in apartment %}
-                <img src="{{ field.binding.image.url }}" alt="">
-                {% endfor %}
-            </div>
+      <!--     <div class="our_works_img">
+            {% for field in apartment %}
+           <img src="{{ field.binding.image.url }}" alt="">
+           {% endfor %}
+       </div> -->
 
             <div class="our_works_wrapper_title">
+                <a href="{% url 'index' %}"><img class="icon" style="margin-top: 10px"
+                                                  src="{% static 'images/home.ico' %}"></a>
                 <h1>Ремонт квартиры</h1>
                 {% for field in works %}
                 <p>{{ field.binding.description|linebreaks }}</p>
@@ -94,12 +97,31 @@
 {% endblock %}
 {% block footer %}
 <div class="footer">
-    <div class="footer_wrap">
-        <ul class="footer_ul">
-            <li>Почта</li>
-            <li>Телеграм</li>
-            <li>Обратная связь</li>
-        </ul>
+            {% for fields in contact %}
+                <ul class="contact_list">
+                    <li class="contact_element">
+
+                        <img src="{% static 'images/address_icon.png' %}" alt=""><p>{{ fields.address }}</p>
+                    </li>
+                    <li class="contact_element">
+
+                        <img src="{% static 'images/phone_icon.png' %}" alt=""><p>{{ fields.phone }}</p>
+                    </li>
+                     <li class="contact_element">
+
+                        <img src="{% static 'images/mail_icon.png' %}" alt=""><p>{{ fields.email }}</p>
+                    </li>
+                </ul>
+            {% endfor %}
+    <div class="footer_wrap" >
+
+            <form action="{% url 'index' %}" method="post">
+                        {% csrf_token %}
+            <h6>Отправьте номер и мы Вам перезвоним</h6>
+            <input type="tel" id="phone" name="phone" placeholder="123-456-67-88" pattern="[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}"
+         required><br><br>
+            <input type="submit">
+                </form>
     </div>
 </div>
 {% endblock %}

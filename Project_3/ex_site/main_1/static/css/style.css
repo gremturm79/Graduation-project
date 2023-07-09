@@ -104,6 +104,8 @@ img.icon {
     flex-direction: row;
     justify-content: flex-end;
     margin-right: 50px;
+    padding-top: 15px;
+    padding-bottom: 15px
 }
 
 /* .footer_wrap ul {
@@ -242,7 +244,7 @@ input {
     position: relative;
     float: left;
     width: 25%;
-    height: 25%;
+    /* height: 25%; */
     overflow: hidden;
 }
 
@@ -453,9 +455,6 @@ form.form_calculate {
 
 }
 
-input.btn_calculate {
-    width: 200px;
-}
 
 /* About us */
 .our_works_wrapper {
@@ -469,6 +468,10 @@ input.btn_calculate {
     margin-top: 50px;
 }
 
+.our_works_wrapper_title>p {
+    font-size: 120%;
+    font-weight: 500;
+}
 
 .our_works_img {
     display: flex;
@@ -808,11 +811,12 @@ body:after {
     border-radius: 8px;
     box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.8);
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 20px;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 30px;
     box-sizing: border-box;
+    width: 600px;
 }
 
 .personal-cabinet {
@@ -836,14 +840,14 @@ body:after {
 
 .name,
 .contact {
-    padding-left: 15px;
+    /* padding-left: 15px; */
     margin-right: 10px;
     margin-top: 10px;
 }
 
 .contact ul {
     list-style: none;
-    padding-left: 15px
+    /* padding-left: 15px */
 }
 
 .name li {
@@ -921,8 +925,9 @@ body:after {
 
 /* Card profil */
 .name_card {
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
@@ -1154,7 +1159,9 @@ body:after {
     width: 100%;
     margin: auto 0;
     display: flex;
+    flex-direction: column;
     text-align: justify;
+    padding-top: 50px;
 
 }
 
@@ -1175,16 +1182,28 @@ body:after {
     /* height: 500px; */
     flex-direction: column;
     align-content: flex-end;
-    margin-bottom: 80px;
+    /* margin-bottom: 80px; */
+    background: #e2e2ec;
+    margin: 10px 10px 10px 10px;
+
+
 }
 
 .about_company_description>p {
     font-weight: bold;
-    font-size: 110%;
+    font-size: 130%;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .about_company_description>p>p>p {
     background: #2196f3;
+}
+
+.location_objects {
+    /* background: #e2e2ec; */
+    /* padding-top: 30px; */
 }
 
 .company_services {
@@ -1198,6 +1217,13 @@ body:after {
     justify-content: space-between;
     width: 100%;
     flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.location_block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
     flex-wrap: wrap;
 }
 
@@ -1249,8 +1275,8 @@ body:after {
 .all_thread {
     background: burlywood;
     width: 100%;
-
-    text-align: center;
+    padding: 10px;
+    text-align: start;
 }
 
 .all_reply {
@@ -1462,3 +1488,54 @@ table {
     right: 0;
     bottom: 0;
 }
+
+/* navbar index.html */
+.hov:hover {
+    font-weight: bold;
+}
+
+/* spinner my_object */
+
+
+/* end spinner */
+th,
+td {
+    padding: 10px;
+}
+
+/* image favourite */
+.gallery_title_wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.heart {
+    font-size: 50px;
+    color: #e00;
+    animation: beat 1s infinite alternate;
+    transform-origin: center;
+}
+
+/* Heart beat animation */
+@keyframes beat {
+    to {
+        transform: scale(1.4);
+    }
+}
+
+/* input password eye */
+/* .password-control {
+    position: absolute;
+    top: 11px;
+    right: 6px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url('../images/close-yey.png') 0 0 no-repeat;
+}
+
+.password-control.view {
+    background: url('../images/open-yey.png') 0 0 no-repeat;
+} */

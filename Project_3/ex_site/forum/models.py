@@ -25,7 +25,7 @@ class Thread(models.Model):  # модель Thread для создания ру�
 
 class Reply(models.Model):  # модель Reply для сообщений в модели Thread отдельной рубрике
     content = models.TextField()
-    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE, blank=True, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 

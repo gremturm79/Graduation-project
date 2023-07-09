@@ -12,28 +12,31 @@
 {% endfor %}
 </div>
   <div class="name_card">
-      <a href="{% url 'index' %}"><img class="icon" src="{% static 'images/home.ico' %}"></a>
-
       <img src="{{ image.url }} " style="width: 75px; height: 75px" alt="">
-      <div>{{ user.first_name }}</div>
-      <div>{{ user.last_name }}</div>
+      <div style="padding-left: 10px">{{ user.first_name }}</div>
+      <div style="padding-left: 5px">{{ user.last_name }}</div>
+
   </div>
   <div class="contact">
 	  <ul>
-          <li>{{ phone }}</li>
-    <li>{{ user.email }}</li>
+
+          <li><span style="font-weight: bolder">Телефон:</span> {{ phone }}</li>
+    <li><span style="font-weight: bolder">Почта:</span> {{ user.email }}</li>
 	  </ul>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
   Редактировать
 </button>
 
-          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModaldeleteUser">
+          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModaldeleteUser">
   Удалить
 </button>
-      <hr>
+
       {% if user.review_set.all.count == 1 %}
-      <h6>Спасибо за отзыв !</h6>
+      <hr>
+      <h5>Спасибо за отзыв !</h5>
       {% else %}
+      <hr>
+      <h5>Написать отзыв на странице отзывов</h5>
       <button type="button" class="btn btn-success" data-bs-toggle="modal"
               data-bs-target="#exampleModalreview"><a href="{% url 'write-review' %}"
                           style="text-decoration: none; color: white">Оставить отзыв</a></button>
@@ -41,7 +44,7 @@
       <hr>
 
         {% if summ_count == 0 %}
-      <h6>У Вас нет расчётов</h6>
+      <h5>Рассчитать стоимость работ</h5>
             <button type="button" class="btn btn-success" data-bs-toggle="modal"
               data-bs-target="#exampleModalreview"><a href="{% url 'calculate-apartments' %}"
                           style="text-decoration: none; color: white">перейти к расчёту</a></button>
@@ -62,14 +65,20 @@
             <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Отправить расчёт
 </button>
+                <h5 style="padding-top: 5px">Скачать в формате PDF</h5>
             </form>
-
+            <form action="{% url 'view_pdf' %}" method="get">
+            <button type="submit"  class="btn btn-primary btn-lg">Скачать</button>
+            </form>
             <hr>
         {% endif %}
-      <h6>Ваша тема на форуме</h6>
+      <h5>Ваша тема на форуме</h5>
             {% if branch %}
             {% for field in branch %}
-            <h6><a href="{% url 'forum_discuss' field.id %}">{{ field.title }}</a></h6>
+            <h6 id="delete-forum"><a href="{% url 'forum_discuss' field.id %}">{{ field.title }}</a></h6>
+            <button type="submit" hx-target="#delete-forum" hx-get="/delete-threed/" hx-trigger="click"
+                    class="btn btn-warning">Удалить
+            </button>
             {% endfor %}
             {% else %}
           <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -77,14 +86,45 @@
           </button>
             {% endif %}
             <hr>
-        </div>
+       {% if my_object_data %}
+<div class="location_objects" id="my_object" style="width: 100%">
+            <h5>Объект ремонта</h5>
+            <div class="location_block" >
+                {% for field in my_object_data %}
+            <div class="card" style="width: 18rem;">
+                <img src="{{ field.image.url }}" style="height: 250px" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ field.city }} {{ field.street }}</h5>
+                    <p class="card-text">{{ field.description }}</p>
+                    <form action="" method="get">
+                    <input type="hidden" name="object" value="{{user.id}}">
+                    <button type="submit" hx-target="#my_object" hx-get="/delete-object/" hx-trigger="click"
+                            class="btn btn-primary">Удалить</button>
+                    </form>
+                </div>
+            </div>
+                 {% endfor %}
+            </div>
+    {% else %}
+        <h5>Объект ремонта</h5>
+        <button type="button" class="btn btn-success"
+                data-bs-toggle="modal" data-bs-target="#exampleModalobject">Создать
+             объект</button>
+            <div id="see"></div>
+{% endif %}
+</div>
+
         <!-- тег избранные фото начало-->
+            <hr>
         <div class="gallery_wrap" style="text-align: center; width: 400px">
-          <h2>Избранные фотографии</h2>
+            <div class="gallery_title_wrap">
+          <h4>Избранные фотографии</h4>
+            <a href="{% url 'gallery' %}" style="text-decoration: none"><div class="heart">&#x2665;</div></a>
+            </div>
 	<div class="top">
     	<ul>
             {% for image in images_favorite %}
-        	<li style="display: flex " id="close-block" data-block="{{ image.id }}" class="close-block{{image.id}}">
+        	<li style="display: flex" id="close-block" data-block="{{ image.id }}" class="close-block{{image.id}}">
                 <a href="#img_{{ image.id }}">
                     <img src="{{ image.image.image.url }}" style="width: 200px; height: 150px"></a>
                  <div class="like-image" title="Удалить">
@@ -102,6 +142,7 @@
             <img src="{{ image.image.image.url }}"></a>
             {% endfor %}
     </div>
+
 </div>
 </div>
         <!-- тег избранные фото конец  -->
@@ -110,6 +151,7 @@
 
   </div>
 
+</div>
 </div>
 <!-- Button trigger modal -->
 
@@ -197,12 +239,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-          <form action="{% url 'personal_account' user.id %}" method="post">
+              <form action="{% url 'personal_account' user.id %}" method="post">
               {% csrf_token %}
               {{ category.as_p }}
-              <button type="submit" class="btn btn-primary">Создать</button>
+              <button type="submit" class="btn btn-primary">Создать
+              </button>
               <input type="hidden"  name="forum" value="{{user.id}}" />
-          </form>
+                  </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
@@ -210,6 +253,49 @@
     </div>
   </div>
 </div>
+<!-- Мой объект -->
+<div class="modal" tabindex="-1" id="exampleModalobject" data-bs-backdrop="static" data-bs-keyboard="false"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabelobject">Создать объект ремонта</h5>
+        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form class="form-control" action="{% url 'personal_account' user.id %}" method="post"
+                enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ my_object.city.label }}
+                <input type="text" name="city" hx-get="/check-city/" hx-trigger="keyup changed delay:1s"
+                       hx-target="#check_city" hx-swap="outerhtml">
+              <div id="check_city" style="padding-top: 20px; color: blue"></div>
+              {{ my_object.street.label }}
+                {{ my_object.street }}
+              <div style="padding-bottom: 20px"></div>
+              {{ my_object.description.label }}
+                {{ my_object.description }}
+              <div style="padding-bottom: 20px"></div>
+              {{ my_object.street.image }}
+                {{ my_object.image }}
+              <div style="padding-bottom: 20px"></div>
+              {{ my_object.types.label }}
+                {{ my_object.types }}
+              <input type="hidden"  name="my_object" value="{{user.id}}" />
+              <div style="padding-top: 10px">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+          <button type="submit" class="btn btn-primary" id="spinner_start">Создать</button>
+              </div>
+              <div class="spinner-border text-primary" id="spinner" role="status" style="display: none">
+  <span class="visually-hidden">Loading...</span>
+</div>
+          </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="{% static 'css/style1.js' %}"></script>
 <script>
 $('.remove-favourite').on('click', function () {

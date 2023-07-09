@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
+import requests
+import bs4
+import random
+from bing_image_downloader.downloader import download
+from transliterate import translit
 
 
 class PhotoOfWorks(models.Model):  # модель для хранения фотографий выполненных работ
@@ -161,3 +166,44 @@ class ImageFavorite(models.Model):
 
     def __str__(self):
         return f'{self.owner}'
+
+
+class MyObject(models.Model):
+    city = models.CharField(max_length=100, blank=True, null=True)
+    street = models.CharField(max_length=100, blank=True, null=True)
+    description = models.TextField(max_length=500, blank=True, null=True)
+    image = models.ImageField(upload_to='image_works/%Y/%m/%d/')
+    types = models.ForeignKey(TypeOfServices, on_delete=models.CASCADE, blank=True, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+    def __str__(self):
+        return self.city
+
+
+class LocationObjects(models.Model):  # модель по локации объектов
+    city = models.CharField(max_length=100, blank=True, null=True)
+    image = models.ImageField(upload_to='objects')
+    bind = models.ManyToManyField(MyObject)
+
+    def __str__(self):
+        return f'{self.city}'
+
+    def location_city(self, city):
+        for i in city:
+            url = 'https://ru.wikipedia.org/wiki/' + i
+            request_result = requests.get(url)
+            soup = bs4.BeautifulSoup(request_result.text, "html.parser")
+            heading_object = soup.find_all('img')
+            lst = []
+            lst_2 = []
+            for info in heading_object:
+                lst_2.append(info.get('src'))
+
+            # lst_1 = random.choice(lst[20:30])
+            # lst_2.append(lst_1)
+            # print(lst_2)
+            return random.choice(lst_2[20:30])
+
+
+
